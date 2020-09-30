@@ -34,7 +34,7 @@ export class AuthHTTPService {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
-    return this.http.get<UserModel>(`${API_USERS_URL}`, {
+    return this.http.get<UserModel>(`${API_USERS_URL}/me`, {
       headers: httpHeaders,
     });
   }
