@@ -1,3 +1,4 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InlineSVGModule } from 'ng-inline-svg';
@@ -41,7 +42,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ScrollTopComponent,
     ToolbarComponent,
   ],
-  imports: [CommonModule, InlineSVGModule, PerfectScrollbarModule, CoreModule],
+  imports: [CommonModule, InlineSVGModule, PerfectScrollbarModule, CoreModule, RouterModule],
   providers: [
     {
       provide: PERFECT_SCROLLBAR_CONFIG,
