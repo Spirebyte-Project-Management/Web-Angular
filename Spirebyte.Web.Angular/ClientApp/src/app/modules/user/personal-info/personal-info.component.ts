@@ -3,8 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserHTTPService } from '../_services/user-http.service';
 import { UpdateModel } from '../_models/update.model';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { AuthService } from '../../auth/_services/auth.service';
+import { UserModel } from '../../auth/_models/user.model';
 
 @Component({
   selector: 'app-personal-info',
@@ -58,11 +59,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
         .updateUser(updateUser)
         .pipe(first())
         .subscribe((user: UpdateModel) => {
-          if (user) {
-            this.authService.getUserByToken();
-          } else {
-            this.hasError = true;
-          }
+            this.authService.updateUserByToken().subscribe();
         });
       this.unsubscribe.push(updateUserSubscr);
     }

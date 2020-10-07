@@ -81,6 +81,23 @@ export class AuthService implements OnDestroy {
     );
   }
 
+  updateUserByToken(): Observable<UserModel> {
+    const auth = this.getAuthFromLocalStorage();
+
+    this.isLoadingSubject.next(true);
+    return this.authHttpService.getUserByToken(auth.accessToken).pipe(
+      map((user: UserModel) => {
+        if (user) {
+          this.currentUserSubject.next(user);
+        } else {
+          this.logout();
+        }
+        return user;
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
   // need create new user then login
   registration(user: UserModel): Observable<any> {
     this.isLoadingSubject.next(true);

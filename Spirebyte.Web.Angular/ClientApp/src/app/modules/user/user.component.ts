@@ -12,7 +12,7 @@ export class UserComponent implements OnInit {
   user$: Observable<UserModel>;
   
   constructor(private auth: AuthService) {
-    this.user$ = this.auth.currentUserSubject.asObservable();
+    this.user$ = this.auth.currentUserSubject.pipe();
   }
 
   ngOnInit(): void {
