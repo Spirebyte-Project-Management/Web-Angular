@@ -272,9 +272,10 @@
               >{{ _user.fullname }}</span
             >
             <span class="symbol symbol-35 symbol-light-success">
-              <span class="symbol-label font-size-h5 font-weight-bold">{{
-                _user.fullname | firstLetter
-              }}</span>
+                <div *ngIf="_user.pic != null; else firstletter" class="symbol-label" style="background-image:url('{{_user.pic}}')"></div>
+                <span #firstletter class="symbol-label font-size-h5 font-weight-bold">{{
+                        _user.fullname | firstLetter
+                        }}</span>
             </span>
           </div>
         </div>

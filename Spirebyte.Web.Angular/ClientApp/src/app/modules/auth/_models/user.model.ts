@@ -3,13 +3,13 @@ import { AddressModel } from './address.model';
 import { SocialNetworksModel } from './social-networks.model';
 
 export class UserModel extends AuthModel {
-  id: number;
+  id: string;
   username: string;
   password: string;
   fullname: string;
   email: string;
   pic: string;
-  roles: number[];
+  role: string;
   occupation: string;
   companyName: string;
   phone: string;
@@ -22,8 +22,8 @@ export class UserModel extends AuthModel {
     this.password = user.password || '';
     this.fullname = user.fullname || '';
     this.email = user.email || '';
-    this.pic = user.pic || './assets/media/users/default.jpg';
-    this.roles = user.roles || [];
+    this.pic = user.pic || '';
+    this.role = user.roles || '';
     this.occupation = user.occupation || '';
     this.companyName = user.companyName || '';
     this.phone = user.phone || '';
