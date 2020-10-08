@@ -50,11 +50,6 @@
           id="kt_content"
           [ngClass]="contentClasses"
         >
-          <!-- begin:: Content Head -->
-          <ng-container *ngIf="subheaderDisplay">
-            <app-subheader-wrapper></app-subheader-wrapper>
-          </ng-container>
-          <!-- end:: Content Head -->
 
           <!-- begin:: Content Body -->
           <ng-container *ngIf="contentExtended">
@@ -114,8 +109,6 @@
     <ng-container *ngIf="extrasUserOffcanvasDisplay">
       <app-user-offcanvas></app-user-offcanvas>
     </ng-container>
-
-    <app-toolbar></app-toolbar>
 
     <ng-container *ngIf="extrasScrollTopDisplay">
       <app-scroll-top></app-scroll-top>

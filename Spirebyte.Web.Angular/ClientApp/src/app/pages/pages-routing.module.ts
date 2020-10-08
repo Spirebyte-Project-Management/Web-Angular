@@ -8,9 +8,9 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
-        path: 'dashboard',
+        path: 'projects',
         loadChildren: () =>
-          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+          import('../modules/projects/project.module').then((m) => m.ProjectModule),
       },
       {
         path: 'profile',
@@ -19,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'projects',
         pathMatch: 'full',
       },
       {
