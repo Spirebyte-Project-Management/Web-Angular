@@ -8,7 +8,7 @@
                 <!--begin::User-->
                 <div class="text-center mb-10" *ngIf="user$ | async as _user">
                     <div class="symbol symbol-60 symbol-circle symbol-xl-90">
-                        <div *ngIf="_user.pic != null; else firstletter" class="symbol-label" style="background-image:url('{{_user.pic}}')"></div>
+                        <div *ngIf="_user.pic != null && _user.pic != ''; else firstletter" class="symbol-label" style="background-image:url('{{_user.pic}}')"></div>
                         <ng-template #firstletter>
                                 <span class="symbol-label font-size-h3 font-weight-bold">{{
                                         _user.fullname | firstLetter

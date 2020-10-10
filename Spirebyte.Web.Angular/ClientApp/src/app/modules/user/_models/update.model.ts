@@ -6,6 +6,7 @@ export class UpdateModel {
   id: string;
   fullname: string;
   pic: string;
+  file: File;
   companyName: string;
   phone: string;
   address?: AddressModel;
@@ -14,7 +15,8 @@ export class UpdateModel {
   setUpdateModel(user: any) {
     this.id = user.id;
     this.fullname = user.fullname || '';
-    this.pic = user.pic || '';
+    this.pic = user.pic;
+    this.file = user.file;
     this.companyName = user.companyName || '';
     this.phone = user.phone || '';
     this.address = user.address;

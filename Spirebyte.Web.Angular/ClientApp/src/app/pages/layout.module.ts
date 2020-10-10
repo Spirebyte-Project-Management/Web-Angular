@@ -16,7 +16,6 @@ import { HeaderMenuComponent } from './_layout/components/header/header-menu/hea
 import { TopbarComponent } from './_layout/components/topbar/topbar.component';
 import { ExtrasModule } from '../_metronic/partials/layout/extras/extras.module';
 import { CoreModule } from '../_metronic/core';
-import { SubheaderModule } from '../_metronic/partials/layout/subheader/subheader.module';
 import { AsideDynamicComponent } from './_layout/components/aside-dynamic/aside-dynamic.component';
 import { HeaderMenuDynamicComponent } from './_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
 
@@ -41,7 +40,6 @@ import { HeaderMenuDynamicComponent } from './_layout/components/header/header-m
     NgbDropdownModule,
     NgbProgressbarModule,
     CoreModule,
-    SubheaderModule,
   ],
 })
 export class LayoutModule { }

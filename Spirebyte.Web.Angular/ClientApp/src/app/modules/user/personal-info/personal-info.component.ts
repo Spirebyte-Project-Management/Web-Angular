@@ -16,6 +16,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   personalInfoForm: FormGroup;
   hasError: boolean;
+  currentUser: UserModel;
 
   private unsubscribe: Subscription[] = [];
 
@@ -33,7 +34,6 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
   initForm() {
     this.personalInfoForm = this.fb.group(
       {
-        id: [''],
         fullname: [
           '',
           Validators.compose([
@@ -41,9 +41,13 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
             Validators.minLength(3),
             Validators.maxLength(100),
           ]),
-        ]
+        ],
+        file: []
       });
-    const getUserSubscr = this.authService.currentUserSubject.asObservable().subscribe(res => this.personalInfoForm.patchValue(res));
+    const getUserSubscr = this.authService.currentUserSubject.asObservable().subscribe(res => {
+      this.personalInfoForm.patchValue(res);
+      this.currentUser = res;
+    });
     this.unsubscribe.push(getUserSubscr);
     }
 

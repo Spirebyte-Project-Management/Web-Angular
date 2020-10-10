@@ -7,9 +7,10 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { NoticeComponent } from './notice/notice.component';
 import { CodePreviewComponent } from './code-preview/code-preview.component';
 import { CoreModule } from '../../../core';
+import { AvatarFileUploadComponent } from './avatar-file-upload/avatar-file-upload.component';
 
 @NgModule({
-  declarations: [NoticeComponent, CodePreviewComponent],
+  declarations: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent],
   imports: [
     CommonModule,
     CoreModule,
@@ -20,6 +21,6 @@ import { CoreModule } from '../../../core';
     NgbTooltipModule,
     InlineSVGModule,
   ],
-  exports: [NoticeComponent, CodePreviewComponent],
+  exports: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent],
 })
 export class GeneralModule {}
