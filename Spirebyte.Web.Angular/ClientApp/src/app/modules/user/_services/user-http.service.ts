@@ -15,6 +15,6 @@ export class UserHTTPService {
 
   // UPDATE =>  PUT: update user
   updateUser(user: UpdateModel): Observable<any> {
-    return this.http.put<UpdateModel>(`${API_USERS_URL}/me`, toFormData(user));
+    return this.http.put<UpdateModel>(`${API_USERS_URL}/me`, user);
   }
 }

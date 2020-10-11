@@ -20,15 +20,21 @@ export class AvatarFileUploadComponent implements AfterViewInit, ControlValueAcc
   @Input() defaultPicture;
 
   private fileUploadComponent: any;
-  private file: File | null = null;
+  private file: string | null = null;
   onChange: Function;
 
   constructor(private host: ElementRef<HTMLInputElement> ) { }
 
   @HostListener('change', ['$event.target.files']) emitFiles( event: FileList ) {
     const file = event && event.item(0);
-    this.onChange(file);
-    this.file = file;
+    const reader = new FileReader();
+
+    reader.onloadend = (e: Event) => {
+          this.file = reader.result.toString();
+          this.onChange(this.file);
+      };
+
+    reader.readAsDataURL(file);
   }
 
   ngAfterViewInit() {

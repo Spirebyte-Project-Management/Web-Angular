@@ -6,7 +6,7 @@ export class UpdateModel {
   id: string;
   fullname: string;
   pic: string;
-  file: File;
+  file: string;
   companyName: string;
   phone: string;
   address?: AddressModel;
