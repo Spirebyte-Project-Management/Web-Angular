@@ -30,6 +30,15 @@ export class AuthHTTPService {
     });
   }
 
+  // Server should check token for user id and if true change password
+  resetPassword(userId: string, token: string, password: string): Observable<boolean> {
+    return this.http.post<boolean>(`${API_USERS_URL}/reset-password`, {
+      userId,
+      token,
+      password
+    });
+  }
+
   getUserByToken(token): Observable<UserModel> {
     const httpHeaders = new HttpHeaders({
       Authorization: `Bearer ${token}`,
