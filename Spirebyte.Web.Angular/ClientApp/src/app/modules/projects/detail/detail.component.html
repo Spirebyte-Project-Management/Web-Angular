@@ -1,0 +1,80 @@
+<div class="d-flex flex-row">
+    <!--begin::Aside-->
+    <div class="flex-row-auto offcanvas-mobile w-250px w-xxl-350px" id="kt_profile_aside">
+        <!--begin::Profile Card-->
+        <div class="card card-custom">
+            <!--begin::Body-->
+            <div class="card-body pt-15">
+
+                <div class="d-flex align-items-center" *ngIf="project$ | async as _project">
+                    <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
+                        <div *ngIf="_project.pic != null && _project.pic != ''; else firstletter" class="symbol-label" style="background-image:url('{{_project.pic}}')"></div>
+                        <ng-template #firstletter>
+                                <span class="symbol-label font-size-h3 font-weight-bold">{{
+                                        _project.title | firstLetter
+                                        }}</span>
+                        </ng-template>
+                    </div>
+                    <div>
+                        <a href="#" class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">{{_project.title}}</a>
+                        <div class="text-muted">{{_project.description}}</div>
+                    </div>
+                </div>
+
+                <div class="py-9">
+                    <div class="d-flex align-items-center justify-content-between flex-lg-fill mb-2">
+                        <span class="font-weight-bold mr-2">Members:</span>
+                        <div class="symbol-group symbol-hover">
+                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Mark Stone">
+                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_25.jpg">
+                            </div>
+                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Charlie Stone">
+                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_19.jpg">
+                            </div>
+                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Luca Doncic">
+                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_22.jpg">
+                            </div>
+                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Nick Mana">
+                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_23.jpg">
+                            </div>
+                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Teresa Fox">
+                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_18.jpg">
+                            </div>
+                            <div class="symbol symbol-30 symbol-circle symbol-light">
+                                <span class="symbol-label font-weight-bold">5+</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--begin::Nav-->
+                <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
+                        <div class="navi-item mb-2">
+                            <a [routerLink]="['issues']" [routerLinkActive]="['active']" class="navi-link py-4">
+                                <span class="navi-icon mr-2">
+                                    <span class="svg-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24"></rect>
+                                                <rect fill="#000000" x="4" y="5" width="16" height="3" rx="1.5"></rect>
+                                                <path d="M5.5,15 L18.5,15 C19.3284271,15 20,15.6715729 20,16.5 C20,17.3284271 19.3284271,18 18.5,18 L5.5,18 C4.67157288,18 4,17.3284271 4,16.5 C4,15.6715729 4.67157288,15 5.5,15 Z M5.5,10 L12.5,10 C13.3284271,10 14,10.6715729 14,11.5 C14,12.3284271 13.3284271,13 12.5,13 L5.5,13 C4.67157288,13 4,12.3284271 4,11.5 C4,10.6715729 4.67157288,10 5.5,10 Z" fill="#000000" opacity="0.3"></path>
+                                            </g>
+                                        </svg>
+                                    </span>
+                                </span>
+                                <span class="navi-text font-size-lg">Issues</span>
+                            </a>
+                        </div>
+                    </div>
+                <!--end::Nav-->
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Profile Card-->
+    </div>
+    <!--end::Aside-->
+    <!--begin::Content-->
+    <div class="flex-row-fluid ml-lg-8">
+        <router-outlet></router-outlet>
+    </div>
+    <!--end::Content-->
+</div>

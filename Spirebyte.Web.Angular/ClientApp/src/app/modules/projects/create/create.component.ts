@@ -5,6 +5,7 @@ import { ProjectHTTPService } from '../_services/project-http.service';
 import { first, catchError } from 'rxjs/operators';
 import { ProjectModel } from '../_models/project.model';
 import { Router } from '@angular/router';
+import { doesKeyExistValidator } from './does-key-exist.validator';
 
 @Component({
   selector: 'app-create',
@@ -39,6 +40,15 @@ export class CreateComponent implements OnInit, OnDestroy {
             Validators.required,
             Validators.minLength(3),
             Validators.maxLength(100),
+          ]),
+        ],
+        key: [
+          '',
+          Validators.compose([
+            Validators.required,
+          ]),
+          Validators.composeAsync([
+            doesKeyExistValidator(this.projectHttpService)
           ]),
         ],
         description: []

@@ -12,7 +12,7 @@
                 <button type="submit" class="btn btn-success mr-2" [disabled]="
     createProjectForm.invalid
     ">Save Changes</button>
-                <button type="reset" class="btn btn-secondary">Cancel</button>
+                <a [routerLink]="'/projects/overview'" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
         <!--end::Header-->
@@ -81,6 +81,25 @@
             control: createProjectForm.controls['title']
         }"></ng-container>
             </div>
+            <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Key</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <input class="form-control form-control-lg form-control-solid" type="text" name="key"
+                            formControlName="key" autocomplete="off" [ngClass]="{
+                    'is-invalid': createProjectForm.controls['key'].invalid
+                }" />
+                    </div>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Key is required',
+                control: createProjectForm.controls['key']
+            }"></ng-container>
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'keyExist',
+                message: 'Key already exists',
+                control: createProjectForm.controls['key']
+            }"></ng-container>
+                </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
                 <div class="col-lg-9 col-xl-6">

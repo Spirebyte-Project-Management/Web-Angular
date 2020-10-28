@@ -8,11 +8,15 @@ import { ProjectComponent } from './project.component';
 import { CreateComponent } from './create/create.component';
 import { OverviewComponent } from './overview/overview.component';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { DetailComponent } from './detail/detail.component';
+import { IssuesComponent } from './detail/issues/issues.component';
+import { CreateIssueComponent } from './detail/create-issue/create-issue.component';
+import { IssueHTTPService } from './_services/issue-http.service';
 
 
 
 @NgModule({
-  declarations: [ProjectComponent, CreateComponent, OverviewComponent],
+  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent],
   imports: [
     ProjectRoutingModule,
     CommonModule,
@@ -21,6 +25,6 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     NgbDropdownModule
   ],
-  providers: [ProjectHTTPService]
+  providers: [ProjectHTTPService, IssueHTTPService]
 })
 export class ProjectModule { }
