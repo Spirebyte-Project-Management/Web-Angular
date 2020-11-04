@@ -24,26 +24,22 @@
                 <div class="py-9">
                     <div class="d-flex align-items-center justify-content-between flex-lg-fill mb-2">
                         <span class="font-weight-bold mr-2">Members:</span>
-                        <div class="symbol-group symbol-hover">
-                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Mark Stone">
-                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_25.jpg">
+                        <div class="symbol-group symbol-hover" *ngIf="projectUsers$ | async as _projectUsers; else loadingMembers">
+                            <div *ngFor="let user of _projectUsers.slice(0, 5)" class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Mark Stone">
+                                <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label" style="background-image:url('{{user.pic}}')"></div>
+                                <ng-template #firstletter>
+                                        <span class="symbol-label font-size-sm font-weight-bold">{{
+                                                user.fullname | firstLetter
+                                                }}</span>
+                                </ng-template>
                             </div>
-                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Charlie Stone">
-                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_19.jpg">
-                            </div>
-                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Luca Doncic">
-                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_22.jpg">
-                            </div>
-                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Nick Mana">
-                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_23.jpg">
-                            </div>
-                            <div class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title="" data-original-title="Teresa Fox">
-                                <img alt="Pic" src="/metronic/theme/html/demo1/dist/assets/media/users/300_18.jpg">
-                            </div>
-                            <div class="symbol symbol-30 symbol-circle symbol-light">
-                                <span class="symbol-label font-weight-bold">5+</span>
+                            <div class="symbol symbol-30 symbol-circle symbol-light" *ngIf="_projectUsers.length > 5">
+                                <span class="symbol-label font-weight-bold">{{_projectUsers.length - 5}}+</span>
                             </div>
                         </div>
+                        <ng-template #loadingMembers>
+                            <div class="spinner spinner-primary"></div>
+                        </ng-template>
                     </div>
                 </div>
                 <!--begin::Nav-->

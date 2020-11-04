@@ -6,13 +6,14 @@
         <div class="card-header py-3">
             <div class="card-title align-items-start flex-column">
                 <h3 class="card-label font-weight-bolder text-dark">Create Issue</h3>
-                <span class="text-muted font-weight-bold font-size-sm mt-1">Start documenting as quickly as possible.</span>
+                <span class="text-muted font-weight-bold font-size-sm mt-1">Start documenting as quickly as
+                    possible.</span>
             </div>
             <div class="card-toolbar">
                 <button type="submit" class="btn btn-success mr-2" [disabled]="
     createIssueForm.invalid
     ">Save Changes</button>
-                <button type="reset" class="btn btn-secondary">Cancel</button>
+                <a [routerLink]="'../'" class="btn btn-secondary">Cancel</a>
             </div>
         </div>
         <!--end::Header-->
@@ -33,7 +34,7 @@
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Title
-                <span class="text-danger">*</span></label>
+                    <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-xl-6">
                     <input class="form-control form-control-lg form-control-solid" type="text" name="title"
                         formControlName="title" autocomplete="off" [ngClass]="{
@@ -58,9 +59,10 @@
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Type
-                <span class="text-danger">*</span></label>
+                    <span class="text-danger">*</span></label>
                 <div class="col-lg-9 col-xl-6">
-                    <select class="form-control form-control-lg form-control-solid" id="type" name="type" formControlName="type">
+                    <select class="form-control form-control-lg form-control-solid" id="type" name="type"
+                        formControlName="type">
                         <option *ngFor="let item of types | enumToArray" [value]="item.index">{{item.name}}</option>
                     </select>
                 </div>
@@ -69,7 +71,7 @@
                 <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
                 <div class="col-lg-9 col-xl-6">
                     <textarea class="form-control form-control-lg form-control-solid" type="text" name="description"
-                    formControlName="description" autocomplete="off"></textarea>
+                        formControlName="description" autocomplete="off"></textarea>
                 </div>
             </div>
             <ng-template #formError let-control="control" let-message="message" let-validation="validation">

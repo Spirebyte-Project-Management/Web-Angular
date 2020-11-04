@@ -12,6 +12,7 @@ import { DetailComponent } from './detail/detail.component';
 import { IssuesComponent } from './detail/issues/issues.component';
 import { CreateIssueComponent } from './detail/create-issue/create-issue.component';
 import { IssueHTTPService } from './_services/issue-http.service';
+import { UserHTTPService } from './_services/user-http.service';
 
 
 
@@ -25,6 +26,6 @@ import { IssueHTTPService } from './_services/issue-http.service';
     ReactiveFormsModule,
     NgbDropdownModule
   ],
-  providers: [ProjectHTTPService, IssueHTTPService]
+  providers: [ProjectHTTPService, IssueHTTPService, UserHTTPService]
 })
 export class ProjectModule { }
