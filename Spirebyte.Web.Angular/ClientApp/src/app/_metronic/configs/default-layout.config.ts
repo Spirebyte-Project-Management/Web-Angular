@@ -122,7 +122,7 @@ export const DefaultLayoutConfig = {
 
   // Content
   content: {
-    width: 'fixed', // fluid|fixed
+    width: 'fluid', // fluid|fixed
   },
 
   // Brand
@@ -140,7 +140,7 @@ export const DefaultLayoutConfig = {
       fixed: true,
       minimize: {
         toggle: true, // allow toggle
-        default: false, // default state
+        default: true, // default state
         hoverable: true, // allow hover
       },
     },
