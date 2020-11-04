@@ -13,13 +13,16 @@ import { IssuesComponent } from './detail/issues/issues.component';
 import { CreateIssueComponent } from './detail/create-issue/create-issue.component';
 import { IssueHTTPService } from './_services/issue-http.service';
 import { UserHTTPService } from './_services/user-http.service';
+import { UpdateComponent } from './update/update.component';
+import { GeneralModule } from 'src/app/_metronic/partials/content/general/general.module';
 
 
 
 @NgModule({
-  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent],
+  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent],
   imports: [
     ProjectRoutingModule,
+    GeneralModule,
     CommonModule,
     CoreModule,
     FormsModule,

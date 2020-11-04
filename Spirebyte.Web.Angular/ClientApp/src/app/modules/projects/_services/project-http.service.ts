@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { ProjectModel } from '../_models/project.model';
+import { ProjectUpdateModel } from '../_models/updateProject.model';
 
 const API_PROJECTS_URL = `${environment.apiUrl}/projects`;
 
@@ -25,6 +26,11 @@ export class ProjectHTTPService {
   // CREATE =>  POST: create project
   createProject(project: ProjectModel): Observable<ProjectModel> {
     return this.http.post<ProjectModel>(`${API_PROJECTS_URL}`, project);
+  }
+
+  // UPDATE =>  PUT: update user
+  updateProject(project: ProjectUpdateModel, key:string): Observable<any> {
+    return this.http.put<ProjectUpdateModel>(`${API_PROJECTS_URL}/${key}`, project);
   }
 
   // CHECK =>  GET: does key exist

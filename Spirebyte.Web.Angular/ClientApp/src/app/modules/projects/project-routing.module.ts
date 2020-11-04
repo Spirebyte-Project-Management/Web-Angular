@@ -6,6 +6,7 @@ import { CreateComponent } from './create/create.component';
 import { DetailComponent } from './detail/detail.component';
 import { IssuesComponent } from './detail/issues/issues.component';
 import { CreateIssueComponent } from './detail/create-issue/create-issue.component';
+import { UpdateComponent } from './update/update.component';
 
 
 const routes: Routes = [
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: 'create',
         component: CreateComponent
+      },
+      {
+        path: ':key/update',
+        component: UpdateComponent
       },
       {
         path: ':key',
