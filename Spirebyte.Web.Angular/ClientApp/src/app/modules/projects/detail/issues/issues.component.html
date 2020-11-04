@@ -29,7 +29,7 @@
             <tbody>
                 <tr *ngFor="let issue of issues">
                     <th>
-                        <div class="d-flex align-items-center">
+                        <div class="d-flex align-items-center" (click)="setSelectedIssue(issue.key)">
                             <!--begin::Checkbox-->
                             <div class="symbol mt-1 mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
                                 <span *ngSwitchCase="'epic'" class="symbol-label bg-info">

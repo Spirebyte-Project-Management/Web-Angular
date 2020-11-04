@@ -13,13 +13,13 @@ export class IssueHTTPService {
   constructor(private http: HttpClient) {}
 
   // GET =>  GET: get issues for project
-  getIssuesForProject(projectId: string): Observable<IssueModel[]> {
-    return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/${projectId}`);
+  getIssuesForProject(projectKey: string): Observable<IssueModel[]> {
+    return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/forProject/${projectKey}`);
   }
 
   // GET =>  GET: get project
-  getIssue(issueId: string): Observable<IssueModel> {
-    return this.http.get<IssueModel>(`${API_ISSUES_URL}/${issueId}`);
+  getIssue(issueKey: string): Observable<IssueModel> {
+    return this.http.get<IssueModel>(`${API_ISSUES_URL}/${issueKey}`);
   }
 
   // CREATE =>  POST: create issue
