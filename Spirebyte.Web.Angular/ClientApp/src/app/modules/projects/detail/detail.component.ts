@@ -40,9 +40,8 @@ export class DetailComponent implements OnInit, OnDestroy {
       this.projectKey = params.get('key');
       this.project$ = this.projectHttpService.getProject(this.projectKey).pipe(
         tap(res => {
-          const ids = [];
+          const ids = res.projectUserIds;
           ids.push(res.ownerUserId);
-          ids.push.apply(res.projectUserIds);
 
           this.projectUsers$ = this.userHttpService.getUsersWithIds(ids);
         })

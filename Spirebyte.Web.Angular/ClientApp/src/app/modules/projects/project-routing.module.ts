@@ -7,6 +7,7 @@ import { DetailComponent } from './detail/detail.component';
 import { IssuesComponent } from './detail/issues/issues.component';
 import { CreateIssueComponent } from './detail/create-issue/create-issue.component';
 import { UpdateComponent } from './update/update.component';
+import { InvitationComponent } from './invitation/invitation.component';
 
 
 const routes: Routes = [
@@ -33,6 +34,10 @@ const routes: Routes = [
           {
             path: 'issues',
             component: IssuesComponent
+          },
+          {
+            path: 'invitation/:userId',
+            component: InvitationComponent
           },
           {
             path: 'issues/create',

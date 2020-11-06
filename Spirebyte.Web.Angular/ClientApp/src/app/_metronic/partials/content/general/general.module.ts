@@ -8,9 +8,10 @@ import { NoticeComponent } from './notice/notice.component';
 import { CodePreviewComponent } from './code-preview/code-preview.component';
 import { CoreModule } from '../../../core';
 import { AvatarFileUploadComponent } from './avatar-file-upload/avatar-file-upload.component';
+import { TagInputComponent } from './tag-input/tag-input.component';
 
 @NgModule({
-  declarations: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent],
+  declarations: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent],
   imports: [
     CommonModule,
     CoreModule,
@@ -21,6 +22,6 @@ import { AvatarFileUploadComponent } from './avatar-file-upload/avatar-file-uplo
     NgbTooltipModule,
     InlineSVGModule,
   ],
-  exports: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent],
+  exports: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent],
 })
 export class GeneralModule {}

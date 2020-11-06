@@ -74,6 +74,18 @@
                             formControlName="description" autocomplete="off"></textarea>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Invitations</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <app-tag-input formControlName="invitedUserIds" [settings]="inviteSettings" [typeaheadUrl]="inviteUsersLink" [typeaheadFunc]="inviteUsersFunction"></app-tag-input>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-xl-3 col-lg-3 col-form-label">Members</label>
+                    <div class="col-lg-9 col-xl-6">
+                        <app-tag-input formControlName="projectUserIds" [editOnly]="true" [settings]="memberSettings"></app-tag-input>
+                    </div>
+                </div>
                 <ng-template #formError let-control="control" let-message="message" let-validation="validation">
                     <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
                         <div class="fv-plugins-message-container">

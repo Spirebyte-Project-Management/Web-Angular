@@ -37,4 +37,14 @@ export class ProjectHTTPService {
   doesKeyExist(key: string): Observable<boolean> {
     return this.http.get<boolean>(`${API_PROJECTS_URL}/doeskeyexist/${key}`);
   }
+
+  // JOIN =>  POST: create project
+  joinProject(key: string, userId: string): Observable<ProjectModel> {
+    return this.http.post<ProjectModel>(`${API_PROJECTS_URL}/${key}/join`, { userId });
+  }
+
+  // LEAVE =>  POST: create project
+  leaveProject(key: string, userId: string): Observable<ProjectModel> {
+    return this.http.post<ProjectModel>(`${API_PROJECTS_URL}/${key}/leave`, { userId });
+  }
 }

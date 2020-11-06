@@ -10,6 +10,9 @@ const API_USERS_URL = `${environment.apiUrl}/identity/users`;
   providedIn: 'root',
 })
 export class UserHTTPService {
+
+  public baseUrl = API_USERS_URL;
+
   constructor(private http: HttpClient) {}
 
   // GET =>  GET: get issues for project
@@ -18,6 +21,15 @@ export class UserHTTPService {
     params = params.append(`userIds`, JSON.stringify(userIds)); 
 
     return this.http.get<UserModel[]>(`${API_USERS_URL}/withids`, {
+        params
+    });
+  }
+
+  searchUsers(searchTerm: string): Observable<UserModel[]> {
+    let params = new HttpParams();
+    params = params.append(`SearchTerm`, searchTerm);
+
+    return this.http.get<UserModel[]>(`${API_USERS_URL}`, {
         params
     });
   }
