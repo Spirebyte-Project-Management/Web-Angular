@@ -184,6 +184,11 @@ export class UpdateComponent implements OnInit, OnDestroy {
     result['invitedUserIds'].map(item => invitedIdList.push(item.value));
     result['invitedUserIds'] = invitedIdList;
 
+    const memberIdList = [];
+    if (typeof result['projectUserIds'] == 'string') { result['projectUserIds'] = JSON.parse(result['projectUserIds']); }
+    result['projectUserIds'].map(item => memberIdList.push(item.value));
+    result['projectUserIds'] = memberIdList;
+
     const updateProject = new ProjectUpdateModel();
     updateProject.setUpdateModel(result);
     const updateProjectSubscr = this.projectHttpservice
