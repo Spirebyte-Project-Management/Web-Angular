@@ -26,4 +26,9 @@ export class IssueHTTPService {
   createIssue(issue: IssueModel, projectId: string): Observable<IssueModel> {
     return this.http.post<IssueModel>(`${API_ISSUES_URL}/${projectId}`, issue);
   }
+
+  // CREATE =>  POST: create issue
+  updateIssue(issue: IssueModel, issueKey: string): Observable<IssueModel> {
+    return this.http.put<IssueModel>(`${API_ISSUES_URL}/${issueKey}`, issue);
+  }
 }

@@ -6,7 +6,7 @@ import { ProjectHTTPService } from '../_services/project-http.service';
 import { UserModel } from '../../auth/_models/user.model';
 import { map, tap } from 'rxjs/operators';
 import { UserHTTPService } from '../_services/user-http.service';
-import { IssueModel } from '../_models/issue.model';
+import { IssueModel, IssueType, IssueStatus } from '../_models/issue.model';
 import { IssueHTTPService } from '../_services/issue-http.service';
 
 @Component({
@@ -17,6 +17,9 @@ import { IssueHTTPService } from '../_services/issue-http.service';
 export class DetailComponent implements OnInit, OnDestroy {
   projectKey: string;
   project$: Observable<ProjectModel>;
+
+  issueType = IssueType;
+  issueStatus = IssueStatus;
 
   private issueSubject: BehaviorSubject<IssueModel>;
   issue$: Observable<IssueModel>;

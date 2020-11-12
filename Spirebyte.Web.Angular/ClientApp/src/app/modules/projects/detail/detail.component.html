@@ -111,7 +111,7 @@
                 <div class="card">
                     <div class="card-header ribbon ribbon-top ribbon-ver p-0" *ngIf="project$ | async as _project">
                         <ng-container [ngSwitch]="issue.type">
-                                <div *ngSwitchCase="'epic'" class="ribbon-target bg-info" style="top: -2px; right: 20px;">
+                                <div *ngSwitchCase="issueType.Epic" class="ribbon-target bg-info" style="top: -2px; right: 60px;">
                                         <span class="svg-icon svg-icon-white svg-icon-sm">
                                             <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/Weather/Thunder.svg-->
                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +128,7 @@
                                         </span>
                                     </div>
     
-                                    <div *ngSwitchCase="'story'" class="ribbon-target bg-success" style="top: -2px; right: 20px;">
+                                    <div *ngSwitchCase="issueType.Story" class="ribbon-target bg-success" style="top: -2px; right: 60px;">
                                         <span class="svg-icon svg-icon-white svg-icon-sm">
                                             <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/Files/Folder.svg--><svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -144,7 +144,7 @@
                                             <!--end::Svg Icon--></span>
                                     </div>
     
-                                    <div *ngSwitchCase="'task'" class="ribbon-target bg-primary" style="top: -2px; right: 20px;">
+                                    <div *ngSwitchCase="issueType.Task" class="ribbon-target bg-primary" style="top: -2px; right: 60px;">
                                         <span class="svg-icon svg-icon-white svg-icon-sm">
                                             <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/General/Clipboard.svg--><svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -167,7 +167,7 @@
                                             <!--end::Svg Icon--></span>
                                     </div>
     
-                                    <div *ngSwitchCase="'subTask'" class="ribbon-target bg-primary" style="top: -2px; right: 20px;">
+                                    <div *ngSwitchCase="issueType.SubTask" class="ribbon-target bg-primary" style="top: -2px; right: 60px;">
                                         <span class="svg-icon svg-icon-white svg-icon-sm">
                                             <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/General/Duplicate.svg--><svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -186,7 +186,7 @@
                                             <!--end::Svg Icon--></span>
                                     </div>
     
-                                    <div *ngSwitchCase="'subTask'" class="ribbon-target bg-danger" style="top: -2px; right: 20px;">
+                                    <div *ngSwitchCase="issueType.Bug" class="ribbon-target bg-danger" style="top: -2px; right: 60px;">
                                         <span class="svg-icon svg-icon-white svg-icon-sm">
                                             <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/General/Fire.svg--><svg
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -202,22 +202,49 @@
                                             <!--end::Svg Icon--></span>
                                     </div>
                         </ng-container>
-                        <div class="d-flex flex-row">
-                            <div class="symbol symbol-30 m-5 mr-2">
-                                <div *ngIf="_project.pic != null && _project.pic != ''; else firstletter"
-                                    class="symbol-label" style="background-image:url('{{_project.pic}}')"></div>
-                                <ng-template #firstletter>
-                                    <span class="symbol-label font-size-h3 font-weight-bold">{{
-                                                    _project.title | firstLetter
-                                                    }}</span>
-                                </ng-template>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row">
+                                <div class="symbol symbol-30 m-5 mr-2">
+                                    <div *ngIf="_project.pic != null && _project.pic != ''; else firstletter"
+                                        class="symbol-label" style="background-image:url('{{_project.pic}}')"></div>
+                                    <ng-template #firstletter>
+                                        <span class="symbol-label font-size-h3 font-weight-bold">{{
+                                                        _project.title | firstLetter
+                                                        }}</span>
+                                    </ng-template>
+                                </div>
+                                <ol class="breadcrumb breadcrumb-transparent m-0 p-0">
+                                    <li class="breadcrumb-item">
+                                        {{_project.title}}
+                                    </li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{issue.key}}</li>
+                                </ol>
                             </div>
-                            <ol class="breadcrumb breadcrumb-transparent m-0 p-0">
-                                <li class="breadcrumb-item">
-                                    {{_project.title}}
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">{{issue.key}}</li>
-                            </ol>
+                            <!--begin::Toolbar-->
+                            <div class="card-toolbar m-5">
+                                <div ngbDropdown class="dropdown dropdown-inline" data-toggle="tooltip" title=""
+                                    data-placement="left" data-original-title="Quick actions">
+                                    <a ngbDropdownToggle class="btn btn-clean btn-hover-light-primary btn-sm btn-icon"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="ki ki-bold-more-hor"></i>
+                                    </a>
+                                    <div ngbDropdownMenu class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                        <!--begin::Navigation-->
+                                        <ul class="navi navi-hover">
+                                            <li class="navi-item">
+                                                <a [routerLink]="['/projects', projectKey, 'issues', issue.key, 'update']" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="flaticon2-edit"></i>
+                                                    </span>
+                                                    <span class="navi-text">Edit</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <!--end::Navigation-->
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end::Toolbar-->
                         </div>
                     </div>
                     <div class="card-body pt-1">
@@ -233,10 +260,10 @@
                             <div class="form-group row">
                                 <label class="col-lg-3 text-right text-dark-65">Status:</label>
                                 <div class="col-lg-6" [ngSwitch]="issue.status">
-                                    <span *ngSwitchCase="'todo'" class="label label-inline mr-2">TO DO</span>
-                                    <span *ngSwitchCase="'inprogress'" class="label label-info label-inline mr-2">IN
+                                    <span *ngSwitchCase="issueStatus.TODO" class="label label-inline mr-2">TO DO</span>
+                                    <span *ngSwitchCase="issueStatus.INPROGRESS" class="label label-info label-inline mr-2">IN
                                         PROGRESS</span>
-                                    <span *ngSwitchCase="'done'"
+                                    <span *ngSwitchCase="issueStatus.DONE"
                                         class="label label-success label-inline mr-2">DONE</span>
                                 </div>
                             </div>

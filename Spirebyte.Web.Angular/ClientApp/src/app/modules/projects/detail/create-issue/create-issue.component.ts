@@ -74,7 +74,8 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
         .createIssue(issue, this.projectId)
         .subscribe(
           result => {
-            this.router.navigate(['../']);
+            this.router.navigate(['../'],
+            {relativeTo: this.route});
           },
           error => {
             this.hasError = true;

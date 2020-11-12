@@ -8,6 +8,7 @@ import { IssuesComponent } from './detail/issues/issues.component';
 import { CreateIssueComponent } from './detail/create-issue/create-issue.component';
 import { UpdateComponent } from './update/update.component';
 import { InvitationComponent } from './invitation/invitation.component';
+import { UpdateIssueComponent } from './detail/update-issue/update-issue.component';
 
 
 const routes: Routes = [
@@ -38,6 +39,10 @@ const routes: Routes = [
           {
             path: 'invitation/:userId',
             component: InvitationComponent
+          },
+          {
+            path: 'issues/:issueKey/update',
+            component: UpdateIssueComponent
           },
           {
             path: 'issues/create',
