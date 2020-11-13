@@ -1,0 +1,72 @@
+<!--begin::Form-->
+<div class="form" novalidate="novalidate">
+    <!--begin::Card-->
+    <div class="card card-custom card-stretch">
+        <!--begin::Header-->
+        <div class="card-header py-3">
+            <div class="card-title align-items-start flex-column">
+                <h3 class="card-label font-weight-bolder text-dark">Delete Issue</h3>
+                <span class="text-muted font-weight-bold font-size-sm mt-1">Are you certain u wish to delte this issue?</span>
+            </div>
+            <div class="card-toolbar">
+                <button type="submit" class="btn btn-danger mr-2" (click)="delete()">Delete</button>
+                <a [routerLink]="'../'" class="btn btn-secondary">Cancel</a>
+            </div>
+        </div>
+        <!--end::Header-->
+        <div class="card-body" *ngIf="isLoading$ | async; else deleteForm">
+            <div class="spinner spinner-primary"></div>
+        </div>
+
+        <ng-template #deleteForm>
+        <!--begin::Body-->
+        <div class="card-body">
+            <div class="row">
+                <label class="col-xl-3"></label>
+                <div class="col-lg-9 col-xl-6">
+                    <h5 class="font-weight-bold mb-6">Issue Details</h5>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Title
+                    <span class="text-danger">*</span></label>
+                <div class="col-lg-9 col-xl-6">
+                    <input class="form-control form-control-lg form-control-solid" disabled type="text" value="{{issue.title}}" name="title"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Type
+                    <span class="text-danger">*</span></label>
+                <div class="col-lg-9 col-xl-6">
+                    <select class="form-control form-control-lg form-control-solid" disabled value="{{issue.type}}" id="type" name="type">
+                        <option *ngFor="let item of types | enumToArray" [value]="item.index">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Status
+                    <span class="text-danger">*</span></label>
+                <div class="col-lg-9 col-xl-6">
+                    <select class="form-control form-control-lg form-control-solid" disabled value="{{issue.status}}" id="status" name="status">
+                        <option *ngFor="let item of status | enumToArray" [value]="item.index">{{item.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Storypoints</label>
+                <div class="col-lg-9 col-xl-6">
+                    <input class="form-control form-control-lg form-control-solid" disabled value="{{issue.storyPoints}}" type="number" name="storyPoints"/>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
+                <div class="col-lg-9 col-xl-6">
+                    <textarea class="form-control form-control-lg form-control-solid" disabled value="{{issue.description}}" type="text" name="description"></textarea>
+                </div>
+            </div>
+        </div>
+        </ng-template>
+        <!--end::Body-->
+    </div>
+</div>
+<!--end::Form-->

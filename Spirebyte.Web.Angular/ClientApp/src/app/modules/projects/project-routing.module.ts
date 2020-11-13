@@ -9,6 +9,7 @@ import { CreateIssueComponent } from './detail/create-issue/create-issue.compone
 import { UpdateComponent } from './update/update.component';
 import { InvitationComponent } from './invitation/invitation.component';
 import { UpdateIssueComponent } from './detail/update-issue/update-issue.component';
+import { DeleteIssueComponent } from './detail/delete-issue/delete-issue.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,10 @@ const routes: Routes = [
           {
             path: 'invitation/:userId',
             component: InvitationComponent
+          },
+          {
+            path: 'issues/:issueKey/delete',
+            component: DeleteIssueComponent
           },
           {
             path: 'issues/:issueKey/update',

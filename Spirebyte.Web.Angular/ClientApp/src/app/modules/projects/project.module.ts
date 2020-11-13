@@ -17,11 +17,12 @@ import { UpdateComponent } from './update/update.component';
 import { GeneralModule } from 'src/app/_metronic/partials/content/general/general.module';
 import { InvitationComponent } from './invitation/invitation.component';
 import { UpdateIssueComponent } from './detail/update-issue/update-issue.component';
+import { DeleteIssueComponent } from './detail/delete-issue/delete-issue.component';
 
 
 
 @NgModule({
-  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent],
+  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent],
   imports: [
     ProjectRoutingModule,
     GeneralModule,

@@ -27,8 +27,13 @@ export class IssueHTTPService {
     return this.http.post<IssueModel>(`${API_ISSUES_URL}/${projectId}`, issue);
   }
 
-  // CREATE =>  POST: create issue
+  // UPDATE =>  PUT: update issue
   updateIssue(issue: IssueModel, issueKey: string): Observable<IssueModel> {
     return this.http.put<IssueModel>(`${API_ISSUES_URL}/${issueKey}`, issue);
+  }
+
+  // DELETE =>  DELETE: delete issue
+  deleteIssue(issueKey: string): Observable<IssueModel> {
+    return this.http.delete<IssueModel>(`${API_ISSUES_URL}/${issueKey}`);
   }
 }

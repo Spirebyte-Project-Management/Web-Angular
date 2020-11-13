@@ -239,6 +239,14 @@
                                                     <span class="navi-text">Edit</span>
                                                 </a>
                                             </li>
+                                            <li class="navi-item">
+                                                <a [routerLink]="['/projects', projectKey, 'issues', issue.key, 'delete']" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="flaticon2-delete"></i>
+                                                    </span>
+                                                    <span class="navi-text">Delete</span>
+                                                </a>
+                                            </li>
                                         </ul>
                                         <!--end::Navigation-->
                                     </div>
