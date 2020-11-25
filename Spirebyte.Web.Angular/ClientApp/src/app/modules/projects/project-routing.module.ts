@@ -10,6 +10,8 @@ import { UpdateComponent } from './update/update.component';
 import { InvitationComponent } from './invitation/invitation.component';
 import { UpdateIssueComponent } from './detail/update-issue/update-issue.component';
 import { DeleteIssueComponent } from './detail/delete-issue/delete-issue.component';
+import { BacklogComponent } from './detail/backlog/backlog.component';
+import { CreateSprintComponent } from './detail/create-sprint/create-sprint.component';
 
 
 const routes: Routes = [
@@ -38,6 +40,10 @@ const routes: Routes = [
             component: IssuesComponent
           },
           {
+            path: 'backlog',
+            component: BacklogComponent
+          },
+          {
             path: 'invitation/:userId',
             component: InvitationComponent
           },
@@ -52,6 +58,10 @@ const routes: Routes = [
           {
             path: 'issues/create',
             component: CreateIssueComponent
+          },
+          {
+            path: 'sprint/create',
+            component: CreateSprintComponent
           },
           {path: '', redirectTo: 'issues', pathMatch: 'full'},
           {path: '**', redirectTo: 'issues', pathMatch: 'full'},

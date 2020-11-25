@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ViewChild, AfterViewInit, Output, EventEmitter, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import * as Tagify from '@yaireo/tagify';
 import { SettingsModel } from './_models/settings.model';
-import { thistle } from 'color-name';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -23,7 +22,7 @@ export class TagInputComponent implements AfterViewInit, OnChanges, OnDestroy, C
 
   @Input() settings: SettingsModel; // get possible tagify settings
   @Input() value: string | Array<string>;
-  @Input() editOnly: boolean = false;
+  @Input() editOnly = false;
   @Input() typeaheadUrl: string = null;
   @Input() typeaheadFunc: (searchTerm: string) => Observable<any[]>;
 
@@ -61,7 +60,7 @@ export class TagInputComponent implements AfterViewInit, OnChanges, OnDestroy, C
     }
   }
 
-    /**
+  /**
    * @description removes all tags
    */
   removeAll() {
