@@ -22,6 +22,7 @@ import { BacklogComponent } from './detail/backlog/backlog.component';
 import { BacklogItemComponent } from './detail/widgets/backlog-item/backlog-item.component';
 import { CreateSprintComponent } from './detail/create-sprint/create-sprint.component';
 import { SprintHTTPService } from './_services/sprint-http.service';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 
@@ -35,7 +36,8 @@ import { SprintHTTPService } from './_services/sprint-http.service';
     FormsModule,
     ReactiveFormsModule,
     NgbDropdownModule,
-    NgbDatepickerModule
+    NgbDatepickerModule,
+    DragDropModule
   ],
   providers: [ProjectHTTPService, IssueHTTPService, UserHTTPService, SprintHTTPService]
 })

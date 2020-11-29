@@ -1,8 +1,10 @@
 export class SprintModel {
     id: string;
+    key: string;
     title: string;
     description: string;
     projectId: string;
+    issueIds: string[];
     createdAt: Date;
     startedAt: Date;
     startDate: Date;

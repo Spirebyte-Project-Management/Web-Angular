@@ -1,8 +1,8 @@
-<div class="card mb-1">
-    <div class="card-body p-1">
+<div class="card mb-1" cdkDrag [cdkDragData]="issue">
+    <div class="card-body p-2">
         <div class="d-flex align-items-center" (click)="setSelectedIssue(issue.key)">
             <!--begin::Checkbox-->
-            <div class="symbol mt-1 mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
+            <div class="symbol mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
                 <span *ngSwitchCase="issueType.Epic" class="symbol-label bg-info">
                     <span class="svg-icon svg-icon-white svg-icon-xs">
                         <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/Weather/Thunder.svg-->

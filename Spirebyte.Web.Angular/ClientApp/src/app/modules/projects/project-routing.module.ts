@@ -63,8 +63,8 @@ const routes: Routes = [
             path: 'sprint/create',
             component: CreateSprintComponent
           },
-          {path: '', redirectTo: 'issues', pathMatch: 'full'},
-          {path: '**', redirectTo: 'issues', pathMatch: 'full'},
+          {path: '', redirectTo: 'backlog', pathMatch: 'full'},
+          {path: '**', redirectTo: 'backlog', pathMatch: 'full'},
         ]
       },
       {path: '', redirectTo: 'overview', pathMatch: 'full'},

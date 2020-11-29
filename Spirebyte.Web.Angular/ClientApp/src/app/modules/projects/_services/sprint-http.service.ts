@@ -26,4 +26,12 @@ export class SprintHTTPService {
   createSprint(Sprint: SprintModel, projectId: string): Observable<SprintModel> {
     return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${projectId}`, Sprint);
   }
+
+  addIssueToSprint(sprintKey: string, issueKey: string){
+    return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${sprintKey}/addIssue/${issueKey}`, {sprintKey, issueKey});
+  }
+
+  removeIssueFromSprint(sprintKey: string, issueKey: string){
+    return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${sprintKey}/removeIssue/${issueKey}`, {sprintKey, issueKey});
+  }
 }

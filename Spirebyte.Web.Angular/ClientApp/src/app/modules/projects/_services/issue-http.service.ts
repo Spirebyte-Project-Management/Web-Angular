@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { IssueModel } from '../_models/issue.model';
+import { HttpParams } from '@angular/common/http';
 
 const API_ISSUES_URL = `${environment.apiUrl}/issues`;
 
@@ -15,6 +16,11 @@ export class IssueHTTPService {
   // GET =>  GET: get issues for project
   getIssuesForProject(projectKey: string): Observable<IssueModel[]> {
     return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/forProject/${projectKey}`);
+  }
+
+  // GET =>  GET: get issues for project
+  getBacklogForProject(projectKey: string): Observable<IssueModel[]> {
+    return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/backlogForProject/${projectKey}`);
   }
 
   // GET =>  GET: get project
@@ -35,5 +41,15 @@ export class IssueHTTPService {
   // DELETE =>  DELETE: delete issue
   deleteIssue(issueKey: string): Observable<IssueModel> {
     return this.http.delete<IssueModel>(`${API_ISSUES_URL}/${issueKey}`);
+  }
+
+  // GET =>  GET: get issues for project
+  getIssuesWithIds(issueIds: string[]): Observable<IssueModel[]> {
+    let params = new HttpParams();
+    params = params.append(`issueIds`, JSON.stringify(issueIds));
+
+    return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/withIds`, {
+        params
+    });
   }
 }
