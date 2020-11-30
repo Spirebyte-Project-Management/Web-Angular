@@ -203,7 +203,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
   searchUsers(term: string) {
     return this.userHttpservice.searchUsers(term).pipe(map(response => {
       const payload = [];
-      response.map(item => {
+      response.forEach(item => {
         payload.push({ value: item.id, fullname: item.fullname, pic: item.pic });
       });
       return payload;
@@ -215,7 +215,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
       this.userHttpservice.getUsersWithIds(userIds).toPromise()
         .then((res) => {
           const invitedUsers = [];
-          res.map(item => {
+          res.forEach(item => {
             invitedUsers.push({ value: item.id, fullname: item.fullname, pic: item.pic });
           });
           resolve(invitedUsers);

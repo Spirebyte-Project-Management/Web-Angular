@@ -26,9 +26,10 @@
     <div class="card-body" *ngIf="issues$ | async as issues; else loadingIssues">
         <!--begin: Datatable-->
         <table class="table table-hover" *ngIf="issues.length > 0; else noIssues">
+            <caption>Project issues</caption>
             <tbody>
                 <tr *ngFor="let issue of issues">
-                    <th>
+                    <th [id]="issue.id">
                         <div class="d-flex align-items-center" (click)="setSelectedIssue(issue.key)">
                             <!--begin::Checkbox-->
                             <div class="symbol mt-1 mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">

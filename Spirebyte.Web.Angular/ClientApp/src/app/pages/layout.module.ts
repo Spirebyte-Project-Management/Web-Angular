@@ -16,7 +16,6 @@ import { HeaderMenuComponent } from './_layout/components/header/header-menu/hea
 import { TopbarComponent } from './_layout/components/topbar/topbar.component';
 import { ExtrasModule } from '../_metronic/partials/layout/extras/extras.module';
 import { CoreModule } from '../_metronic/core';
-import { AsideDynamicComponent } from './_layout/components/aside-dynamic/aside-dynamic.component';
 import { HeaderMenuDynamicComponent } from './_layout/components/header/header-menu-dynamic/header-menu-dynamic.component';
 
 @NgModule({
@@ -29,7 +28,6 @@ import { HeaderMenuDynamicComponent } from './_layout/components/header/header-m
     HeaderComponent,
     HeaderMenuComponent,
     TopbarComponent,
-    AsideDynamicComponent,
     HeaderMenuDynamicComponent,
   ],
   imports: [
