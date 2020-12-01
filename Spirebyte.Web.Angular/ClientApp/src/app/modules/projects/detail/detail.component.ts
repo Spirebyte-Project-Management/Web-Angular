@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject, of } from 'rxjs';
 import { ProjectModel } from '../_models/project.model';
 import { ProjectHTTPService } from '../_services/project-http.service';
 import { UserModel } from '../../auth/_models/user.model';
@@ -16,7 +16,6 @@ import { IssueHTTPService } from '../_services/issue-http.service';
 })
 export class DetailComponent implements OnInit, OnDestroy {
   projectKey: string;
-  project$: Observable<ProjectModel>;
 
   issueType = IssueType;
   issueStatus = IssueStatus;
@@ -24,8 +23,11 @@ export class DetailComponent implements OnInit, OnDestroy {
   private issueSubject: BehaviorSubject<IssueModel>;
   issue$: Observable<IssueModel>;
 
-  projectUsers$: Observable<UserModel[]>;
   assignees$: Observable<UserModel[]>;
+
+  private project: ProjectModel;
+  private projectUsers: UserModel[];
+
 
   private unsubscribe: Subscription[] = [];
   constructor(
@@ -41,14 +43,6 @@ export class DetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const paramsSubscription = this.route.paramMap.subscribe(params => {
       this.projectKey = params.get('key');
-      this.project$ = this.projectHttpService.getProject(this.projectKey).pipe(
-        tap(res => {
-          const ids = res.projectUserIds;
-          ids.push(res.ownerUserId);
-
-          this.projectUsers$ = this.userHttpService.getUsersWithIds(ids);
-        })
-      );
     });
 
     const queryParamsSubscription = this.route.queryParamMap.subscribe(params => {
@@ -57,9 +51,6 @@ export class DetailComponent implements OnInit, OnDestroy {
         const issueSubscription = this.issueHttpService
           .getIssue(issueKey)
           .subscribe(result => {
-            if (result.assignees.length === 0) {
-              this.assignees$ = this.userHttpService.getUsersWithIds(result.assignees);
-            }
             this.issueSubject.next(result);
           });
         this.unsubscribe.push(issueSubscription);
@@ -67,6 +58,23 @@ export class DetailComponent implements OnInit, OnDestroy {
     });
     this.unsubscribe.push(paramsSubscription);
     this.unsubscribe.push(queryParamsSubscription);
+  }
+
+  getProject(): Observable<ProjectModel> {
+    if (this.project !== undefined) {
+      return of(this.project);
+    }
+    return this.projectHttpService.getProject(this.projectKey).pipe(tap(res => this.project = res));
+  }
+
+  getProjectUsers(ownerId: string, projectUsers: string[]): Observable<UserModel[]> {
+    if (this.projectUsers !== undefined) {
+      return of(this.projectUsers);
+    }
+    const ids = projectUsers;
+    ids.push(ownerId);
+
+    return this.userHttpService.getUsersWithIds(ids).pipe(tap(res => this.projectUsers = res));
   }
 
   ngOnDestroy() {

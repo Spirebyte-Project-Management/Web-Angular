@@ -23,11 +23,12 @@ import { BacklogItemComponent } from './detail/widgets/backlog-item/backlog-item
 import { CreateSprintComponent } from './detail/create-sprint/create-sprint.component';
 import { SprintHTTPService } from './_services/sprint-http.service';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { IssueDetailAsideComponent } from './detail/widgets/issue-detail-aside/issue-detail-aside.component';
 
 
 
 @NgModule({
-  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent],
+  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent, IssueDetailAsideComponent],
   imports: [
     ProjectRoutingModule,
     GeneralModule,
