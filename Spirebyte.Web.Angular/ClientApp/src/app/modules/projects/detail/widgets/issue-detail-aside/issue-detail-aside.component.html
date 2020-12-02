@@ -165,7 +165,18 @@
                         class="label label-success label-inline mr-2">DONE</span>
                 </div>
             </div>
-
+            <div class="form-group row" *ngIf="issue.type != issueType.Epic && project != null">
+                <label class="col-lg-3 col-form-label text-right text-dark-65">Epic link:</label>
+                <div class="col-lg-6">
+                 <select class="form-control form-control-hidden px-0" *ngIf="getEpics(project.key) | async as epics; else loadingEpics">
+                  <option [selected]="issue.epicId == '00000000-0000-0000-0000-000000000000'" value="00000000-0000-0000-0000-000000000000">No epic</option>
+                  <option *ngFor="let epic of epics" [selected]="issue.epicId == epic.id" [value]="epic.id">{{epic.title}} | ({{epic.key}})</option>
+                 </select>
+                </div>
+                <ng-template #loadingEpics>
+                    <div class="spinner spinner-primary"></div>
+                </ng-template>
+            </div>
         </div>
         <h3 class="font-size-lg text-dark font-weight-bold mb-3">People</h3>
         <div class="mb-3">

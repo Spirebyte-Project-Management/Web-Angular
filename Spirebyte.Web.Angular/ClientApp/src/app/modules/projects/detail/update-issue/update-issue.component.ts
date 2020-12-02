@@ -17,9 +17,11 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
   updateIssueForm: FormGroup;
   hasError: boolean;
   issueKey: string;
+  projectKey: string;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
+  epics$: Observable<IssueModel[]>;
 
   private unsubscribe: Subscription[] = [];
 
@@ -33,7 +35,10 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const paramsSubscription = this.route.paramMap.subscribe( params => {
       this.issueKey = params.get('issueKey');
+      this.projectKey = params.get('key');
       
+      this.epics$ = this.issueHttpService.getEpicsForProject(this.projectKey);
+
       const issueSubscription = this.issueHttpService.getIssue(this.issueKey).subscribe(res => {
         this.updateIssueForm.patchValue(res);
         this.isLoadingSubject.next(false);
@@ -79,6 +84,9 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
           Validators.compose([
             Validators.min(0)
           ])
+        ],
+        epicId: [
+          ''
         ]
       });
     }

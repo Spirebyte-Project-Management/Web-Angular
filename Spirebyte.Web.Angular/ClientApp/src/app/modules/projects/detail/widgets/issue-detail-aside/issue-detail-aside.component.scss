@@ -1,9 +1,12 @@
 .form-control-hidden{
     border-color: #ffffff;
+    appearance: none;
 }
 .form-control-hidden:hover{
     border-color: #ced4da;
+    appearance: menulist;
 }
 .form-control-hidden:focus{
     border-color: #69b3ff;
+    appearance: menulist;
 }

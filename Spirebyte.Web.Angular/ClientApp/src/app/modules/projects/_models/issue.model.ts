@@ -7,6 +7,7 @@ export class IssueModel {
     description: string;
     storyPoints: number;
     projectId: string;
+    epicId: string;
     assignees: string[];
     linkedIssues: string[];
     createdAt: string;
@@ -20,6 +21,7 @@ export class IssueModel {
         this.description = issue.description;
         this.storyPoints = issue.storyPoints;
         this.projectId = issue.projectId;
+        this.epicId = issue.epicId;
         this.assignees = issue.assignees;
         this.linkedIssues = issue.linkedIssues;
         this.createdAt = issue.createdAt;

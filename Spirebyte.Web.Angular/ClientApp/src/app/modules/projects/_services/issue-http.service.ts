@@ -18,7 +18,12 @@ export class IssueHTTPService {
     return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/forProject/${projectKey}`);
   }
 
-  // GET =>  GET: get issues for project
+  // GET =>  GET: get epics for project
+  getEpicsForProject(projectKey: string): Observable<IssueModel[]> {
+    return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/epicsForProject/${projectKey}`);
+  }
+
+  // GET =>  GET: get backlog for project
   getBacklogForProject(projectKey: string): Observable<IssueModel[]> {
     return this.http.get<IssueModel[]>(`${API_ISSUES_URL}/backlogForProject/${projectKey}`);
   }

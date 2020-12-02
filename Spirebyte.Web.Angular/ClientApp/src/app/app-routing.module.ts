@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 import { AuthGuard } from './modules/auth/_services/auth.guard';
+
+export const routingConfiguration: ExtraOptions = {
+  paramsInheritanceStrategy: 'always'
+};
 
 export const routes: Routes = [
   {
@@ -23,7 +27,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routingConfiguration)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
