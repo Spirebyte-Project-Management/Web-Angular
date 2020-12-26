@@ -1,0 +1,26 @@
+<div class="card card-custom mx-1">
+    <!--begin::Header-->
+    <div class="card-header border-0 pt-5">
+        <h3 class="card-title align-items-start flex-column">
+            <span class="card-label font-weight-bolder text-dark">Epics</span>
+        </h3>
+    </div>
+    <!--end::Header-->
+    <!--begin::Body-->
+    <div class="card-body pt-2">
+        <div class="table-responsive">
+            <div class="d-flex align-items-center mb-2" *ngFor="let epic of epics$ | async">
+                <!--begin::Bullet-->
+                <span class="bullet bullet-bar align-self-stretch" [style.background]="epicColor(epic.key)"></span>
+                <!--end::Bullet-->
+                <!--begin::Text-->
+                <div class="d-flex flex-column flex-grow-1 mx-2">
+                    <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">{{epic.key}}</a>
+                    <span class="text-muted font-weight-bold">{{epic.title}}</span>
+                </div>
+                <!--end::Text-->
+            </div>
+        </div>
+    </div>
+    <!--end::Body-->
+</div>

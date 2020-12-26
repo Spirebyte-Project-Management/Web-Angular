@@ -52,8 +52,18 @@ export class CreateSprintComponent implements OnInit, OnDestroy {
           ]),
         ],
         description: [''],
-        startDate: [undefined],
-        endDate: [undefined],
+        startDate: [
+          undefined,
+          Validators.compose([
+            Validators.required
+          ])
+        ],
+        endDate: [
+          undefined,
+          Validators.compose([
+            Validators.required
+          ])
+        ],
       });
     }
 

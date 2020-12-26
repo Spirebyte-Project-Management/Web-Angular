@@ -1,79 +1,86 @@
-<ng-container cdkDropListGroup>
-    <ng-container *ngIf="sprints$ | async as sprints">
-        <div class="card card-custom mb-3" *ngFor="let sprint of sprints">
-            <div class="card-header flex-wrap border-0 pb-0">
-                <div class="card-title">
-                    <h3 class="card-label">{{sprint.title}}</h3>
-                </div>
-            </div>
-            <div class="card-body" *ngIf="getIssuesForSprint(sprint) | async as issues; else loadingSprint">
-                <div [id]="sprint.key" class="rounded bg-gray-300 px-2 pt-2 pb-1" cdkDropList [cdkDropListData]="issues" (cdkDropListDropped)="issueDropped($event)">
-                    <ng-container *ngIf="issues.length > 0 else noSprintIssues">
-                        <app-backlog-item *ngFor="let issue of getIssuesForSprint(sprint) | async" [issue]="issue"></app-backlog-item>
-                    </ng-container>
-                    <ng-template #noSprintIssues>
-                        <div class="card mb-1">
-                            <div class="card-body p-2">
-                                <span>This sprint does not yet have any issues.</span>
-                            </div>
+<div class="row">
+    <div class="col-2">
+        <app-epic-list [projectKey]="projectKey"></app-epic-list>
+    </div>
+    <div class="col">
+        <ng-container cdkDropListGroup>
+            <ng-container *ngIf="sprints$ | async as sprints">
+                <div class="card card-custom mb-3" *ngFor="let sprint of sprints">
+                    <div class="card-header flex-wrap border-0 pb-0">
+                        <div class="card-title">
+                            <h3 class="card-label">{{sprint.title}}</h3>
+                        </div>
+                    </div>
+                    <div class="card-body" *ngIf="getIssuesForSprint(sprint) | async as issues; else loadingSprint">
+                        <div [id]="sprint.key" class="rounded bg-gray-300 px-2 pt-2 pb-2" cdkDropList [cdkDropListData]="issues" (cdkDropListDropped)="issueDropped($event)">
+                            <ng-container *ngIf="issues.length > 0 else noSprintIssues">
+                                <app-backlog-item *ngFor="let issue of getIssuesForSprint(sprint) | async" [issue]="issue"></app-backlog-item>
+                            </ng-container>
+                            <ng-template #noSprintIssues>
+                                <div class="card mb-1">
+                                    <div class="card-body p-2">
+                                        <span>This sprint does not yet have any issues.</span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                    <ng-template #loadingSprint>
+                        <div class="card-body">
+                            <div class="spinner spinner-primary"></div>
                         </div>
                     </ng-template>
                 </div>
-            </div>
-            <ng-template #loadingSprint>
-                <div class="card-body">
-                    <div class="spinner spinner-primary"></div>
+            </ng-container>
+            
+            <div class="card card-custom">
+                <div class="card-header flex-wrap border-0 pb-0">
+                    <div class="card-title">
+                        <h3 class="card-label">Backlog</h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <!--begin::Button-->
+                        <a [routerLink]="['../sprint/create']" class="btn btn-primary font-weight-bolder">
+                            <span class="svg-icon svg-icon-md">
+                                <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/Flatten.svg-->
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                                    height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <circle fill="#000000" cx="9" cy="15" r="6" />
+                                        <path
+                                            d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
+                                            fill="#000000" opacity="0.3" />
+                                    </g>
+                                </svg>
+                                <!--end::Svg Icon-->
+                            </span>Create sprint</a>
+                        <!--end::Button-->
+                    </div>
                 </div>
-            </ng-template>
-        </div>
-    </ng-container>
-    
-    <div class="card card-custom">
-        <div class="card-header flex-wrap border-0 pb-0">
-            <div class="card-title">
-                <h3 class="card-label">Backlog</h3>
-            </div>
-            <div class="card-toolbar">
-                <!--begin::Button-->
-                <a [routerLink]="['../sprint/create']" class="btn btn-primary font-weight-bolder">
-                    <span class="svg-icon svg-icon-md">
-                        <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/Flatten.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
-                            height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <rect x="0" y="0" width="24" height="24" />
-                                <circle fill="#000000" cx="9" cy="15" r="6" />
-                                <path
-                                    d="M8.8012943,7.00241953 C9.83837775,5.20768121 11.7781543,4 14,4 C17.3137085,4 20,6.6862915 20,10 C20,12.2218457 18.7923188,14.1616223 16.9975805,15.1987057 C16.9991904,15.1326658 17,15.0664274 17,15 C17,10.581722 13.418278,7 9,7 C8.93357256,7 8.86733422,7.00080962 8.8012943,7.00241953 Z"
-                                    fill="#000000" opacity="0.3" />
-                            </g>
-                        </svg>
-                        <!--end::Svg Icon-->
-                    </span>Create sprint</a>
-                <!--end::Button-->
-            </div>
-        </div>
-        <div class="card-body" *ngIf="getBacklog() | async as backlog; else loadingBacklog">
-            <!--begin: Datatable-->
-            <div class="rounded bg-gray-300 px-2 pt-2 pb-1">
-                <div id="backlog" *ngIf="backlog.length > 0 else noIssues" cdkDropList [cdkDropListData]="backlog" (cdkDropListDropped)="issueDropped($event)">
-                    <app-backlog-item *ngFor="let issue of backlog" [issue]="issue"></app-backlog-item>
-                </div>
-                <ng-template #noIssues>
-                    <div class="card mb-1">
-                        <div class="card-body p-2">
-                            <span>This project does not yet have any issues.</span>
+                <div class="card-body" *ngIf="getBacklog() | async as backlog; else loadingBacklog">
+                    <!--begin: Datatable-->
+                    <div class="rounded bg-gray-300 px-2 pt-2 pb-2">
+                        <div id="backlog" *ngIf="backlog.length > 0 else noIssues" cdkDropList [cdkDropListData]="backlog" (cdkDropListDropped)="issueDropped($event)">
+                            <app-backlog-item *ngFor="let issue of backlog" [issue]="issue"></app-backlog-item>
                         </div>
+                        <ng-template #noIssues>
+                            <div class="card mb-1">
+                                <div class="card-body p-2">
+                                    <span>This project does not yet have any issues.</span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+        
+                    <!--end: Datatable-->
+                </div>
+                <ng-template #loadingBacklog>
+                    <div class="card-body">
+                        <div class="spinner spinner-primary"></div>
                     </div>
                 </ng-template>
             </div>
-
-            <!--end: Datatable-->
-        </div>
-        <ng-template #loadingBacklog>
-            <div class="card-body">
-                <div class="spinner spinner-primary"></div>
-            </div>
-        </ng-template>
+        </ng-container>
     </div>
-</ng-container>
+</div>

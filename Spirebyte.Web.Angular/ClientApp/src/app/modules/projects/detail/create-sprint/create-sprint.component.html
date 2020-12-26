@@ -40,22 +40,22 @@
                         formControlName="title" autocomplete="off" [ngClass]="{
                 'is-invalid': createSprintForm.controls['title'].invalid
             }" />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Title is required',
+                control: createSprintForm.controls['title']
+            }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'minlength',
+                message: 'Title should have at least 3 symbols',
+                control: createSprintForm.controls['title']
+            }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'maxLength',
+                message: 'Title should have maximum 100 symbols',
+                control: createSprintForm.controls['title']
+            }"></ng-container>
                 </div>
-                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-            validation: 'required',
-            message: 'Title is required',
-            control: createSprintForm.controls['title']
-        }"></ng-container>
-                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-            validation: 'minlength',
-            message: 'Title should have at least 3 symbols',
-            control: createSprintForm.controls['title']
-        }"></ng-container>
-                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-            validation: 'maxLength',
-            message: 'Title should have maximum 100 symbols',
-            control: createSprintForm.controls['title']
-        }"></ng-container>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
@@ -68,26 +68,40 @@
                 <label class="col-xl-3 col-lg-3 col-form-label">Start date</label>
                 <div class="col-lg-9 col-xl-6">
                     <div class="input-group input-group-solid">
-                        <input ngbDatepicker #d="ngbDatepicker" formControlName="startDate" class="form-control form-control-lg form-control-solid" />
+                        <input ngbDatepicker #d="ngbDatepicker" formControlName="startDate" class="form-control form-control-lg form-control-solid" [ngClass]="{
+                            'is-invalid': createSprintForm.controls['startDate'].invalid
+                        }" />
                         <div class="input-group-append" (click)="d.toggle()">
                             <span class="input-group-text">
                                 <em class="text-dark-50 flaticon-calendar"></em>
                             </span>
                         </div>
                     </div> 
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                        validation: 'required',
+                        message: 'Start date is required',
+                        control: createSprintForm.controls['startDate']
+                    }"></ng-container>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">End date</label>
                 <div class="col-lg-9 col-xl-6">
                     <div class="input-group input-group-solid">
-                        <input ngbDatepicker #t="ngbDatepicker" formControlName="endDate" class="form-control form-control-lg form-control-solid" />
+                        <input ngbDatepicker #t="ngbDatepicker" formControlName="endDate" class="form-control form-control-lg form-control-solid" [ngClass]="{
+                            'is-invalid': createSprintForm.controls['endDate'].invalid
+                        }" />
                         <div class="input-group-append" (click)="t.toggle()">
                             <span class="input-group-text">
                                 <em class="text-dark-50 flaticon-calendar"></em>
                             </span>
                         </div>
                     </div> 
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                        validation: 'required',
+                        message: 'End date is required',
+                        control: createSprintForm.controls['endDate']
+                    }"></ng-container>
                 </div>
             </div>
             <ng-template #formError let-control="control" let-message="message" let-validation="validation">
