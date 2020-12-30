@@ -2,12 +2,15 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProjectModel } from '../_models/project.model';
 import { ProjectUpdateModel } from '../_models/updateProject.model';
-import { ProjectHTTPService } from '../_services/project-http.service';
+import { ProjectHTTPService } from '../_services/projects/project-http.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
 import { SettingsModel } from 'src/app/_metronic/partials/content/general/tag-input/_models/settings.model';
-import { UserHTTPService } from '../_services/user-http.service';
+import { UserHTTPService } from '../_services/users/user-http.service';
+import { ProjectEntityService } from '../_services/projects/project-entity.service';
+
+declare function clone<T>(val: T): {[K in (keyof T)]: T[K]};
 
 @Component({
   selector: 'app-update',
@@ -18,6 +21,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
   updateProjectForm: FormGroup;
   hasError: boolean;
   currentProject: ProjectModel;
+  returnUrl: string;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
@@ -118,13 +122,14 @@ export class UpdateComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private projectHttpservice: ProjectHTTPService,
+    private projectEntityService: ProjectEntityService,
     private userHttpservice: UserHTTPService,
     private route: ActivatedRoute,
     private router: Router,
   ) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(true);
     this.isLoading$ = this.isLoadingSubject.asObservable();
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '../';
   }
 
   ngOnInit(): void {
@@ -152,11 +157,12 @@ export class UpdateComponent implements OnInit, OnDestroy {
       file: []
     });
     const getParamsSubscription = this.route.paramMap.subscribe(params => {
-      const getProjectSubscription = this.projectHttpservice
-        .getProject(params.get('key'))
+      const getProjectSubscription = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == params.get('key'))))
         .subscribe(async project => {
-          this.currentProject = project;
-          const projectCopy: any = project;
+          const projectCopy1 = new ProjectModel();
+          projectCopy1.setProject(project);
+          const projectCopy:any = projectCopy1;
+          
           if (project.invitedUserIds.length > 0) {
             this.inviteSettings.whitelist = await this.getUsersPromise(project.invitedUserIds);
             projectCopy.invitedUserIds = JSON.stringify(this.inviteSettings.whitelist);
@@ -165,6 +171,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
             this.memberSettings.whitelist = await this.getUsersPromise(project.projectUserIds);
             projectCopy.projectUserIds = JSON.stringify(this.memberSettings.whitelist);
           }
+          this.currentProject = projectCopy;
           this.updateProjectForm.patchValue(projectCopy);
           this.isLoadingSubject.next(false);
         });
@@ -191,11 +198,12 @@ export class UpdateComponent implements OnInit, OnDestroy {
 
     const updateProject = new ProjectUpdateModel();
     updateProject.setUpdateModel(result);
-    const updateProjectSubscr = this.projectHttpservice
-      .updateProject(updateProject, this.currentProject.key)
+    updateProject.id = this.currentProject.id;
+    const updateProjectSubscr = this.projectEntityService
+      .update(updateProject)
       .pipe(first())
-      .subscribe((project: ProjectUpdateModel) => {
-        this.router.navigate(['../']);
+      .subscribe((project: ProjectModel) => {
+        this.router.navigate([this.returnUrl]);
       });
     this.unsubscribe.push(updateProjectSubscr);
   }
@@ -227,4 +235,5 @@ export class UpdateComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe.forEach(sb => sb.unsubscribe());
   }
+  
 };

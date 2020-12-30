@@ -45,8 +45,10 @@ export class TagInputComponent implements AfterViewInit, OnChanges, OnDestroy, C
       remove: () => this.remove.emit(this.tagify.value)
     };
     this.tagify = new Tagify(this.tagifyInputRef.nativeElement, this.settings);
-
-    this.tagify.on('change', (event) => this.onChange(JSON.parse(event.detail.value)));
+    this.tagify.loadOriginalValues(this.value);
+    this.tagify.on('change', (event) => {
+      this.onChange(event.detail.value != '' ? JSON.parse(event.detail.value) : [])
+    });
     if (this.typeaheadUrl != null) {
       this.tagify.on('input', (event) => this.searchUsers(event.detail.value));
     }

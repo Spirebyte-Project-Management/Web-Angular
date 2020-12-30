@@ -1,9 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import stc from 'string-to-color';
-import { IssueModel } from '../../../_models/issue.model';
+import { IssueModel, IssueType } from '../../../_models/issue.model';
 import { ProjectModel } from '../../../_models/project.model';
-import { IssueHTTPService } from '../../../_services/issue-http.service';
+import { IssueEntityService } from '../../../_services/issues/issue-entity.service';
+import { IssueHTTPService } from '../../../_services/issues/issue-http.service';
 
 @Component({
   selector: 'app-epic-list',
@@ -12,17 +15,30 @@ import { IssueHTTPService } from '../../../_services/issue-http.service';
 })
 export class EpicListComponent implements OnInit {
 
-  @Input() projectKey: string;
+  @Input() projectId: string;
   public epics$: Observable<IssueModel[]>;
 
-  constructor(private issueHttpService: IssueHTTPService) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private issueEntityService: IssueEntityService) { }
 
   ngOnInit(): void {
-    this.epics$ = this.issueHttpService.getEpicsForProject(this.projectKey);
+    this.epics$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId && issue.type == IssueType.Epic)));
   }
 
   public epicColor(epicKey: string): string {
     return stc(epicKey);
+  }
+
+  setSelectedIssue(key: string): void {
+    // changes the route without moving from the current view or
+    // triggering a navigation event,
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        selectedIssue: key
+      }
+    });
   }
 
 }

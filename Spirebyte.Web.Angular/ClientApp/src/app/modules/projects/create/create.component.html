@@ -58,20 +58,20 @@
             <div class="form-group row">
                     <label class="col-xl-3 col-lg-3 col-form-label">Key</label>
                     <div class="col-lg-9 col-xl-6">
-                        <input class="form-control form-control-lg form-control-solid" type="text" name="key"
-                            formControlName="key" autocomplete="off" [ngClass]="{
-                    'is-invalid': createProjectForm.controls['key'].invalid
+                        <input class="form-control form-control-lg form-control-solid" type="text" name="projectId"
+                            formControlName="projectId" autocomplete="off" [ngClass]="{
+                    'is-invalid': createProjectForm.controls['projectId'].invalid
                 }" />
                     </div>
                     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
                 message: 'Key is required',
-                control: createProjectForm.controls['key']
+                control: createProjectForm.controls['projectId']
             }"></ng-container>
             <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'keyExist',
                 message: 'Key already exists',
-                control: createProjectForm.controls['key']
+                control: createProjectForm.controls['projectId']
             }"></ng-container>
                 </div>
             <div class="form-group row">

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { IssueModel } from '../_models/issue.model';
+import { IssueModel } from '../../_models/issue.model';
 import { HttpParams } from '@angular/common/http';
 
 const API_ISSUES_URL = `${environment.apiUrl}/issues`;

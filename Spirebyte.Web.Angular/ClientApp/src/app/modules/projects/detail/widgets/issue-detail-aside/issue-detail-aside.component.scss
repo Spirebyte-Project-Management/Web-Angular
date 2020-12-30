@@ -2,11 +2,30 @@
     border-color: #ffffff;
     appearance: none;
 }
+
+select.form-control-hidden{
+    color: #ffffff;
+    padding: 0.15rem 0.75rem 0.15rem 0.75rem !important;
+    text-align: center;
+}
+
+select.form-control-hidden.text-black{
+    color: #000000!important;
+
+}
 .form-control-hidden:hover{
     border-color: #ced4da;
-    appearance: menulist;
+    color: #000000;
+    background: #ffffff!important;
+    padding: 0.65rem 1rem;
+    appearance: menulist;    
+    text-align: start;
 }
 .form-control-hidden:focus{
     border-color: #69b3ff;
+    color: #000000;
+    background: #ffffff!important;
+    padding: 0.65rem 1rem;
     appearance: menulist;
+    text-align: start;
 }

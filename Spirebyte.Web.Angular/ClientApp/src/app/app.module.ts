@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './modules/auth/_services/auth.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 // Highlight JS
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import highlight from 'highlight.js/lib/highlight';
@@ -19,6 +19,12 @@ import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 import { AuthHttpInterceptor } from './modules/auth/_services/auth.http.interceptor';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EntityDataModule } from '@ngrx/data';
+import { EffectsModule } from '@ngrx/effects';
+import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 
 function appInitializer(authService: AuthService) {
   return () => {
@@ -54,6 +60,14 @@ export function getHighlightLanguages() {
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([]),
+    EntityDataModule.forRoot({}),
+    StoreRouterConnectingModule.forRoot({
+      stateKey: 'router',
+      routerState: RouterState.Minimal
+    })
   ],
   providers: [
     {
@@ -76,4 +90,4 @@ export function getHighlightLanguages() {
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

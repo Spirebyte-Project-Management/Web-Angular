@@ -26,11 +26,10 @@
     <div class="card-body" *ngIf="issues$ | async as issues; else loadingIssues">
         <!--begin: Datatable-->
         <table class="table table-hover" *ngIf="issues.length > 0; else noIssues">
-            <caption>Project issues</caption>
             <tbody>
                 <tr *ngFor="let issue of issues">
                     <th [id]="issue.id">
-                        <div class="d-flex align-items-center" (click)="setSelectedIssue(issue.key)">
+                        <div class="d-flex align-items-center" (click)="setSelectedIssue(issue.id)">
                             <!--begin::Checkbox-->
                             <div class="symbol mt-1 mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
                                 <span *ngSwitchCase="issueType.Epic" class="symbol-label bg-info">
@@ -128,13 +127,33 @@
                             <!--begin::Text-->
                             <div class="d-flex flex-column flex-grow-1">
                                 <span
-                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-md">{{issue.key}}</span>
+                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-md">{{issue.id}}</span>
                                 <span
                                     class="text-muted font-weight-bold text-hover-primary font-size-sm">{{issue.title}}</span>
                             </div>
                             <!--end::Text-->
                         </div>
                     </th>
+                </tr>
+                <tr>
+                    <a [routerLink]="['create']">
+                        <div class="d-flex align-items-center p-1">
+                            <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                    viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1"/>
+                                        <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) " x="4" y="11" width="16" height="2" rx="1"/>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
+                                New Issue
+                            </span>
+                        </div>
+                    </a>
                 </tr>
             </tbody>
         </table>

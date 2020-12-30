@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SprintModel } from '../../_models/Sprint.model';
-import { ProjectHTTPService } from '../../_services/project-http.service';
-import { SprintHTTPService } from '../../_services/sprint-http.service';
+import { ProjectEntityService } from '../../_services/projects/project-entity.service';
+import { ProjectHTTPService } from '../../_services/projects/project-http.service';
+import { SprintEntityService } from '../../_services/sprints/sprint-entity.service';
+import { SprintHTTPService } from '../../_services/sprints/sprint-http.service';
 
 @Component({
   selector: 'app-create-sprint',
@@ -14,21 +16,18 @@ import { SprintHTTPService } from '../../_services/sprint-http.service';
 export class CreateSprintComponent implements OnInit, OnDestroy {
   createSprintForm: FormGroup;
   hasError: boolean;
-  projectKey: string;
   projectId: string;
 
   private unsubscribe: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, private sprintHttpService: SprintHTTPService,
-              private projectHttpService: ProjectHTTPService,
+  constructor(private fb: FormBuilder, 
+              private sprintEntityService: SprintEntityService,
               private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     const paramsSubscription = this.route.parent.paramMap.subscribe( params => {
-      this.projectKey = params.get('key');
-
-      const projectSubscription = this.projectHttpService.getProject(this.projectKey).subscribe(res => this.projectId = res.id);
-      this.unsubscribe.push(projectSubscription);
+      this.projectId = params.get('key');
+      console.log(this.projectId)
     });
     this.unsubscribe.push(paramsSubscription);
 
@@ -75,17 +74,13 @@ export class CreateSprintComponent implements OnInit, OnDestroy {
       });
       const sprint = new SprintModel();
       sprint.setSprint(result);
-      const createSprintSubscr = this.sprintHttpService
-        .createSprint(sprint, this.projectId)
+      sprint.projectId = this.projectId;
+      const createSprintSubscr = this.sprintEntityService
+        .add(sprint)
         .subscribe(
-          result => {
+          () => {
             this.router.navigate(['../backlog'],
             {relativeTo: this.route});
-          },
-          error => {
-            this.hasError = true;
-          },
-          () => {
           }
         );
       this.unsubscribe.push(createSprintSubscr);

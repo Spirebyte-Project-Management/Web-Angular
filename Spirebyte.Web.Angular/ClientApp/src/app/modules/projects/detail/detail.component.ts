@@ -1,13 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, Observable, BehaviorSubject, of } from 'rxjs';
 import { ProjectModel } from '../_models/project.model';
-import { ProjectHTTPService } from '../_services/project-http.service';
+import { ProjectHTTPService } from '../_services/projects/project-http.service';
 import { UserModel } from '../../auth/_models/user.model';
-import { map, tap } from 'rxjs/operators';
-import { UserHTTPService } from '../_services/user-http.service';
+import { first, map, single, take, tap } from 'rxjs/operators';
+import { UserHTTPService } from '../_services/users/user-http.service';
 import { IssueModel, IssueType, IssueStatus } from '../_models/issue.model';
-import { IssueHTTPService } from '../_services/issue-http.service';
+import { IssueHTTPService } from '../_services/issues/issue-http.service';
+import { ProjectEntityService } from '../_services/projects/project-entity.service';
+import { IssueEntityService } from '../_services/issues/issue-entity.service';
+import { UserEntityService } from '../_services/users/user-entity.service';
 
 @Component({
   selector: 'app-detail',
@@ -15,66 +18,45 @@ import { IssueHTTPService } from '../_services/issue-http.service';
   styleUrls: ['./detail.component.scss']
 })
 export class DetailComponent implements OnInit, OnDestroy {
-  projectKey: string;
+  projectId: string;
 
   issueType = IssueType;
   issueStatus = IssueStatus;
 
-  private issueSubject: BehaviorSubject<IssueModel>;
   issue$: Observable<IssueModel>;
+  project$: Observable<ProjectModel>;
 
   assignees$: Observable<UserModel[]>;
 
-  private project: ProjectModel;
-  private projectUsers: UserModel[];
+  projectUsers$: Observable<UserModel[]>;
 
 
   private unsubscribe: Subscription[] = [];
   constructor(
     private route: ActivatedRoute,
-    private projectHttpService: ProjectHTTPService,
-    private userHttpService: UserHTTPService,
-    private issueHttpService: IssueHTTPService
+    public router: Router,
+    private projectEntityService: ProjectEntityService,
+    private userEntityService: UserEntityService,
+    private issueEntityService: IssueEntityService
   ) {
-    this.issueSubject = new BehaviorSubject<IssueModel>(null);
-    this.issue$ = this.issueSubject.asObservable();
   }
 
   ngOnInit(): void {
     const paramsSubscription = this.route.paramMap.subscribe(params => {
-      this.projectKey = params.get('key');
+      this.projectId = params.get('key');
     });
 
     const queryParamsSubscription = this.route.queryParamMap.subscribe(params => {
-      const issueKey = params.get('selectedIssue');
-      if (issueKey != null) {
-        const issueSubscription = this.issueHttpService
-          .getIssue(issueKey)
-          .subscribe(result => {
-            this.issueSubject.next(result);
-          });
-        this.unsubscribe.push(issueSubscription);
+      const issueId = params.get('selectedIssue');
+      if (issueId != null) {
+        this.issue$ = this.issueEntityService.entities$.pipe(map(issues => issues.find(issue => issue.id == issueId)));
       }
     });
     this.unsubscribe.push(paramsSubscription);
     this.unsubscribe.push(queryParamsSubscription);
-  }
 
-  getProject(): Observable<ProjectModel> {
-    if (this.project !== undefined) {
-      return of(this.project);
-    }
-    return this.projectHttpService.getProject(this.projectKey).pipe(tap(res => this.project = res));
-  }
-
-  getProjectUsers(ownerId: string, projectUsers: string[]): Observable<UserModel[]> {
-    if (this.projectUsers !== undefined) {
-      return of(this.projectUsers);
-    }
-    const ids = projectUsers;
-    ids.push(ownerId);
-
-    return this.userHttpService.getUsersWithIds(ids).pipe(tap(res => this.projectUsers = res));
+    this.project$ = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == this.projectId)));
+    this.projectUsers$ = this.userEntityService.entities$;
   }
 
   ngOnDestroy() {

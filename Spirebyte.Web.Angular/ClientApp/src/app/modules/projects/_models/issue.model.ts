@@ -1,6 +1,5 @@
 export class IssueModel {
     id: string;
-    key: string;
     type: IssueType;
     status: IssueStatus;
     title: string;
@@ -8,13 +7,13 @@ export class IssueModel {
     storyPoints: number;
     projectId: string;
     epicId: string;
+    sprintId: string;
     assignees: string[];
     linkedIssues: string[];
     createdAt: string;
 
     setIssue(issue: any) {
         this.id = issue.id;
-        this.key = issue.key;
         this.type = issue.type;
         this.status = issue.status;
         this.title = issue.title;

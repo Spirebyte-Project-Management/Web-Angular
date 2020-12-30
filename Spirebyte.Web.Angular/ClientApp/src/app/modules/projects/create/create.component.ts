@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { ProjectHTTPService } from '../_services/project-http.service';
+import { ProjectHTTPService } from '../_services/projects/project-http.service';
 import { first, catchError } from 'rxjs/operators';
 import { ProjectModel } from '../_models/project.model';
 import { Router } from '@angular/router';
 import { doesKeyExistValidator } from './does-key-exist.validator';
+import { ProjectEntityService } from '../_services/projects/project-entity.service';
 
 @Component({
   selector: 'app-create',
@@ -19,7 +20,9 @@ export class CreateComponent implements OnInit, OnDestroy {
 
   private unsubscribe: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, private projectHttpService: ProjectHTTPService,
+  constructor(private fb: FormBuilder,
+              private projectEntityService: ProjectEntityService,
+              private projectHttpService: ProjectHTTPService,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -42,7 +45,7 @@ export class CreateComponent implements OnInit, OnDestroy {
             Validators.maxLength(100),
           ]),
         ],
-        key: [
+        projectId: [
           '',
           Validators.compose([
             Validators.required,
@@ -63,16 +66,11 @@ export class CreateComponent implements OnInit, OnDestroy {
       });
       const project = new ProjectModel();
       project.setProject(result);
-      const createProjectSubscr = this.projectHttpService
-        .createProject(project)
+      const createProjectSubscr = this.projectEntityService
+        .add(project)
         .subscribe(
-          result => {
-            this.router.navigate(['/projects']);
-          },
-          error => {
-            this.hasError = true;
-          },
           () => {
+            this.router.navigate(['/projects']);
           }
         );
       this.unsubscribe.push(createProjectSubscr);

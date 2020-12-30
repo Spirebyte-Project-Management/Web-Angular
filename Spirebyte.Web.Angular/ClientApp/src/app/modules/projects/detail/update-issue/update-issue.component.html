@@ -100,13 +100,19 @@
                 <label class="col-xl-3 col-lg-3 col-form-label">Epic</label>
                 <div class="col-lg-9 col-xl-6">
                  <select formControlName="epicId" class="form-control form-control-lg form-control-solid" *ngIf="epics$ | async as epics; else loadingEpics">
-                  <option value="00000000-0000-0000-0000-000000000000">No epic</option>
-                  <option *ngFor="let epic of epics" [value]="epic.id">{{epic.title}} | ({{epic.key}})</option>
+                  <option value="null">No epic</option>
+                  <option *ngFor="let epic of epics" [value]="epic.id">{{epic.title}} | ({{epic.id}})</option>
                  </select>
                 </div>
                 <ng-template #loadingEpics>
                     <div class="spinner spinner-primary"></div>
                 </ng-template>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Assignees</label>
+                <div class="col-lg-9 col-xl-6">
+                    <app-tag-input formControlName="assignees" [value]="assignees" [settings]="assigneeSettings"></app-tag-input>
+                </div>
             </div>
             <ng-template #formError let-control="control" let-message="message" let-validation="validation">
                 <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">

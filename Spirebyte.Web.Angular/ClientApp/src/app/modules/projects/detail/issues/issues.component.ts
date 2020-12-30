@@ -1,9 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IssueModel, IssueType } from '../../_models/issue.model';
-import { IssueHTTPService } from '../../_services/issue-http.service';
+import { IssueHTTPService } from '../../_services/issues/issue-http.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectHTTPService } from '../../_services/project-http.service';
+import { ProjectHTTPService } from '../../_services/projects/project-http.service';
+import { IssueEntityService } from '../../_services/issues/issue-entity.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-issues',
@@ -16,18 +18,15 @@ export class IssuesComponent implements OnInit {
   projectKey: string;
 
   constructor(
-    private issueHttpService: IssueHTTPService,
-    private projectHttpService: ProjectHTTPService,
+    private issueEntityService: IssueEntityService,
     private route: ActivatedRoute,
     private router: Router,
-    private changeDetector: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     const paramsSubscription = this.route.parent.paramMap.subscribe(params => {
-      this.projectKey = params.get('key');
-
-      this.issues$ = this.issueHttpService.getIssuesForProject(this.projectKey);
+      let projectId = params.get('key');
+      this.issues$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == projectId)));
     });
   }
 

@@ -107,7 +107,7 @@
                     <li class="breadcrumb-item">
                         {{project.title}}
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">{{issue.key}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{issue.id}}</li>
                 </ol>
             </div>
             <!--begin::Toolbar-->
@@ -122,7 +122,7 @@
                         <!--begin::Navigation-->
                         <ul class="navi navi-hover">
                             <li class="navi-item">
-                                <a [routerLink]="['/projects', project.key, 'issues', issue.key, 'update']" class="navi-link">
+                                <a [routerLink]="['/projects', project.id, 'issues', issue.id, 'update']" class="navi-link">
                                     <span class="navi-icon">
                                         <em class="flaticon2-edit"></em>
                                     </span>
@@ -130,7 +130,7 @@
                                 </a>
                             </li>
                             <li class="navi-item">
-                                <a [routerLink]="['/projects', project.key, 'issues', issue.key, 'delete']" class="navi-link">
+                                <a [routerLink]="['/projects', project.id, 'issues', issue.id, 'delete']" class="navi-link">
                                     <span class="navi-icon">
                                         <em class="flaticon2-delete"></em>
                                     </span>
@@ -168,9 +168,9 @@
             <div class="form-group row" *ngIf="issue.type != issueType.Epic && project != null">
                 <label class="col-lg-3 col-form-label text-right text-dark-65">Epic link:</label>
                 <div class="col-lg-6">
-                 <select class="form-control form-control-hidden px-0" *ngIf="getEpics(project.key) | async as epics; else loadingEpics">
-                  <option [selected]="issue.epicId == '00000000-0000-0000-0000-000000000000'" value="00000000-0000-0000-0000-000000000000">No epic</option>
-                  <option *ngFor="let epic of epics" [selected]="issue.epicId == epic.id" [value]="epic.id">{{epic.title}} | ({{epic.key}})</option>
+                 <select class="form-control form-control-hidden px-0" [style.background]="epicColor(issue.epicId)" [class.text-black]="issue.epicId == null" *ngIf="epics$ | async as epics; else loadingEpics">
+                  <option [selected]="issue.epicId == 'null'" value="null" class="text-black">No epic</option>
+                  <option *ngFor="let epic of epics" [selected]="issue.epicId == epic.id" [value]="epic.id">{{epic.title}} | ({{epic.id}})</option>
                  </select>
                 </div>
                 <ng-template #loadingEpics>
@@ -181,30 +181,9 @@
         <h3 class="font-size-lg text-dark font-weight-bold mb-3">People</h3>
         <div class="mb-3">
             <div class="form-group row">
-                <label class="col-lg-3 text-right text-dark-65">Assignees:</label>
+                <label class="col-lg-3 col-form-label text-right text-dark-65">Assignees:</label>
                 <div class="col-lg-6">
-                    <span *ngIf="issue.assignees.length == 0; else loadAssignees">No assignees</span>
-                    <ng-template #loadAssignees>
-                        <div class="symbol-group symbol-hover"
-                            *ngIf="getAssignees(issue.assignees) | async as _assignees; else loadingAssignees">
-                            <div *ngFor="let user of _assignees.slice(0, 5)" class="symbol symbol-30 symbol-circle"
-                                data-toggle="tooltip" title="" data-original-title="Mark Stone">
-                                <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
-                                    style="background-image:url('{{user.pic}}')"></div>
-                                <ng-template #firstletter>
-                                    <span class="symbol-label font-size-sm font-weight-bold">{{
-                                                user.fullname | firstLetter
-                                                }}</span>
-                                </ng-template>
-                            </div>
-                            <div class="symbol symbol-30 symbol-circle symbol-light" *ngIf="_assignees.length > 5">
-                                <span class="symbol-label font-weight-bold">{{_assignees.length - 5}}+</span>
-                            </div>
-                        </div>
-                    </ng-template>
-                    <ng-template #loadingAssignees>
-                        <div class="spinner spinner-primary"></div>
-                    </ng-template>
+                    <app-user-symbol-group [users$]="assignees$" [errorMessage]="'No assignees'"></app-user-symbol-group>
                 </div>
             </div>
         </div>

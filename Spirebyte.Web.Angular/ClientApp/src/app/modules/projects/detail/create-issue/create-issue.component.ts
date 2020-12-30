@@ -3,8 +3,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { IssueModel, IssueType } from '../../_models/issue.model';
-import { IssueHTTPService } from '../../_services/issue-http.service';
-import { ProjectHTTPService } from '../../_services/project-http.service';
+import { IssueHTTPService } from '../../_services/issues/issue-http.service';
+import { ProjectHTTPService } from '../../_services/projects/project-http.service';
+import { IssueEntityService } from '../../_services/issues/issue-entity.service';
 
 @Component({
   selector: 'app-create-issue',
@@ -15,23 +16,22 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
   types = IssueType;
   createIssueForm: FormGroup;
   hasError: boolean;
-  projectKey: string;
   projectId: string;
+  returnUrl: string;
 
   private unsubscribe: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, private issueHttpService: IssueHTTPService,
-              private projectHttpService: ProjectHTTPService,
+  constructor(private fb: FormBuilder, 
+              private issueEntityService: IssueEntityService,
               private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     const paramsSubscription = this.route.parent.paramMap.subscribe( params => {
-      this.projectKey = params.get('key');
-      
-      const projectSubscription = this.projectHttpService.getProject(this.projectKey).subscribe(res => this.projectId = res.id);
-      this.unsubscribe.push(projectSubscription);
+      this.projectId = params.get('key');
     });
     this.unsubscribe.push(paramsSubscription);
+
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '../';
 
     this.initForm();
   }
@@ -70,17 +70,13 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
       });
       const issue = new IssueModel();
       issue.setIssue(result);
-      const createIssueSubscr = this.issueHttpService
-        .createIssue(issue, this.projectId)
+      issue.projectId = this.projectId;
+      const createIssueSubscr = this.issueEntityService
+        .add(issue)
         .subscribe(
-          result => {
-            this.router.navigate(['../'],
-            {relativeTo: this.route});
-          },
-          error => {
-            this.hasError = true;
-          },
           () => {
+            this.router.navigateByUrl(this.returnUrl,
+            {relativeTo: this.route});
           }
         );
       this.unsubscribe.push(createIssueSubscr);

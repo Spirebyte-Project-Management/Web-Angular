@@ -1,0 +1,20 @@
+<div *ngIf="users$ | async as users; else loadingUsers" class="symbol-group symbol-hover">
+    <span *ngIf="users.length == 0; else loadUsers">{{errorMessage}}</span>
+    <ng-template #loadUsers>
+        <div *ngFor="let user of users.slice(0, 5)" class="symbol symbol-circle" [class]="getClass()" data-toggle="tooltip"
+            title="" data-original-title="Mark Stone">
+            <span *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label font-size-sm font-weight-bold" style="background-image:url('{{user.pic}}')">&#8203;</span>
+            <ng-template #firstletter>
+                <span class="symbol-label font-size-sm font-weight-bold">{{
+                        user.fullname | firstLetter
+                        }}</span>
+            </ng-template>
+        </div>
+        <div class="symbol symbol-circle symbol-light" [class]="getClass()" *ngIf="users.length > 5">
+            <span class="symbol-label font-weight-bold">{{users.length - 5}}+</span>
+        </div>
+    </ng-template>
+</div>
+<ng-template #loadingUsers>
+    <div class="spinner spinner-primary"></div>
+</ng-template>

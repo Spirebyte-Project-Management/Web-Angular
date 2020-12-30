@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IssueModel, IssueType, IssueStatus } from '../../_models/issue.model';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { IssueHTTPService } from '../../_services/issue-http.service';
+import { IssueHTTPService } from '../../_services/issues/issue-http.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { IssueEntityService } from '../../_services/issues/issue-entity.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-delete-issue',
@@ -12,7 +14,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class DeleteIssueComponent implements OnInit, OnDestroy {
   types = IssueType;
   status = IssueStatus;
-  issueKey: string;
+  issueId: string;
   issue: IssueModel;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
@@ -20,7 +22,7 @@ export class DeleteIssueComponent implements OnInit, OnDestroy {
 
   private unsubscribe: Subscription[] = [];
 
-  constructor(private issueHttpService: IssueHTTPService,
+  constructor(private issueEntityService: IssueEntityService,
       private router: Router, private route: ActivatedRoute) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(true);
     this.isLoading$ = this.isLoadingSubject.asObservable();
@@ -28,9 +30,9 @@ export class DeleteIssueComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const paramsSubscription = this.route.paramMap.subscribe( params => {
-      this.issueKey = params.get('issueKey');
+      this.issueId = params.get('issueKey');
       
-      const issueSubscription = this.issueHttpService.getIssue(this.issueKey).subscribe(res => {
+      const issueSubscription = this.issueEntityService.entities$.pipe(map(issues => issues.find(issue => issue.id == this.issueId))).subscribe(res => {
         this.issue = res;
         this.isLoadingSubject.next(false);
       });
@@ -40,7 +42,7 @@ export class DeleteIssueComponent implements OnInit, OnDestroy {
   }
 
   delete(): void {
-    this.issueHttpService.deleteIssue(this.issueKey).subscribe(res => {
+    this.issueEntityService.delete(this.issueId).subscribe(res => {
       this.router.navigate(['../'], {
         relativeTo: this.route,
       });

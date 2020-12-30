@@ -5,7 +5,7 @@
         <div class="card card-custom">
             <!--begin::Body-->
             <div class="card-body pt-4">
-                <ng-container *ngIf="getProject() | async as _project">
+                <ng-container *ngIf="project$ | async as _project">
 
                     <!--begin::Toolbar-->
                     <div class="d-flex justify-content-end">
@@ -19,7 +19,7 @@
                                 <!--begin::Navigation-->
                                 <ul class="navi navi-hover">
                                     <li class="navi-item">
-                                        <a [routerLink]="['/projects', _project.key, 'update']" class="navi-link">
+                                        <a [routerLink]="['/projects', _project.id, 'update']" [queryParams]="{returnUrl: router.url}" class="navi-link">
                                             <span class="navi-icon">
                                                 <em class="flaticon2-edit"></em>
                                             </span>
@@ -51,27 +51,7 @@
                     <div class="py-9">
                         <div class="d-flex align-items-center justify-content-between flex-lg-fill mb-2">
                             <span class="font-weight-bold mr-2">Members:</span>
-                            <div class="symbol-group symbol-hover"
-                                *ngIf="getProjectUsers(_project.ownerUserId, _project.projectUserIds) | async as _projectUsers; else loadingMembers">
-                                <div *ngFor="let user of _projectUsers.slice(0, 5)"
-                                    class="symbol symbol-30 symbol-circle" data-toggle="tooltip" title=""
-                                    data-original-title="Mark Stone">
-                                    <div *ngIf="user.pic != null && user.pic != ''; else firstletter"
-                                        class="symbol-label" style="background-image:url('{{user.pic}}')"></div>
-                                    <ng-template #firstletter>
-                                        <span class="symbol-label font-size-sm font-weight-bold">{{
-                                                user.fullname | firstLetter
-                                                }}</span>
-                                    </ng-template>
-                                </div>
-                                <div class="symbol symbol-30 symbol-circle symbol-light"
-                                    *ngIf="_projectUsers.length > 5">
-                                    <span class="symbol-label font-weight-bold">{{_projectUsers.length - 5}}+</span>
-                                </div>
-                            </div>
-                            <ng-template #loadingMembers>
-                                <div class="spinner spinner-primary"></div>
-                            </ng-template>
+                                <app-user-symbol-group [users$]="projectUsers$" [errorMessage]="'No members'"></app-user-symbol-group>
                         </div>
                     </div>
                 </ng-container>
@@ -137,7 +117,7 @@
                 <router-outlet></router-outlet>
             </div>
             <div class="col-lg-5 col-xl-3" *ngIf="issue$ | async as issue">
-                <app-issue-detail-aside [issue]="issue" [project]="getProject() | async"></app-issue-detail-aside>
+                <app-issue-detail-aside [issue]="issue" [project]="project$ | async"></app-issue-detail-aside>
             </div>
         </div>
         <!--end::Content-->

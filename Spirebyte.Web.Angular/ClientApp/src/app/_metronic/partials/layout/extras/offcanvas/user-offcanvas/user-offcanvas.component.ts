@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LayoutService } from '../../../../../core';
 import { Observable } from 'rxjs';
 import { UserModel } from '../../../../../../modules/auth/_models/user.model';
@@ -13,6 +13,8 @@ export class UserOffcanvasComponent implements OnInit {
   extrasUserOffcanvasDirection = 'offcanvas-right';
   user$: Observable<UserModel>;
 
+  @ViewChild('closeBtn') closeBtn: ElementRef<HTMLElement>;
+
   constructor(private layout: LayoutService, private auth: AuthService) {}
 
   ngOnInit(): void {
@@ -20,6 +22,11 @@ export class UserOffcanvasComponent implements OnInit {
       'extras.user.offcanvas.direction'
     )}`;
     this.user$ = this.auth.currentUserSubject.asObservable();
+  }
+
+  close() {
+      let el: HTMLElement = this.closeBtn.nativeElement;
+      el.click();
   }
 
   logout() {

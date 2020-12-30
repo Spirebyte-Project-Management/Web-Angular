@@ -12,16 +12,23 @@ import { UpdateIssueComponent } from './detail/update-issue/update-issue.compone
 import { DeleteIssueComponent } from './detail/delete-issue/delete-issue.component';
 import { BacklogComponent } from './detail/backlog/backlog.component';
 import { CreateSprintComponent } from './detail/create-sprint/create-sprint.component';
+import { ProjectResolver } from './_services/projects/project.resolver';
+import { IssuesResolver } from './_services/issues/issues.resolver';
+import { UsersResolver } from './_services/users/users.resolver';
+import { SprintsResolver } from './_services/sprints/sprints.resolver';
 
 
 const routes: Routes = [
   {
     path: '',
     component: ProjectComponent,
+    resolve: {
+      projects: ProjectResolver
+    },
     children: [
       {
         path: 'overview',
-        component: OverviewComponent
+        component: OverviewComponent,
       },
       {
         path: 'create',
@@ -34,14 +41,21 @@ const routes: Routes = [
       {
         path: ':key',
         component: DetailComponent,
+        resolve: {
+          issues: IssuesResolver,
+          users: UsersResolver
+        },
         children: [
           {
             path: 'issues',
-            component: IssuesComponent
+            component: IssuesComponent,
           },
           {
             path: 'backlog',
-            component: BacklogComponent
+            component: BacklogComponent,
+            resolve: {
+              sprints: SprintsResolver,
+            },
           },
           {
             path: 'invitation/:userId',
