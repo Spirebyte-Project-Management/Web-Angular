@@ -73,7 +73,7 @@ export class CreateSprintComponent implements OnInit, OnDestroy {
         result[key] = this.f[key].value;
       });
       const sprint = new SprintModel();
-      sprint.setSprint(result);
+      sprint.createSprint(result);
       sprint.projectId = this.projectId;
       const createSprintSubscr = this.sprintEntityService
         .add(sprint)

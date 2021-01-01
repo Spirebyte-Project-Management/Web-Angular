@@ -21,8 +21,11 @@ export class BacklogComponent implements OnInit {
 
   sprints$: Observable<SprintModel[]>;
   backlog$: Observable<IssueModel[]>;
+  backlogCount$: Observable<number>;
   issueType = IssueType;
   projectId: string;
+
+  minDate = '0001-01-01T00:00:00';
 
   backlogKey = 'backlog';
   private sprintIssues: Map<string, IssueModel[]>;
@@ -44,10 +47,23 @@ export class BacklogComponent implements OnInit {
     this.sprints$ = this.sprintEntityService.entities$.pipe(map(sprints => sprints.filter(sprint => sprint.projectId == this.projectId)));
 
     this.backlog$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic)));
+    this.backlogCount$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic).length));
   }
 
-  getIssuesForSprint(sprint: SprintModel): Observable<IssueModel[]> {
-    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprint.id && issue.type != IssueType.Epic)));
+  getIssuesForSprint(sprintId: string): Observable<IssueModel[]> {
+    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic)));
+  }
+
+  getIssueCountForSprint(sprintId: string): Observable<number> {
+    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic).length));
+  }
+
+  startSprint(sprint: SprintModel){
+    this.sprintHttpService.startSprint(sprint.id).subscribe();
+    let updateSprint = new SprintModel();
+    updateSprint.setSprint(sprint);
+    updateSprint.startedAt = new Date().toISOString();
+    this.sprintEntityService.updateOneInCache(updateSprint);
   }
 
   issueDropped(event: CdkDragDrop<IssueModel[]>){

@@ -12,19 +12,9 @@ const API_SPRINTS_URL = `${environment.apiUrl}/Sprints`;
 export class SprintHTTPService {
   constructor(private http: HttpClient) {}
 
-  // GET =>  GET: get Sprints for project
-  getSprintsForProject(projectKey: string): Observable<SprintModel[]> {
-    return this.http.get<SprintModel[]>(`${API_SPRINTS_URL}/forProject/${projectKey}`);
-  }
 
-  // GET =>  GET: get project
-  getSprint(SprintKey: string): Observable<SprintModel> {
-    return this.http.get<SprintModel>(`${API_SPRINTS_URL}/${SprintKey}`);
-  }
-
-  // CREATE =>  POST: create Sprint
-  createSprint(Sprint: SprintModel, projectId: string): Observable<SprintModel> {
-    return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${projectId}`, Sprint);
+  startSprint(sprintId: string){
+    return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${sprintId}/start`, {id: sprintId});
   }
 
   addIssueToSprint(sprintKey: string, issueKey: string){

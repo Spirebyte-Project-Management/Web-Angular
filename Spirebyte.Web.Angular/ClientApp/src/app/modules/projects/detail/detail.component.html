@@ -116,7 +116,7 @@
             <div class="col">
                 <router-outlet></router-outlet>
             </div>
-            <div class="col-lg-5 col-xl-3" *ngIf="issue$ | async as issue">
+            <div class="col-md-6 col-lg-5 col-xl-4 col-xxl-3" *ngIf="issue$ | async as issue">
                 <app-issue-detail-aside [issue]="issue" [project]="project$ | async"></app-issue-detail-aside>
             </div>
         </div>

@@ -1,21 +1,34 @@
-<div class="row">
-    <div class="col-2">
+<div class="row mb-3">
+    <div class="col-12 col-xxl-2 col-xl-3 col-lg-4 mb-3">
         <app-epic-list [projectId]="projectId"></app-epic-list>
     </div>
     <div class="col">
         <ng-container cdkDropListGroup>
             <ng-container *ngIf="sprints$ | async as sprints">
                 <div class="card card-custom mb-3" *ngFor="let sprint of sprints">
-                    <div class="card-header flex-wrap border-0 pb-0">
+                    <div class="card-header flex-wrap border-0 pb-0 pt-2">
                         <div class="card-title">
-                            <h3 class="card-label">{{sprint.title}}</h3>
+                            <div class="card-label d-block">
+                                <div class="d-flex align-items-center">
+                                    {{sprint.title}}
+                                    <small class="px-2" *ngIf="getIssueCountForSprint(sprint.id) | async as sprintIssueCount">{{sprintIssueCount}} Issue{{sprintIssueCount == 1 ? '' : 's'}}</small>
+                                    <span *ngIf="sprint.startedAt != minDate && sprint.endedAt == minDate" class="label label-sm label-success label-pill label-inline mr-2">Active</span>
+                                </div>
+                                <p class="font-size-sm text-muted">{{sprint.startDate | date}} &#8226; {{sprint.endDate | date}}</p>
+                            </div>
+                        </div>
+                        <div class="card-toolbar align-items-start" *ngIf="sprint.startedAt == minDate">
+                            <!--begin::Button-->
+                            <button (click)="startSprint(sprint)" class="btn btn-secondary btn-sm font-weight-bolder">
+                                Start sprint</button>
+                            <!--end::Button-->
                         </div>
                     </div>
-                    <div class="card-body" *ngIf="getIssuesForSprint(sprint) | async as issues; else loadingSprint">
+                    <div class="card-body pt-0" *ngIf="getIssuesForSprint(sprint.id) | async as issues; else loadingSprint">
                         <div [id]="sprint.id" class="rounded bg-gray-300 px-2 pt-2 pb-2" cdkDropList
                             [cdkDropListData]="issues" (cdkDropListDropped)="issueDropped($event)">
                             <ng-container *ngIf="issues.length > 0 else noSprintIssues">
-                                <app-backlog-item *ngFor="let issue of getIssuesForSprint(sprint) | async"
+                                <app-backlog-item *ngFor="let issue of issues"
                                     [issue]="issue"></app-backlog-item>
                             </ng-container>
                             <ng-template #noSprintIssues>
@@ -39,10 +52,11 @@
                 <div class="card-header flex-wrap border-0 pb-0">
                     <div class="card-title">
                         <h3 class="card-label">Backlog</h3>
+                        <small *ngIf="backlogCount$ | async as backlogCount">{{backlogCount}} Issue{{backlogCount == 1 ? '' : 's'}}</small>
                     </div>
                     <div class="card-toolbar">
                         <!--begin::Button-->
-                        <a [routerLink]="['../sprint/create']" class="btn btn-primary font-weight-bolder">
+                        <a [routerLink]="['../sprint/create']" class="btn btn-secondary btn-sm font-weight-bolder">
                             <span class="svg-icon svg-icon-md">
                                 <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/Flatten.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -60,7 +74,7 @@
                         <!--end::Button-->
                     </div>
                 </div>
-                <div class="card-body" *ngIf="backlog$ | async as backlog; else loadingBacklog">
+                <div class="card-body pt-0" *ngIf="backlog$ | async as backlog; else loadingBacklog">
                     <div [id]="backlogKey" class="rounded bg-gray-300 px-2 pt-2 pb-2" cdkDropList
                         [cdkDropListData]="backlog" (cdkDropListDropped)="issueDropped($event)">
                         <ng-container *ngIf="backlog.length > 0 else noIssues">
@@ -73,29 +87,25 @@
                                 </div>
                             </div>
                         </ng-template>
-                        <div class="card mb-1">
-                            <div class="card-body p-2">
-                                <a [routerLink]="['../issues/create']" [queryParams]="{returnUrl: router.url}">
-                                    <div class="d-flex align-items-center">
-                                        <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                                viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
-                                                    <rect fill="#000000" opacity="0.3"
-                                                        transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
-                                                        x="4" y="11" width="16" height="2" rx="1" />
-                                                </g>
-                                            </svg>
-                                        </span>
-                                        <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
-                                            New Issue
-                                        </span>
-                                    </div>
-                                </a>
+                        <a [routerLink]="['../issues/create']" [queryParams]="{returnUrl: router.url}">
+                            <div class="d-flex align-items-center p-2">
+                                <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                        viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+                                            <rect fill="#000000" opacity="0.3"
+                                                transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+                                                x="4" y="11" width="16" height="2" rx="1" />
+                                        </g>
+                                    </svg>
+                                </span>
+                                <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
+                                    New Issue
+                                </span>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <ng-template #loadingBacklog>
