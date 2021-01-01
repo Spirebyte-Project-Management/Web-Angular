@@ -103,7 +103,7 @@
                         </a>
                     </div>
                     <ng-container *ngIf="activeSprints$ | async as activeSprints">
-                        <div ngbDropdown class="navi-item mb-2" *ngIf="activeSprints.length >= 1; else oneBoard">
+                        <div ngbDropdown class="navi-item mb-2" *ngIf="activeSprints.length > 1; else oneBoard">
                             <a ngbDropdownToggle class="navi-link py-4" [class.active]="isActive('/sprint/' + projectId)">
                                 <span class="navi-icon mr-2">
                                     <span class="svg-icon" 

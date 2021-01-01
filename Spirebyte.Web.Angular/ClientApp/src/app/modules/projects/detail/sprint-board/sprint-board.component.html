@@ -9,6 +9,12 @@
             </div>
         </div>
         <div class="card-toolbar align-items-start" *ngIf="sprint.startedAt != minDate && sprint.endedAt == minDate">
+            <span class="p-2 mr-2">
+                <span class="svg-icon svg-icon-dark-75" 
+                    cacheSVG="true"
+                    [inlineSVG]="'./assets/media/svg/icons/Home/Clock.svg'">
+                </span>
+                {{daysRemaining(sprint.endDate)}} days remaining</span>
             <!--begin::Button-->
             <button (click)="endSprint(sprint)" class="btn btn-secondary btn-sm font-weight-bolder">
                 End sprint</button>

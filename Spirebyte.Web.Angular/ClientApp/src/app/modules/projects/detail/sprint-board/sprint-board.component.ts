@@ -1,6 +1,6 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IssueModel, IssueStatus, IssueType } from '../../_models/issue.model';
@@ -26,7 +26,8 @@ export class SprintBoardComponent implements OnInit {
   constructor(private sprintEntityService: SprintEntityService,
     private sprintHttpService: SprintHTTPService,
     private issueEntityService: IssueEntityService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit(): void {
     const paramsSubscription = this.route.paramMap.subscribe(params => {
@@ -45,20 +46,41 @@ export class SprintBoardComponent implements OnInit {
     updateSprint.setSprint(sprint);
     updateSprint.endedAt = new Date().toISOString();
     this.sprintEntityService.updateOneInCache(updateSprint);
+
+    this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprint.id && issue.status != IssueStatus.DONE && issue.type != IssueType.Epic))).subscribe(issues => {
+      issues.forEach(doneIssue => {
+        let issue = new IssueModel();
+        issue.setIssue(doneIssue);
+        issue.sprintId = null;
+        this.issueEntityService.updateOneInCache(issue);
+      });
+    });
+
+    this.router.navigate(['../../backlog'], {
+      relativeTo: this.route
+    });
   }
 
-  issueDropped(event: CdkDragDrop<IssueModel[]>){
-    if(event.container.id == event.previousContainer.id)
+  issueDropped(event: CdkDragDrop<IssueModel[]>) {
+    if (event.container.id == event.previousContainer.id)
       return;
-      
-      let issue = new IssueModel();
-      issue.setIssue(event.item.data);
-      issue.status = IssueStatus[event.container.id as keyof typeof IssueStatus]
-      this.issueEntityService.update(issue);
+
+    let issue = new IssueModel();
+    issue.setIssue(event.item.data);
+    issue.status = IssueStatus[event.container.id as keyof typeof IssueStatus]
+    this.issueEntityService.update(issue);
 
     transferArrayItem(event.previousContainer.data,
       event.container.data,
       event.previousIndex,
       event.currentIndex);
+  }
+
+  daysRemaining(endDate) {
+    let date = new Date(endDate);
+    let currentDate = new Date();
+
+    let days = Math.floor((date.getTime() - currentDate.getTime()) / 1000 / 60 / 60 / 24);
+    return days;
   }
 }

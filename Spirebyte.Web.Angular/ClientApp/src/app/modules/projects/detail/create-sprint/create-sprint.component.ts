@@ -79,7 +79,7 @@ export class CreateSprintComponent implements OnInit, OnDestroy {
         .add(sprint)
         .subscribe(
           () => {
-            this.router.navigate(['../backlog'],
+            this.router.navigate(['../../backlog'],
             {relativeTo: this.route});
           }
         );
