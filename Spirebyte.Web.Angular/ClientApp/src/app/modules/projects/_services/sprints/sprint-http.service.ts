@@ -17,6 +17,10 @@ export class SprintHTTPService {
     return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${sprintId}/start`, {id: sprintId});
   }
 
+  endSprint(sprintId: string){
+    return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${sprintId}/end`, {id: sprintId});
+  }
+
   addIssueToSprint(sprintKey: string, issueKey: string){
     return this.http.post<SprintModel>(`${API_SPRINTS_URL}/${sprintKey}/addIssue/${issueKey}`, {sprintKey, issueKey});
   }

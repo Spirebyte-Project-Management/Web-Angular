@@ -1,6 +1,6 @@
-<div class="card mb-05" cdkDrag [cdkDragData]="issue">
+<div class="card mb-05" cdkDrag [cdkDragData]="issue" [class.active]="isSelected(issue.id)">
     <div class="card-body p-2">
-        <div class="d-flex justify-content-between align-items-center" (click)="setSelectedIssue(issue.id)">
+        <div class="d-flex flex-row justify-content-between align-items-center" (click)="setSelectedIssue(issue.id)">
             <div class="justify-self-start">
                 <!--begin::Checkbox-->
                 <div class="symbol mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
@@ -96,6 +96,7 @@
             <div class="justify-self-end">
                 <app-epic-label *ngIf="issue.epicId != null" [epicId]="issue.epicId"></app-epic-label>
                 <app-user-symbol-group [pxlSize]="20" [users$]="assignees$"></app-user-symbol-group>
+                <span class="label label-md text-gray label-pill mr-2" *ngIf="issue.storyPoints > 0">{{issue.storyPoints}}</span>
             </div>
             <!--end::Text-->
         </div>

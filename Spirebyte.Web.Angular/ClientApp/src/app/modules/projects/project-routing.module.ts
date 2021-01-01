@@ -16,6 +16,8 @@ import { ProjectResolver } from './_services/projects/project.resolver';
 import { IssuesResolver } from './_services/issues/issues.resolver';
 import { UsersResolver } from './_services/users/users.resolver';
 import { SprintsResolver } from './_services/sprints/sprints.resolver';
+import { SprintBoardComponent } from './detail/sprint-board/sprint-board.component';
+import { SprintResolver } from './_services/sprints/sprint.resolver';
 
 
 const routes: Routes = [
@@ -43,7 +45,8 @@ const routes: Routes = [
         component: DetailComponent,
         resolve: {
           issues: IssuesResolver,
-          users: UsersResolver
+          users: UsersResolver,
+          sprints: SprintsResolver,
         },
         children: [
           {
@@ -53,9 +56,6 @@ const routes: Routes = [
           {
             path: 'backlog',
             component: BacklogComponent,
-            resolve: {
-              sprints: SprintsResolver,
-            },
           },
           {
             path: 'invitation/:userId',
@@ -76,6 +76,10 @@ const routes: Routes = [
           {
             path: 'sprint/create',
             component: CreateSprintComponent
+          },
+          {
+            path: 'sprint/:sprintKey',
+            component: SprintBoardComponent,
           },
           {path: '', redirectTo: 'backlog', pathMatch: 'full'},
           {path: '**', redirectTo: 'backlog', pathMatch: 'full'},

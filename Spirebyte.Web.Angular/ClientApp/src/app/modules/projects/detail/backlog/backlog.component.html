@@ -11,8 +11,8 @@
                             <div class="card-label d-block">
                                 <div class="d-flex align-items-center">
                                     {{sprint.title}}
-                                    <small class="px-2" *ngIf="getIssueCountForSprint(sprint.id) | async as sprintIssueCount">{{sprintIssueCount}} Issue{{sprintIssueCount == 1 ? '' : 's'}}</small>
-                                    <span *ngIf="sprint.startedAt != minDate && sprint.endedAt == minDate" class="label label-sm label-success label-pill label-inline mr-2">Active</span>
+                                    <small class="ml-2" *ngIf="getIssueCountForSprint(sprint.id) | async as sprintIssueCount">{{sprintIssueCount}} Issue{{sprintIssueCount == 1 ? '' : 's'}}</small>
+                                    <span *ngIf="sprint.startedAt != minDate && sprint.endedAt == minDate" class="label label-sm label-success label-pill label-inline ml-2">Active</span>
                                 </div>
                                 <p class="font-size-sm text-muted">{{sprint.startDate | date}} &#8226; {{sprint.endDate | date}}</p>
                             </div>

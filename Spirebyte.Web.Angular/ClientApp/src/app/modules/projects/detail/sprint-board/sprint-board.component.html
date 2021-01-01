@@ -1,0 +1,36 @@
+<div class="card card-custom mb-3" *ngIf="sprint$ | async as sprint">
+    <div class="card-header flex-wrap border-0 pb-0 pt-2">
+        <div class="card-title">
+            <div class="card-label d-block">
+                <div class="d-flex align-items-center">
+                    {{sprint.title}}
+                </div>
+                <p class="font-size-sm text-muted">{{sprint.startDate | date}} &#8226; {{sprint.endDate | date}}</p>
+            </div>
+        </div>
+        <div class="card-toolbar align-items-start" *ngIf="sprint.startedAt != minDate && sprint.endedAt == minDate">
+            <!--begin::Button-->
+            <button (click)="endSprint(sprint)" class="btn btn-secondary btn-sm font-weight-bolder">
+                End sprint</button>
+            <!--end::Button-->
+        </div>
+    </div>
+</div>
+<div class="row" cdkDropListGroup>
+    <div class="col" *ngFor="let status of statuses | enumToArray">
+        <div class="card card-custom card-stretch">
+            <div class="card-header flex-wrap border-0 pb-0">
+                <div class="card-title">
+                    <div class="card-label d-block">
+                        <span>{{status.name}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-0" *ngIf="getIssuesForSprintByStatus(sprintId, status.name) | async as issues">
+                <div [id]="status.name" class="rounded bg-gray-300 px-2 pt-2 pb-2 h-100" cdkDropList [cdkDropListData]="issues" (cdkDropListDropped)="issueDropped($event)">
+                    <app-board-item *ngFor="let issue of issues" [issue]="issue"></app-board-item>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

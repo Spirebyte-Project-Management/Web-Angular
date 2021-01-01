@@ -13,6 +13,8 @@ import { IssueEntityService } from '../../../_services/issues/issue-entity.servi
 export class EpicLabelComponent implements OnInit {
 
   @Input() epicId: string;
+  @Input() size = 'md';
+
 
   epic$: Observable<IssueModel>;
 
@@ -22,8 +24,12 @@ export class EpicLabelComponent implements OnInit {
     this.epic$ = this.issueEntityService.entities$.pipe(map(issues => issues.find(issue => issue.id == this.epicId)));
   }
 
-  public epicColor(epicKey: string): string {
+  epicColor(epicKey: string): string {
     return stc(epicKey);
+  }
+
+  getSizeClass(){
+    return 'label-' + this.size;
   }
 
 }

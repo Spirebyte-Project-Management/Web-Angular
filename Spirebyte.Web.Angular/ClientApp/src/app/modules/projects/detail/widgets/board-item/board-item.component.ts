@@ -3,18 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
-import { IssueModel, IssueType } from '../../../_models/issue.model';
-import { IssueEntityService } from '../../../_services/issues/issue-entity.service';
+import { IssueType, IssueModel, IssueStatus } from '../../../_models/issue.model';
 import { UserEntityService } from '../../../_services/users/user-entity.service';
 
 @Component({
-  selector: 'app-backlog-item',
-  templateUrl: './backlog-item.component.html',
-  styleUrls: ['./backlog-item.component.scss']
+  selector: 'app-board-item',
+  templateUrl: './board-item.component.html',
+  styleUrls: ['./board-item.component.scss']
 })
-export class BacklogItemComponent implements OnInit {
+export class BoardItemComponent implements OnInit {
 
   issueType = IssueType;
+  doneStatus = IssueStatus.DONE;
 
   assignees$: Observable<UserModel[]>;
 
@@ -28,6 +28,10 @@ export class BacklogItemComponent implements OnInit {
     this.assignees$ = this.userEntityService.entities$.pipe(map(users => users.filter(user => this.issue.assignees.includes(user.id))));
   }
 
+  isSelected(url): boolean {
+    return this.router.url.includes(url);
+  } 
+
   setSelectedIssue(key: string): void {
     // changes the route without moving from the current view or
     // triggering a navigation event,
@@ -39,7 +43,4 @@ export class BacklogItemComponent implements OnInit {
     });
   }
 
-  isSelected(url): boolean {
-    return this.router.url.includes(url);
-  } 
 }

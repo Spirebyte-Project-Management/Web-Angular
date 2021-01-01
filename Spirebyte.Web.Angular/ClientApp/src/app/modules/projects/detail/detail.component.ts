@@ -11,6 +11,8 @@ import { IssueHTTPService } from '../_services/issues/issue-http.service';
 import { ProjectEntityService } from '../_services/projects/project-entity.service';
 import { IssueEntityService } from '../_services/issues/issue-entity.service';
 import { UserEntityService } from '../_services/users/user-entity.service';
+import { SprintModel } from '../_models/Sprint.model';
+import { SprintEntityService } from '../_services/sprints/sprint-entity.service';
 
 @Component({
   selector: 'app-detail',
@@ -30,6 +32,9 @@ export class DetailComponent implements OnInit, OnDestroy {
 
   projectUsers$: Observable<UserModel[]>;
 
+  activeSprints$: Observable<SprintModel[]>;
+  minDate = '0001-01-01T00:00:00';
+
 
   private unsubscribe: Subscription[] = [];
   constructor(
@@ -37,7 +42,8 @@ export class DetailComponent implements OnInit, OnDestroy {
     public router: Router,
     private projectEntityService: ProjectEntityService,
     private userEntityService: UserEntityService,
-    private issueEntityService: IssueEntityService
+    private issueEntityService: IssueEntityService,
+    private sprintEntityService: SprintEntityService
   ) {
   }
 
@@ -57,7 +63,12 @@ export class DetailComponent implements OnInit, OnDestroy {
 
     this.project$ = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == this.projectId)));
     this.projectUsers$ = this.userEntityService.entities$;
+    this.activeSprints$ = this.sprintEntityService.entities$.pipe(map(sprints => sprints.filter(sprint => sprint.projectId == this.projectId && sprint.startedAt != this.minDate && sprint.endedAt == this.minDate)));
   }
+
+  isActive(url): boolean {
+    return this.router.url.includes(url);
+  } 
 
   ngOnDestroy() {
     this.unsubscribe.forEach(sb => sb.unsubscribe());

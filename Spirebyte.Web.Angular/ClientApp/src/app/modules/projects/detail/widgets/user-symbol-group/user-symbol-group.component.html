@@ -1,4 +1,4 @@
-<div *ngIf="users$ | async as users; else loadingUsers" class="symbol-group symbol-hover">
+<div *ngIf="users$ | async as users; else loadingUsers" class="symbol-group symbol-hover  mr-2">
     <span *ngIf="users.length == 0; else loadUsers">{{errorMessage}}</span>
     <ng-template #loadUsers>
         <div *ngFor="let user of users.slice(0, 5)" class="symbol symbol-circle" [class]="getClass()" data-toggle="tooltip"

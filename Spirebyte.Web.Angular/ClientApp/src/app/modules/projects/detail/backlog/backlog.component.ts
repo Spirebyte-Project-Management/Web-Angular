@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { IssueModel, IssueType } from '../../_models/issue.model';
+import { IssueModel, IssueStatus, IssueType } from '../../_models/issue.model';
 import { SprintModel } from '../../_models/Sprint.model';
 import { IssueEntityService } from '../../_services/issues/issue-entity.service';
 import { IssueHTTPService } from '../../_services/issues/issue-http.service';
@@ -44,18 +44,18 @@ export class BacklogComponent implements OnInit {
     const paramsSubscription = this.route.parent.paramMap.subscribe(params => {
       this.projectId = params.get('key');
     });
-    this.sprints$ = this.sprintEntityService.entities$.pipe(map(sprints => sprints.filter(sprint => sprint.projectId == this.projectId)));
+    this.sprints$ = this.sprintEntityService.entities$.pipe(map(sprints => sprints.filter(sprint => sprint.projectId == this.projectId && sprint.endedAt == this.minDate)));
 
-    this.backlog$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic)));
-    this.backlogCount$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic).length));
+    this.backlog$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE)));
+    this.backlogCount$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE).length));
   }
 
   getIssuesForSprint(sprintId: string): Observable<IssueModel[]> {
-    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic)));
+    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE)));
   }
 
   getIssueCountForSprint(sprintId: string): Observable<number> {
-    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic).length));
+    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE).length));
   }
 
   startSprint(sprint: SprintModel){
@@ -67,6 +67,9 @@ export class BacklogComponent implements OnInit {
   }
 
   issueDropped(event: CdkDragDrop<IssueModel[]>){
+    if(event.container.id == event.previousContainer.id)
+      return;
+
     if (event.container.id === this.backlogKey && event.previousContainer.id !== this.backlogKey){
       this.sprintHttpService.removeIssueFromSprint(event.previousContainer.id, event.item.data.id).subscribe();
       let issue = new IssueModel();

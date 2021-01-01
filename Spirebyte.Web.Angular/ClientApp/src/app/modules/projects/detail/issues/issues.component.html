@@ -28,7 +28,7 @@
         <table class="table table-hover" *ngIf="issues.length > 0; else noIssues">
             <tbody>
                 <tr *ngFor="let issue of issues">
-                    <th [id]="issue.id">
+                    <th [id]="issue.id" [class.active]="isSelected(issue.id)">
                         <div class="d-flex align-items-center" (click)="setSelectedIssue(issue.id)">
                             <!--begin::Checkbox-->
                             <div class="symbol mt-1 mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
@@ -126,8 +126,12 @@
                             <!--end::Checkbox-->
                             <!--begin::Text-->
                             <div class="d-flex flex-column flex-grow-1">
-                                <span
-                                    class="text-dark-75 font-weight-bold text-hover-primary font-size-md">{{issue.id}}</span>
+                                <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
+                                    <span *ngIf="issue.status != doneStatus; else stikedThrough">{{issue.id}}</span>
+                                    <ng-template #stikedThrough>
+                                        <s>{{issue.id}}</s>
+                                    </ng-template>
+                                </span>
                                 <span
                                     class="text-muted font-weight-bold text-hover-primary font-size-sm">{{issue.title}}</span>
                             </div>

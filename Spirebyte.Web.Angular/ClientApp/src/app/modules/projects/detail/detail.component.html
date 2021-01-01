@@ -59,7 +59,7 @@
                 <!--begin::Nav-->
                 <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
                     <div class="navi-item mb-2">
-                        <a [routerLink]="['backlog']" [routerLinkActive]="['active']" class="navi-link py-4">
+                        <a [routerLink]="['backlog']" [routerLinkActive]="['active']" queryParamsHandling="merge" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -84,7 +84,7 @@
                         </a>
                     </div>
                     <div class="navi-item mb-2">
-                        <a [routerLink]="['issues']" [routerLinkActive]="['active']" class="navi-link py-4">
+                        <a [routerLink]="['issues']" [routerLinkActive]="['active']" queryParamsHandling="merge" class="navi-link py-4">
                             <span class="navi-icon mr-2">
                                 <span class="svg-icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -102,6 +102,37 @@
                             <span class="navi-text font-size-lg">Issues</span>
                         </a>
                     </div>
+                    <ng-container *ngIf="activeSprints$ | async as activeSprints">
+                        <div ngbDropdown class="navi-item mb-2" *ngIf="activeSprints.length >= 1; else oneBoard">
+                            <a ngbDropdownToggle class="navi-link py-4" [class.active]="isActive('/sprint/' + projectId)">
+                                <span class="navi-icon mr-2">
+                                    <span class="svg-icon" 
+                                        cacheSVG="true"
+                                        [inlineSVG]="'./assets/media/svg/icons/Layout/Layout-3d.svg'">
+                                    </span>
+                                </span>
+                                <span class="navi-text font-size-lg">Boards</span>
+                            </a>
+                            <div ngbDropdownMenu>
+                                <a class="navi-link" *ngFor="let activeSprint of activeSprints" [routerLink]="['sprint', activeSprint.id]" queryParamsHandling="merge">
+                                    <span class="navi-text font-size-md">{{activeSprint.title}} • <small>{{activeSprint.id}}</small></span>
+                                </a>
+                            </div>
+                        </div>
+                        <ng-template #oneBoard>
+                            <div class="navi-item mb-2" *ngIf="activeSprints.length == 1">
+                                <a class="navi-link py-4" [routerLink]="['sprint', activeSprints[0].id]" [routerLink]="['sprint', activeSprints[0].id]" queryParamsHandling="merge">
+                                    <span class="navi-icon mr-2">
+                                        <span class="svg-icon" 
+                                            cacheSVG="true"
+                                            [inlineSVG]="'./assets/media/svg/icons/Layout/Layout-3d.svg'">
+                                        </span>
+                                    </span>
+                                    <span class="navi-text font-size-lg">Board</span>
+                                </a>
+                            </div>
+                        </ng-template>
+                    </ng-container>
                 </div>
                 <!--end::Nav-->
             </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IssueModel, IssueType } from '../../_models/issue.model';
+import { IssueModel, IssueStatus, IssueType } from '../../_models/issue.model';
 import { IssueHTTPService } from '../../_services/issues/issue-http.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectHTTPService } from '../../_services/projects/project-http.service';
@@ -15,6 +15,7 @@ import { map } from 'rxjs/operators';
 export class IssuesComponent implements OnInit {
   issues$: Observable<IssueModel[]>;
   issueType = IssueType;
+  doneStatus = IssueStatus.DONE;
   projectKey: string;
 
   constructor(
@@ -29,6 +30,10 @@ export class IssuesComponent implements OnInit {
       this.issues$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == projectId)));
     });
   }
+  
+  isSelected(url): boolean {
+    return this.router.url.includes(url);
+  } 
 
   setSelectedIssue(key: string): void{
          // changes the route without moving from the current view or

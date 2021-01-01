@@ -40,6 +40,10 @@ import { SprintDataService } from './_services/sprints/sprint-data.service';
 import { SprintEntityService } from './_services/sprints/sprint-entity.service';
 import { SprintsResolver } from './_services/sprints/sprints.resolver';
 import { UserSymbolGroupComponent } from './detail/widgets/user-symbol-group/user-symbol-group.component';
+import { InlineSVGModule } from 'ng-inline-svg';
+import { SprintBoardComponent } from './detail/sprint-board/sprint-board.component';
+import { SprintResolver } from './_services/sprints/sprint.resolver';
+import { BoardItemComponent } from './detail/widgets/board-item/board-item.component';
 
 const entityMetadata: EntityMetadataMap = {
   Project: {
@@ -65,11 +69,12 @@ const entityMetadata: EntityMetadataMap = {
 };
 
 @NgModule({
-  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent, IssueDetailAsideComponent, EpicListComponent, EpicLabelComponent, UserSymbolGroupComponent],
+  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent, IssueDetailAsideComponent, EpicListComponent, EpicLabelComponent, UserSymbolGroupComponent, SprintBoardComponent, BoardItemComponent],
   imports: [
     ProjectRoutingModule,
     GeneralModule,
     CommonModule,
+    InlineSVGModule,
     CoreModule,
     FormsModule,
     ReactiveFormsModule,
@@ -77,7 +82,7 @@ const entityMetadata: EntityMetadataMap = {
     NgbDatepickerModule,
     DragDropModule
   ],
-  providers: [ProjectHTTPService, ProjectEntityService, ProjectDataService, ProjectResolver, IssueEntityService, IssueDataService, IssuesResolver, IssueHTTPService, UserEntityService, UserDataService, UsersResolver, UserHTTPService, SprintEntityService, SprintDataService, SprintsResolver, SprintHTTPService]
+  providers: [ProjectHTTPService, ProjectEntityService, ProjectDataService, ProjectResolver, IssueEntityService, IssueDataService, IssuesResolver, IssueHTTPService, UserEntityService, UserDataService, UsersResolver, UserHTTPService, SprintEntityService, SprintDataService, SprintsResolver, SprintResolver, SprintHTTPService]
 })
 export class ProjectModule {
   constructor(
