@@ -1,12 +1,9 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { SprintModel } from '../../_models/Sprint.model';
-import { ProjectEntityService } from '../../_services/projects/project-entity.service';
-import { ProjectHTTPService } from '../../_services/projects/project-http.service';
+import { SprintModel } from '../../_models/sprint.model';
 import { SprintEntityService } from '../../_services/sprints/sprint-entity.service';
-import { SprintHTTPService } from '../../_services/sprints/sprint-http.service';
 
 @Component({
   selector: 'app-create-sprint',

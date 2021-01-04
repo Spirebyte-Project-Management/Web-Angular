@@ -1,13 +1,11 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { IssueModel, IssueStatus, IssueType } from '../../_models/issue.model';
-import { SprintModel } from '../../_models/Sprint.model';
+import { SprintModel } from '../../_models/sprint.model';
 import { IssueEntityService } from '../../_services/issues/issue-entity.service';
-import { IssueHTTPService } from '../../_services/issues/issue-http.service';
-import { ProjectHTTPService } from '../../_services/projects/project-http.service';
 import { SprintEntityService } from '../../_services/sprints/sprint-entity.service';
 import { SprintHTTPService } from '../../_services/sprints/sprint-http.service';
 

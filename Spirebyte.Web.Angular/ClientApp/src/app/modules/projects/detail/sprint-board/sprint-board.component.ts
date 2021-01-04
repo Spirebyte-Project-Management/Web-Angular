@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IssueModel, IssueStatus, IssueType } from '../../_models/issue.model';
-import { SprintModel } from '../../_models/Sprint.model';
+import { SprintModel } from '../../_models/sprint.model';
 import { IssueEntityService } from '../../_services/issues/issue-entity.service';
 import { SprintEntityService } from '../../_services/sprints/sprint-entity.service';
 import { SprintHTTPService } from '../../_services/sprints/sprint-http.service';

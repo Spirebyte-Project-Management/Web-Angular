@@ -1,17 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, Observable, BehaviorSubject, of } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { ProjectModel } from '../_models/project.model';
-import { ProjectHTTPService } from '../_services/projects/project-http.service';
 import { UserModel } from '../../auth/_models/user.model';
-import { first, map, single, take, tap } from 'rxjs/operators';
-import { UserHTTPService } from '../_services/users/user-http.service';
+import { map } from 'rxjs/operators';
 import { IssueModel, IssueType, IssueStatus } from '../_models/issue.model';
-import { IssueHTTPService } from '../_services/issues/issue-http.service';
 import { ProjectEntityService } from '../_services/projects/project-entity.service';
 import { IssueEntityService } from '../_services/issues/issue-entity.service';
 import { UserEntityService } from '../_services/users/user-entity.service';
-import { SprintModel } from '../_models/Sprint.model';
+import { SprintModel } from '../_models/sprint.model';
 import { SprintEntityService } from '../_services/sprints/sprint-entity.service';
 
 @Component({

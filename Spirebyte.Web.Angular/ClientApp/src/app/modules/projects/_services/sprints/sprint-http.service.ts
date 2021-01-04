@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { SprintModel } from '../../_models/Sprint.model';
+import { SprintModel } from '../../_models/sprint.model';
 
 const API_SPRINTS_URL = `${environment.apiUrl}/Sprints`;
 
