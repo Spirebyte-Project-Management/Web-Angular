@@ -63,9 +63,9 @@
 
     // Static Subheader
 	.subheader-enabled:not(.subheader-fixed) {
-		.content {
-			padding-top: 0;
-		}
+		// .content {
+		// 	padding-top: 0;
+		// }
 
 		// Subheder Solid Mode
 		.subheader.subheader-solid {
@@ -94,11 +94,11 @@
 	}
 
 	// Content
-	.content {
-		.subheader-enabled:not(.subheader-mobile-fixed) & {
-			padding-top: 0;
-		}
-	}
+	// .content {
+	// 	.subheader-enabled:not(.subheader-mobile-fixed) & {
+	// 		padding-top: 0;
+	// 	}
+	// }
 
 	// Subheder Solid Mode
 	.subheader.subheader-solid {

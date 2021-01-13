@@ -48,7 +48,7 @@
                         </div>
                         <!--end::Info-->
                         <!--begin::Toolbar-->
-                        <div class="card-toolbar mb-7">
+                        <div class="card-toolbar mb-7" *ngIf="!project.invitedUserIds.includes(userId);">
                             <div ngbDropdown class="dropdown dropdown-inline" data-toggle="tooltip" title=""
                                 data-placement="left" data-original-title="Quick actions">
                                 <a ngbDropdownToggle class="btn btn-clean btn-hover-light-primary btn-sm btn-icon"
@@ -126,7 +126,7 @@
                         </div>
                         <div class="d-flex justify-self-end align-items-center">
                             <a [routerLink]="['/projects', project.id]"
-                                class="btn btn-light-primary font-weight-bolder btn-sm py-3 px-6 text-uppercase" [class]="project.invitedUserIds.includes(userId) ? 'btn-light-dark' : 'btn-light-primary'">{{project.invitedUserIds.includes(userId) ? 'view invitation' : 'view project'}}</a>
+                                class="btn btn-light-primary font-weight-bolder btn-sm p-3 text-uppercase" [class]="project.invitedUserIds.includes(userId) ? 'btn-light-dark' : 'btn-light-primary'">{{project.invitedUserIds.includes(userId) ? 'view invitation' : 'view project'}}</a>
                         </div>
                     </div>
                 </div>

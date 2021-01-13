@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { QueryParams } from '@ngrx/data';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { filter, first, map, switchMap, tap } from 'rxjs/operators';
 import { IssueEntityService } from './issue-entity.service';
 
@@ -27,6 +27,9 @@ export class IssuesResolver implements Resolve<boolean> {
                             localStorage.setItem('loadedProjectIssues', projectId);
                             return true;
                         }));
+                    }
+                    else{
+                        return of(true);
                     }
                 }),
                 filter(loaded => !!loaded),
