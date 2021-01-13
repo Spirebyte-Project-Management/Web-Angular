@@ -10,6 +10,7 @@ import { IssueEntityService } from '../_services/issues/issue-entity.service';
 import { UserEntityService } from '../_services/users/user-entity.service';
 import { SprintModel } from '../_models/sprint.model';
 import { SprintEntityService } from '../_services/sprints/sprint-entity.service';
+import { AuthService } from '../../auth/_services/auth.service';
 
 @Component({
   selector: 'app-detail',
@@ -18,6 +19,7 @@ import { SprintEntityService } from '../_services/sprints/sprint-entity.service'
 })
 export class DetailComponent implements OnInit, OnDestroy {
   projectId: string;
+  userId: string;
 
   issueType = IssueType;
   issueStatus = IssueStatus;
@@ -40,11 +42,14 @@ export class DetailComponent implements OnInit, OnDestroy {
     private projectEntityService: ProjectEntityService,
     private userEntityService: UserEntityService,
     private issueEntityService: IssueEntityService,
-    private sprintEntityService: SprintEntityService
+    private sprintEntityService: SprintEntityService,
+    private authService: AuthService
   ) {
   }
 
   ngOnInit(): void {
+    this.userId = this.authService.currentUserValue.id;
+
     const paramsSubscription = this.route.paramMap.subscribe(params => {
       this.projectId = params.get('key');
     });
