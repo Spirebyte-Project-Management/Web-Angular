@@ -24,25 +24,25 @@
                             <!--end::Button-->
                         </div>
                     </div>
-                    <div class="card-body pt-0" *ngIf="getIssuesForSprint(sprint.id) | async as issues; else loadingSprint">
-                        <div [id]="sprint.id" class="rounded bg-gray-300 px-2 pt-2 pb-2" cdkDropList
-                            [cdkDropListData]="issues" (cdkDropListDropped)="issueDropped($event)">
-                            <ng-container *ngIf="issues.length > 0 else noSprintIssues">
-                                <app-backlog-item *ngFor="let issue of issues"
-                                    [issue]="issue"></app-backlog-item>
-                            </ng-container>
-                            <ng-template #noSprintIssues>
-                                <div class="card mb-1">
-                                    <div class="card-body p-2">
-                                        <span>This sprint does not yet have any issues.</span>
-                                    </div>
-                                </div>
-                            </ng-template>
-                        </div>
+                    <div class="card-body" *ngIf="!(loadedIssues | async); else sprintIssues">
+                        <div class="spinner spinner-primary"></div>
                     </div>
-                    <ng-template #loadingSprint>
-                        <div class="card-body">
-                            <div class="spinner spinner-primary"></div>
+                    <ng-template #sprintIssues>
+                        <div class="card-body pt-0" *ngIf="getIssuesForSprint(sprint.id) | async as issues">
+                            <div [id]="sprint.id" class="rounded bg-gray-300 px-2 pt-2 pb-2" cdkDropList
+                                [cdkDropListData]="issues" (cdkDropListDropped)="issueDropped($event)">
+                                <ng-container *ngIf="issues.length > 0 else noSprintIssues">
+                                    <app-backlog-item *ngFor="let issue of issues"
+                                        [issue]="issue"></app-backlog-item>
+                                </ng-container>
+                                <ng-template #noSprintIssues>
+                                    <div class="card mb-1">
+                                        <div class="card-body p-2">
+                                            <span>This sprint does not yet have any issues.</span>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </div>
                         </div>
                     </ng-template>
                 </div>
@@ -74,43 +74,43 @@
                         <!--end::Button-->
                     </div>
                 </div>
-                <div class="card-body pt-0" *ngIf="backlog$ | async as backlog; else loadingBacklog">
-                    <div [id]="backlogKey" class="rounded bg-gray-300 px-2 pt-2 pb-2" cdkDropList
-                        [cdkDropListData]="backlog" (cdkDropListDropped)="issueDropped($event)">
-                        <ng-container *ngIf="backlog.length > 0 else noIssues">
-                            <app-backlog-item *ngFor="let issue of backlog" [issue]="issue"></app-backlog-item>
-                        </ng-container>
-                        <ng-template #noIssues>
-                            <div class="card mb-1">
-                                <div class="card-body p-2">
-                                    <span>This project does not yet have any issues.</span>
-                                </div>
-                            </div>
-                        </ng-template>
-                        <a [routerLink]="['../issues/create']" [queryParams]="{returnUrl: router.url}">
-                            <div class="d-flex align-items-center p-2">
-                                <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                        viewBox="0 0 24 24" version="1.1">
-                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                            <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
-                                            <rect fill="#000000" opacity="0.3"
-                                                transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
-                                                x="4" y="11" width="16" height="2" rx="1" />
-                                        </g>
-                                    </svg>
-                                </span>
-                                <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
-                                    New Issue
-                                </span>
-                            </div>
-                        </a>
-                    </div>
+                <div class="card-body" *ngIf="!(loadedIssues | async); else backlog">
+                    <div class="spinner spinner-primary"></div>
                 </div>
-                <ng-template #loadingBacklog>
-                    <div class="card-body">
-                        <div class="spinner spinner-primary"></div>
+                <ng-template #backlog>
+                    <div class="card-body pt-0" *ngIf="backlog$ | async as backlog">
+                        <div [id]="backlogKey" class="rounded bg-gray-300 px-2 pt-2 pb-2" cdkDropList
+                            [cdkDropListData]="backlog" (cdkDropListDropped)="issueDropped($event)">
+                            <ng-container *ngIf="backlog.length > 0 else noIssues">
+                                <app-backlog-item *ngFor="let issue of backlog" [issue]="issue"></app-backlog-item>
+                            </ng-container>
+                            <ng-template #noIssues>
+                                <div class="card mb-1">
+                                    <div class="card-body p-2">
+                                        <span>This project does not yet have any issues.</span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <a [routerLink]="['../issues/create']" [queryParams]="{returnUrl: router.url}">
+                                <div class="d-flex align-items-center p-2">
+                                    <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                            viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+                                                <rect fill="#000000" opacity="0.3"
+                                                    transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+                                                    x="4" y="11" width="16" height="2" rx="1" />
+                                            </g>
+                                        </svg>
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
+                                        New Issue
+                                    </span>
+                                </div>
+                            </a>
+                        </div>
                     </div>
                 </ng-template>
             </div>

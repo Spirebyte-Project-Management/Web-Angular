@@ -16,7 +16,7 @@ import { SprintHTTPService } from '../../_services/sprints/sprint-http.service';
   styleUrls: ['./backlog.component.scss']
 })
 export class BacklogComponent implements OnInit {
-
+  loadedIssues: Observable<boolean>;
   sprints$: Observable<SprintModel[]>;
   backlog$: Observable<IssueModel[]>;
   backlogCount$: Observable<number>;
@@ -42,6 +42,8 @@ export class BacklogComponent implements OnInit {
     const paramsSubscription = this.route.parent.paramMap.subscribe(params => {
       this.projectId = params.get('key');
     });
+
+    this.loadedIssues = this.issueEntityService.loaded$;
     this.sprints$ = this.sprintEntityService.entities$.pipe(map(sprints => sprints.filter(sprint => sprint.projectId == this.projectId && sprint.endedAt == this.minDate)));
 
     this.backlog$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE)));

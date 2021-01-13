@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./issues.component.scss']
 })
 export class IssuesComponent implements OnInit {
+  loadedIssues: Observable<boolean>;
   issues$: Observable<IssueModel[]>;
   issueType = IssueType;
   doneStatus = IssueStatus.DONE;
@@ -25,6 +26,7 @@ export class IssuesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.loadedIssues = this.issueEntityService.loaded$;
     const paramsSubscription = this.route.parent.paramMap.subscribe(params => {
       let projectId = params.get('key');
       this.issues$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == projectId)));

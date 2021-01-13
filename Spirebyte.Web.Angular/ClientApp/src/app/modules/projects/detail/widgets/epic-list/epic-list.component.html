@@ -6,25 +6,33 @@
         </h3>
     </div>
     <!--end::Header-->
-    <!--begin::Body-->
-    <div class="card-body pt-2">
-        <div class="table-responsive" *ngIf="epics$ | async as epics">
-            <div *ngIf="epics.length == 0; else epicList">This project does not yet have any epics</div>
-
-            <ng-template #epicList>
-                <div class="d-flex align-items-center mb-2" *ngFor="let epic of epics" (click)="setSelectedIssue(epic.id)">
-                    <!--begin::Bullet-->
-                    <span class="bullet bullet-bar align-self-stretch" [style.background]="epicColor(epic.id)"></span>
-                    <!--end::Bullet-->
-                    <!--begin::Text-->
-                    <div class="d-flex flex-column flex-grow-1 mx-2">
-                        <span class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">{{epic.id}}</span>
-                        <span class="text-muted font-weight-bold">{{epic.title}}</span>
-                    </div>
-                    <!--end::Text-->
-                </div>
-            </ng-template>
-        </div>
+    <div class="card-body" *ngIf="!(loadedEpics | async); else showList">
+        <div class="spinner spinner-primary"></div>
     </div>
-    <!--end::Body-->
+    <ng-template #showList>
+        <!--begin::Body-->
+        <div class="card-body pt-2">
+            <div class="table-responsive" *ngIf="epics$ | async as epics">
+                <div *ngIf="epics.length == 0; else epicList">This project does not yet have any epics</div>
+
+                <ng-template #epicList>
+                    <div class="d-flex align-items-center mb-2" *ngFor="let epic of epics"
+                        (click)="setSelectedIssue(epic.id)">
+                        <!--begin::Bullet-->
+                        <span class="bullet bullet-bar align-self-stretch"
+                            [style.background]="epicColor(epic.id)"></span>
+                        <!--end::Bullet-->
+                        <!--begin::Text-->
+                        <div class="d-flex flex-column flex-grow-1 mx-2">
+                            <span
+                                class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">{{epic.id}}</span>
+                            <span class="text-muted font-weight-bold">{{epic.title}}</span>
+                        </div>
+                        <!--end::Text-->
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <!--end::Body-->
+    </ng-template>
 </div>
