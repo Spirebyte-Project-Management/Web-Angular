@@ -161,16 +161,16 @@
                 <label class="col-lg-4 col-form-label text-right text-dark-65">Status:</label>
                 <div class="col-lg-6" >
                     <select class="form-control form-control-hidden px-0 text-white" name="status" [style.background]="statusColor(localIssue.status)" (change)="issueChanged()" [(ngModel)]="localIssue.status">
-                        <option *ngFor="let status of statusus | enumToArray" [value]="status.index">{{status.name}}</option>
+                        <option *ngFor="let status of statusus | enumToArray" [ngValue]="status.index">{{status.name}}</option>
                     </select>
                 </div>
             </div>
             <div class="form-group row" *ngIf="issue.type != issueType.Epic && project != null">
                 <label class="col-lg-4 col-form-label text-right text-dark-65">Epic link:</label>
                 <div class="col-lg-6">
-                 <select class="form-control form-control-hidden px-0" name="epicId" [style.background]="epicColor(localIssue.epicId)" [class.text-black]="localIssue.epicId == ''" *ngIf="epics$ | async as epics; else loadingEpics" (change)="issueChanged()" [(ngModel)]="localIssue.epicId">
-                  <option [selected]="localIssue.epicId == null" value="" class="text-black">No epic</option>
-                  <option *ngFor="let epic of epics" [value]="epic.id">{{epic.title}} | ({{epic.id}})</option>
+                 <select class="form-control form-control-hidden px-0" name="epicId" [style.background]="epicColor(localIssue.epicId)" [class.text-black]="localIssue.epicId == null" *ngIf="epics$ | async as epics; else loadingEpics" (change)="issueChanged()" [(ngModel)]="localIssue.epicId">
+                  <option [selected]="localIssue.epicId == null" [ngValue]="null" class="text-black">No epic</option>
+                  <option *ngFor="let epic of epics" [ngValue]="epic.id">{{epic.title}} | ({{epic.id}})</option>
                  </select>
                 </div>
                 <ng-template #loadingEpics>

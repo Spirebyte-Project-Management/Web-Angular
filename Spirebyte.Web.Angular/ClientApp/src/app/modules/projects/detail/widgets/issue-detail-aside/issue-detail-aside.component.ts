@@ -56,14 +56,15 @@ export class IssueDetailAsideComponent implements OnInit, OnChanges {
   }
 
   public statusColor(status: IssueStatus) {
+    console.log(this.localIssue);
     switch(status){
-      case IssueStatus.TODO: {
+      case IssueStatus.TODO || 0: {
         return '#7e8299';
       }
-      case IssueStatus.INPROGRESS: {
+      case IssueStatus.INPROGRESS || 1: {
         return '#8950FC';
       }
-      case IssueStatus.DONE: {
+      case IssueStatus.DONE || 2: {
         return '#1BC5BD';
       }
     }

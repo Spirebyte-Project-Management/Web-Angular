@@ -36,7 +36,7 @@ export enum IssueType {
 }
 
 export enum IssueStatus {
-    TODO,
-    INPROGRESS,
-    DONE,
+    TODO = 0,
+    INPROGRESS = 1,
+    DONE = 2,
 }

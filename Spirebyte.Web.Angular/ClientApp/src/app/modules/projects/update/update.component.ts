@@ -76,6 +76,10 @@ export class UpdateComponent implements OnInit, OnDestroy {
   };
 
   public memberSettings: SettingsModel = {
+    dropdown: {
+      enabled: 1,
+      highlightFirst: true,
+    },
     skipInvalid: true,
       templates: {
         tag(tagData){
