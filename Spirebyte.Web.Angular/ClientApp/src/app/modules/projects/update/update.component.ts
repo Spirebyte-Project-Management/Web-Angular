@@ -202,7 +202,6 @@ export class UpdateComponent implements OnInit, OnDestroy {
     if (updateProject.file != null) updateProject.pic = updateProject.file;
     const updateProjectSubscr = this.projectEntityService
       .update(updateProject)
-      .pipe(first())
       .subscribe((project: ProjectModel) => {
         this.router.navigate([this.returnUrl]);
       });
