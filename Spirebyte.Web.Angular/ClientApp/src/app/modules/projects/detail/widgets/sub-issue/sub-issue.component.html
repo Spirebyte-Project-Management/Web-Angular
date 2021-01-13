@@ -1,0 +1,101 @@
+<div class="d-flex flex-row justify-content-between align-items-center p-2 subissue" (click)="setSelectedIssue(issue.id)">
+    <div class="justify-self-start">
+        <!--begin::Checkbox-->
+        <div class="symbol mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
+            <span *ngSwitchCase="issueType.Epic" class="symbol-label bg-info">
+                <span class="svg-icon svg-icon-white svg-icon-xs">
+                    <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/Weather/Thunder.svg-->
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24"></rect>
+                            <path
+                                d="M12.3740377,19.9389434 L18.2226499,11.1660251 C18.4524142,10.8213786 18.3592838,10.3557266 18.0146373,10.1259623 C17.8914367,10.0438285 17.7466809,10 17.5986122,10 L13,10 L13,4.47708173 C13,4.06286817 12.6642136,3.72708173 12.25,3.72708173 C11.9992351,3.72708173 11.7650616,3.85240758 11.6259623,4.06105658 L5.7773501,12.8339749 C5.54758575,13.1786214 5.64071616,13.6442734 5.98536267,13.8740377 C6.10856331,13.9561715 6.25331908,14 6.40138782,14 L11,14 L11,19.5229183 C11,19.9371318 11.3357864,20.2729183 11.75,20.2729183 C12.0007649,20.2729183 12.2349384,20.1475924 12.3740377,19.9389434 Z"
+                                fill="#000000"></path>
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon-->
+                </span>
+            </span>
+
+            <span *ngSwitchCase="issueType.Story" class="symbol-label bg-success">
+                <span class="svg-icon svg-icon-white svg-icon-xs">
+                    <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/Files/Folder.svg--><svg
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <path
+                                d="M3.5,21 L20.5,21 C21.3284271,21 22,20.3284271 22,19.5 L22,8.5 C22,7.67157288 21.3284271,7 20.5,7 L10,7 L7.43933983,4.43933983 C7.15803526,4.15803526 6.77650439,4 6.37867966,4 L3.5,4 C2.67157288,4 2,4.67157288 2,5.5 L2,19.5 C2,20.3284271 2.67157288,21 3.5,21 Z"
+                                fill="#000000" opacity="0.9" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon--></span>
+            </span>
+
+            <span *ngSwitchCase="issueType.Task" class="symbol-label bg-primary">
+                <span class="svg-icon svg-icon-white svg-icon-xs">
+                    <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/General/Clipboard.svg--><svg
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <path
+                                d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z"
+                                fill="#000000" opacity="0.6" />
+                            <path
+                                d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z"
+                                fill="#000000" />
+                            <rect fill="#000000" opacity="0.9" x="7" y="10" width="5" height="2" rx="1" />
+                            <rect fill="#000000" opacity="0.9" x="7" y="14" width="9" height="2" rx="1" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon--></span>
+            </span>
+
+            <span *ngSwitchCase="issueType.SubTask" class="symbol-label bg-primary">
+                <span class="svg-icon svg-icon-white svg-icon-xs">
+                    <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/General/Duplicate.svg--><svg
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <path
+                                d="M15.9956071,6 L9,6 C7.34314575,6 6,7.34314575 6,9 L6,15.9956071 C4.70185442,15.9316381 4,15.1706419 4,13.8181818 L4,6.18181818 C4,4.76751186 4.76751186,4 6.18181818,4 L13.8181818,4 C15.1706419,4 15.9316381,4.70185442 15.9956071,6 Z"
+                                fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                            <path
+                                d="M10.1818182,8 L17.8181818,8 C19.2324881,8 20,8.76751186 20,10.1818182 L20,17.8181818 C20,19.2324881 19.2324881,20 17.8181818,20 L10.1818182,20 C8.76751186,20 8,19.2324881 8,17.8181818 L8,10.1818182 C8,8.76751186 8.76751186,8 10.1818182,8 Z"
+                                fill="#000000" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon--></span>
+            </span>
+
+            <span *ngSwitchCase="issueType.Bug" class="symbol-label bg-danger">
+                <span class="svg-icon svg-icon-white svg-icon-xs">
+                    <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2020-10-29-133027/theme/html/demo1/dist/../src/media/svg/icons/General/Fire.svg--><svg
+                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
+                        height="24px" viewBox="0 0 24 24" version="1.1">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <rect x="0" y="0" width="24" height="24" />
+                            <path
+                                d="M14,7 C13.6666667,10.3333333 12.6666667,12.1167764 11,12.3503292 C11,12.3503292 12.5,6.5 10.5,3.5 C10.5,3.5 10.287918,6.71444735 8.14498739,10.5717225 C7.14049032,12.3798172 6,13.5986793 6,16 C6,19.428689 9.51143904,21.2006583 12.0057195,21.2006583 C14.5,21.2006583 18,20.0006172 18,15.8004732 C18,14.0733981 16.6666667,11.1399071 14,7 Z"
+                                fill="#000000" />
+                        </g>
+                    </svg>
+                    <!--end::Svg Icon--></span>
+            </span>
+        </div>
+        <!--end::Checkbox-->
+        <!--begin::Text-->
+        <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md pr-3">{{issue.id}}</span>
+        <span class="text-muted font-weight-bold text-hover-primary font-size-sm">{{issue.title}}</span>
+    </div>
+    <div class="justify-self-end">
+        <app-epic-label *ngIf="issue.epicId != null" [epicId]="issue.epicId"></app-epic-label>
+        <app-user-symbol-group [pxlSize]="20" [users$]="assignees$"></app-user-symbol-group>
+        <span class="label label-md text-gray label-pill mr-2"
+            *ngIf="issue.storyPoints > 0">{{issue.storyPoints}}</span>
+    </div>
+    <!--end::Text-->
+</div>

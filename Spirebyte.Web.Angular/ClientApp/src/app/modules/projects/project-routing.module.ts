@@ -18,6 +18,7 @@ import { UsersResolver } from './_services/users/users.resolver';
 import { SprintsResolver } from './_services/sprints/sprints.resolver';
 import { SprintBoardComponent } from './detail/sprint-board/sprint-board.component';
 import { SprintResolver } from './_services/sprints/sprint.resolver';
+import { InvitationGuard } from './_services/projects/guards/invitation.guard';
 
 
 const routes: Routes = [
@@ -48,6 +49,7 @@ const routes: Routes = [
           users: UsersResolver,
           sprints: SprintsResolver,
         },
+        canActivate: [InvitationGuard],
         children: [
           {
             path: 'issues',

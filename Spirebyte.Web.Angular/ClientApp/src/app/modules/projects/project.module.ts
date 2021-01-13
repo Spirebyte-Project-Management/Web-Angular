@@ -44,6 +44,10 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { SprintBoardComponent } from './detail/sprint-board/sprint-board.component';
 import { SprintResolver } from './_services/sprints/sprint.resolver';
 import { BoardItemComponent } from './detail/widgets/board-item/board-item.component';
+import { WebsocketService } from './_services/websocket/websocket.service';
+import { SubIssueComponent } from './detail/widgets/sub-issue/sub-issue.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { InvitationGuard } from './_services/projects/guards/invitation.guard';
 
 const entityMetadata: EntityMetadataMap = {
   Project: {
@@ -69,7 +73,7 @@ const entityMetadata: EntityMetadataMap = {
 };
 
 @NgModule({
-  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent, IssueDetailAsideComponent, EpicListComponent, EpicLabelComponent, UserSymbolGroupComponent, SprintBoardComponent, BoardItemComponent],
+  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent, IssueDetailAsideComponent, EpicListComponent, EpicLabelComponent, UserSymbolGroupComponent, SprintBoardComponent, BoardItemComponent, SubIssueComponent],
   imports: [
     ProjectRoutingModule,
     GeneralModule,
@@ -80,9 +84,10 @@ const entityMetadata: EntityMetadataMap = {
     ReactiveFormsModule,
     NgbDropdownModule,
     NgbDatepickerModule,
-    DragDropModule
+    DragDropModule,
+    CKEditorModule
   ],
-  providers: [ProjectHTTPService, ProjectEntityService, ProjectDataService, ProjectResolver, IssueEntityService, IssueDataService, IssuesResolver, IssueHTTPService, UserEntityService, UserDataService, UsersResolver, UserHTTPService, SprintEntityService, SprintDataService, SprintsResolver, SprintResolver, SprintHTTPService]
+  providers: [InvitationGuard, ProjectHTTPService, ProjectEntityService, ProjectDataService, ProjectResolver, IssueEntityService, IssueDataService, IssuesResolver, IssueHTTPService, UserEntityService, UserDataService, UsersResolver, UserHTTPService, SprintEntityService, SprintDataService, SprintsResolver, SprintResolver, SprintHTTPService, WebsocketService]
 })
 export class ProjectModule {
   constructor(

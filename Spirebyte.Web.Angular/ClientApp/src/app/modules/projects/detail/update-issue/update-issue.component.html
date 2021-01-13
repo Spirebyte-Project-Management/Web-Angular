@@ -92,15 +92,14 @@
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
                 <div class="col-lg-9 col-xl-6">
-                    <textarea class="form-control form-control-lg form-control-solid" type="text" name="description"
-                        formControlName="description" autocomplete="off"></textarea>
+                    <ckeditor [editor]="Editor" name="description" formControlName="description"></ckeditor>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Epic</label>
                 <div class="col-lg-9 col-xl-6">
                  <select formControlName="epicId" class="form-control form-control-lg form-control-solid" *ngIf="epics$ | async as epics; else loadingEpics">
-                  <option value="null">No epic</option>
+                  <option value="">No epic</option>
                   <option *ngFor="let epic of epics" [value]="epic.id">{{epic.title}} | ({{epic.id}})</option>
                  </select>
                 </div>

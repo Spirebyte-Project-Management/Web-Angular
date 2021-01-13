@@ -15,7 +15,7 @@ select.form-control-hidden.text-black{
 }
 .form-control-hidden:hover{
     border-color: #ced4da;
-    color: #000000;
+    color: #000000!important;;
     background: #ffffff!important;
     padding: 0.65rem 1rem;
     appearance: menulist;    
@@ -23,7 +23,7 @@ select.form-control-hidden.text-black{
 }
 .form-control-hidden:focus{
     border-color: #69b3ff;
-    color: #000000;
+    color: #000000!important;;
     background: #ffffff!important;
     padding: 0.65rem 1rem;
     appearance: menulist;

@@ -3,16 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
-import { IssueModel, IssueType } from '../../../_models/issue.model';
-import { IssueEntityService } from '../../../_services/issues/issue-entity.service';
+import { IssueType, IssueModel } from '../../../_models/issue.model';
 import { UserEntityService } from '../../../_services/users/user-entity.service';
 
 @Component({
-  selector: 'app-backlog-item',
-  templateUrl: './backlog-item.component.html',
-  styleUrls: ['./backlog-item.component.scss']
+  selector: 'app-sub-issue',
+  templateUrl: './sub-issue.component.html',
+  styleUrls: ['./sub-issue.component.scss']
 })
-export class BacklogItemComponent implements OnInit {
+export class SubIssueComponent implements OnInit {
 
   issueType = IssueType;
 
@@ -39,7 +38,5 @@ export class BacklogItemComponent implements OnInit {
     });
   }
 
-  isSelected(url): boolean {
-    return this.router.url.includes('=' + url);
-  } 
+
 }

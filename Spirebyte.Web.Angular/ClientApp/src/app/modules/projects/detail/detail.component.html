@@ -43,8 +43,7 @@
                             </ng-template>
                         </div>
                         <div>
-                            <a href="#"
-                                class="font-weight-bolder font-size-h5 text-dark-75 text-hover-primary">{{_project.title}}</a>
+                            <span class="font-weight-bolder font-size-h5 text-dark-75">{{_project.title}}</span>
                             <div class="text-muted">{{_project.description}}</div>
                         </div>
                     </div>
@@ -121,7 +120,7 @@
                         </div>
                         <ng-template #oneBoard>
                             <div class="navi-item mb-2" *ngIf="activeSprints.length == 1">
-                                <a class="navi-link py-4" [routerLink]="['sprint', activeSprints[0].id]" [routerLink]="['sprint', activeSprints[0].id]" queryParamsHandling="merge">
+                                <a class="navi-link py-4" [class.active]="isActive('/sprint/' + projectId)" [routerLink]="['sprint', activeSprints[0].id]" [routerLink]="['sprint', activeSprints[0].id]" queryParamsHandling="merge">
                                     <span class="navi-icon mr-2">
                                         <span class="svg-icon" 
                                             cacheSVG="true"
@@ -147,7 +146,7 @@
             <div class="col">
                 <router-outlet></router-outlet>
             </div>
-            <div class="col-md-6 col-lg-5 col-xl-4 col-xxl-3" *ngIf="issue$ | async as issue">
+            <div class="col-md-6 col-lg-5 col-xl-4 col-xxl-4 col-xxxxl-3" *ngIf="issue$ | async as issue">
                 <app-issue-detail-aside [issue]="issue" [project]="project$ | async"></app-issue-detail-aside>
             </div>
         </div>

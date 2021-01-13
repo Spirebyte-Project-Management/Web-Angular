@@ -199,6 +199,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
     const updateProject = new ProjectUpdateModel();
     updateProject.setUpdateModel(result);
     updateProject.id = this.currentProject.id;
+    if (updateProject.file != null) updateProject.pic = updateProject.file;
     const updateProjectSubscr = this.projectEntityService
       .update(updateProject)
       .pipe(first())

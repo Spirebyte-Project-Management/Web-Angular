@@ -29,7 +29,7 @@ export class BoardItemComponent implements OnInit {
   }
 
   isSelected(url): boolean {
-    return this.router.url.includes(url);
+    return this.router.url.includes('=' + url);
   } 
 
   setSelectedIssue(key: string): void {

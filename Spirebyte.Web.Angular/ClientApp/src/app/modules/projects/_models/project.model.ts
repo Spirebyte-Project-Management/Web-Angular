@@ -6,6 +6,7 @@ export class ProjectModel {
     pic: string;
     title: string;
     description: string;
+    issueCount: number;
     createdAt: string;
 
     setProject(project: any) {

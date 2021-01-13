@@ -6,6 +6,8 @@ import { UserEntityService } from '../_services/users/user-entity.service';
 import { environment } from '../../../../environments/environment';
 import { UserModel } from '../../auth/_models/user.model';
 import { AuthService } from '../../auth/_services/auth.service';
+import { ProjectModel } from '../_models/project.model';
+import { ProjectEntityService } from '../_services/projects/project-entity.service';
 
 @Component({
   selector: 'app-invitation',
@@ -21,7 +23,7 @@ export class InvitationComponent implements OnInit {
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
 
-  constructor(private projectHttpService: ProjectHTTPService, private userEntityService: UserEntityService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {
+  constructor(private projectHttpService: ProjectHTTPService, private projectEntityService: ProjectEntityService, private userEntityService: UserEntityService, private route: ActivatedRoute, private router: Router, private authService: AuthService) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
@@ -39,17 +41,19 @@ export class InvitationComponent implements OnInit {
   joinProject() {
     this.isLoadingSubject.next(true);
     this.projectHttpService.joinProject(this.projectId, this.userId).subscribe((result) => {
+      this.projectEntityService.getByKey(this.projectId);
       let user = this.authService.currentUserValue;
       this.userEntityService.addOneToCache(user);
-      this.router.navigate(['../backlog']);
+      this.router.navigate(['../'],
+      {relativeTo: this.route});
     });
   }
 
   leaveProject() {
     this.isLoadingSubject.next(true);
-    this.projectHttpService.joinProject(this.projectId, this.userId).subscribe((result) => {
-      this.router.navigate(['../']);
+    this.projectHttpService.leaveProject(this.projectId, this.userId).subscribe((result) => {
+      this.projectEntityService.removeOneFromCache(this.projectId);
+      this.router.navigate(['/']);
     });
   }
-
 }

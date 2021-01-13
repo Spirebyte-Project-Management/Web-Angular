@@ -6,6 +6,8 @@ import { IssueModel, IssueType } from '../../_models/issue.model';
 import { IssueHTTPService } from '../../_services/issues/issue-http.service';
 import { ProjectHTTPService } from '../../_services/projects/project-http.service';
 import { IssueEntityService } from '../../_services/issues/issue-entity.service';
+import * as InlineEditor from 'ckeditor5-build-inline-with-base64-image-upload';
+
 
 @Component({
   selector: 'app-create-issue',
@@ -13,6 +15,8 @@ import { IssueEntityService } from '../../_services/issues/issue-entity.service'
   styleUrls: ['./create-issue.component.scss']
 })
 export class CreateIssueComponent implements OnInit, OnDestroy {
+  Editor = InlineEditor;
+
   types = IssueType;
   createIssueForm: FormGroup;
   hasError: boolean;
@@ -58,7 +62,7 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
             Validators.maxLength(100),
           ]),
         ],
-        description: []
+        description: ['']
       });
     }
 

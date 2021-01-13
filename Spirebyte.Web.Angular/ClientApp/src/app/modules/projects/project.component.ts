@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { OperationModel } from './_models/operation.model';
+import { WebsocketService } from './_services/websocket/websocket.service';
 
 @Component({
   selector: 'app-project',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor() { }
+  constructor(private websocketService: WebsocketService) { }
 
   ngOnInit(): void {
+    const websocketSub = this.websocketService
+    .retrieveMappedObject()
+    .subscribe((receivedObj: OperationModel) => {
+      console.log(receivedObj)
+    });
   }
 
 }

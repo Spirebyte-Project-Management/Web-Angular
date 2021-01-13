@@ -11,6 +11,8 @@ import { select } from '@ngrx/store';
 import { SettingsModel } from 'src/app/_metronic/partials/content/general/tag-input/_models/settings.model';
 import { UserEntityService } from '../../_services/users/user-entity.service';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import * as InlineEditor from 'ckeditor5-build-inline-with-base64-image-upload';
+
 
 @Component({
   selector: 'app-update-issue',
@@ -18,6 +20,8 @@ import { UserModel } from 'src/app/modules/auth/_models/user.model';
   styleUrls: ['./update-issue.component.scss']
 })
 export class UpdateIssueComponent implements OnInit, OnDestroy {
+  Editor = InlineEditor;
+  
   types = IssueType;
   status = IssueStatus;
   updateIssueForm: FormGroup;

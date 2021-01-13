@@ -1,3 +1,5 @@
+<form #form="ngForm">
+
 <div class="card">
     <div class="card-header ribbon ribbon-top ribbon-ver p-0">
         <ng-container [ngSwitch]="issue.type">
@@ -146,31 +148,29 @@
         </div>
     </div>
     <div class="card-body pt-1">
-        <input type="text" class="form-control form-control-hidden w-100 p-0 h6" value="{{issue.title}}" />
-        <div class="form-group row">
+        <input type="text" class="form-control form-control-hidden w-100 p-0 h6" name="title" (change)="issueChanged()" [(ngModel)]="localIssue.title" />
+        <div class="form-group row" *ngIf="localIssue.type != issueType.Epic">
             <label class="col-lg-4 col-form-label text-e text-dark-65">Storypoints:</label>
             <div class="col-lg-6">
-                <input type="number" class="form-control form-control-hidden" value="{{issue.storyPoints}}" />
+                <input type="number" class="form-control form-control-hidden" name="storyPoints" (change)="issueChanged()" [(ngModel)]="localIssue.storyPoints" />
             </div>
         </div>
         <h3 class="font-size-lg text-dark font-weight-bold mb-3">Details</h3>
         <div class="mb-3">
             <div class="form-group row">
-                <label class="col-lg-4 text-right text-dark-65">Status:</label>
-                <div class="col-lg-6" [ngSwitch]="issue.status">
-                    <span *ngSwitchCase="issueStatus.TODO" class="label label-inline mr-2">TO DO</span>
-                    <span *ngSwitchCase="issueStatus.INPROGRESS" class="label label-info label-inline mr-2">IN
-                        PROGRESS</span>
-                    <span *ngSwitchCase="issueStatus.DONE"
-                        class="label label-success label-inline mr-2">DONE</span>
+                <label class="col-lg-4 col-form-label text-right text-dark-65">Status:</label>
+                <div class="col-lg-6" >
+                    <select class="form-control form-control-hidden px-0 text-white" name="status" [style.background]="statusColor(localIssue.status)" (change)="issueChanged()" [(ngModel)]="localIssue.status">
+                        <option *ngFor="let status of statusus | enumToArray" [value]="status.index">{{status.name}}</option>
+                    </select>
                 </div>
             </div>
             <div class="form-group row" *ngIf="issue.type != issueType.Epic && project != null">
                 <label class="col-lg-4 col-form-label text-right text-dark-65">Epic link:</label>
                 <div class="col-lg-6">
-                 <select class="form-control form-control-hidden px-0" [style.background]="epicColor(issue.epicId)" [class.text-black]="issue.epicId == null" *ngIf="epics$ | async as epics; else loadingEpics">
-                  <option [selected]="issue.epicId == 'null'" value="null" class="text-black">No epic</option>
-                  <option *ngFor="let epic of epics" [selected]="issue.epicId == epic.id" [value]="epic.id">{{epic.title}} | ({{epic.id}})</option>
+                 <select class="form-control form-control-hidden px-0" name="epicId" [style.background]="epicColor(localIssue.epicId)" [class.text-black]="localIssue.epicId == ''" *ngIf="epics$ | async as epics; else loadingEpics" (change)="issueChanged()" [(ngModel)]="localIssue.epicId">
+                  <option [selected]="localIssue.epicId == null" value="" class="text-black">No epic</option>
+                  <option *ngFor="let epic of epics" [value]="epic.id">{{epic.title}} | ({{epic.id}})</option>
                  </select>
                 </div>
                 <ng-template #loadingEpics>
@@ -189,7 +189,23 @@
         </div>
         <h3 class="font-size-lg text-dark font-weight-bold mb-3">Description</h3>
         <div class="mb-3">
-            <textarea class="form-control form-control-hidden w-100">{{issue.description}}</textarea>
+            <ckeditor [editor]="Editor" name="description" (change)="issueChanged()" [(ngModel)]="localIssue.description"></ckeditor>
         </div>
+        <ng-container *ngIf="localIssue.type == issueType.Epic">
+            <h3 class="font-size-lg text-dark font-weight-bold mb-3">Linked issues</h3>
+            <div class="mb-3" *ngIf="epicSubIssues$ | async as epicSubIssues">
+                <div *ngIf="epicSubIssues.length > 0; else epicNoIssues">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item py-1 px-0" *ngFor="let epicSubIssue of epicSubIssues">
+                            <app-sub-issue [issue]="epicSubIssue"></app-sub-issue>
+                        </li>
+                    </ul>
+                </div>
+                <ng-template #epicNoIssues>
+                    <span>This epic has no issues.</span>
+                </ng-template>
+            </div>
+        </ng-container>
     </div>
 </div>
+</form>
