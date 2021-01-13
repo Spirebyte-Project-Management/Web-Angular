@@ -40,19 +40,14 @@ export class InvitationComponent implements OnInit {
 
   joinProject() {
     this.isLoadingSubject.next(true);
-    this.projectEntityService.getByKey(this.projectId);
-    let user = this.authService.currentUserValue;
-    this.userEntityService.addOneToCache(user);
-    this.router.navigate(['../'],
-    {relativeTo: this.route});
-
-    // this.projectHttpService.joinProject(this.projectId, this.userId).subscribe((result) => {
-    //   this.projectEntityService.getByKey(this.projectId);
-    //   let user = this.authService.currentUserValue;
-    //   this.userEntityService.addOneToCache(user);
-    //   this.router.navigate(['../'],
-    //   {relativeTo: this.route});
-    // });
+    
+    this.projectHttpService.joinProject(this.projectId, this.userId).subscribe((result) => {
+      this.projectEntityService.getByKey(this.projectId);
+      let user = this.authService.currentUserValue;
+      this.userEntityService.addOneToCache(user);
+      this.router.navigate(['../'],
+      {relativeTo: this.route});
+    });
   }
 
   leaveProject() {
