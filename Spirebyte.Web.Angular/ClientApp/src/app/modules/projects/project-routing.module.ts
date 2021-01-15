@@ -49,7 +49,7 @@ const routes: Routes = [
           users: UsersResolver,
           sprints: SprintsResolver,
         },
-        //canActivate: [InvitationGuard],
+        canActivate: [InvitationGuard],
         children: [
           {
             path: 'issues',

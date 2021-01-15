@@ -8,9 +8,9 @@ import { ProjectModel } from '../../../_models/project.model';
 import { ProjectEntityService } from '../project-entity.service';
 
 @Injectable()
-  export class InvitationGuard implements CanActivate {
-    constructor(private authService: AuthService, private projectEntityService: ProjectEntityService, private router: Router, private activatedRoute: ActivatedRoute) {}
-  
+export class InvitationGuard implements CanActivate {
+    constructor(private authService: AuthService, private projectEntityService: ProjectEntityService, private router: Router, private activatedRoute: ActivatedRoute) { }
+
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         const projectId = next.paramMap.get('key');
         const userId = this.authService.currentUserValue.id;
@@ -19,32 +19,31 @@ import { ProjectEntityService } from '../project-entity.service';
             if (!loaded) {
                 return this.projectEntityService.getAll().pipe(map(projects => projects.find(p => p.id == projectId)));
             }
-            else{
+            else {
                 return this.projectEntityService.entities$.pipe(map(projects => projects.find(p => p.id == projectId)));
             }
         }), filter(loaded => !!loaded), first()).pipe(map(project => this.checkIfUserIsPartOfProject(userId, project, state)));
     }
 
     checkIfUserIsPartOfProject(userId: string, project: ProjectModel, routerState: RouterStateSnapshot): boolean {
-            return true;
-            if(project == null) {
-                this.router.navigate(['/']);
+        if (project == null) {
+            this.router.navigate(['/']);
+            return false;
+        }
+
+        if (project.ownerUserId == userId || project.projectUserIds.includes(userId)) {
+            return true
+        }
+        else if (project.invitedUserIds.includes(userId)) {
+            if (routerState.url.includes('invitation/' + userId)) {
+                return true;
+            }
+            else {
+                this.router.navigate(['projects', project.id, 'invitation', userId]);
                 return false;
             }
-
-            if(project.ownerUserId == userId || project.projectUserIds.includes(userId)){
-                return true
-            }
-            else if(project.invitedUserIds.includes(userId)) {
-                if (routerState.url.includes('invitation/' + userId)) {
-                    return true;
-                }
-                else{
-                    this.router.navigate(['projects', project.id, 'invitation', userId]);
-                    return false;
-                }
-            }
-            console.log('failed to guard')
-            return false;
+        }
+        console.log('failed to guard')
+        return false;
     }
-  }
+}

@@ -1,6 +1,18 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from '../login/login.component';
+import { LogoutComponent } from '../logout/logout.component';
+import { AuthService } from '../_services/auth.service';
 
 import { ResetPasswordComponent } from './reset-password.component';
+
+const fakeRoutes: Routes = [
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/logout', component: LogoutComponent },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+];
 
 describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;
@@ -8,6 +20,8 @@ describe('ResetPasswordComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [FormsModule, RouterModule.forRoot(fakeRoutes), ReactiveFormsModule, HttpClientTestingModule],
+      providers: [AuthService],
       declarations: [ ResetPasswordComponent ]
     })
     .compileComponents();

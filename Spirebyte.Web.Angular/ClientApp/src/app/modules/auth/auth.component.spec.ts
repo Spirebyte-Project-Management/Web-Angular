@@ -26,17 +26,6 @@ describe('AuthComponent', () => {
   it('should have <h3> with text </h3>', () => {
     const authComponent: HTMLElement = fixture.nativeElement;
     const h3 = authComponent.querySelector('h3');
-    expect(h3.textContent).toMatch(/discover amazing metronic with great build tools/i);
-  });
-
-  it('should have links in the footer', () => {
-    const FOOTER_LINKS = [ 'Terms', 'Plans', 'Contact Us' ];
-    const authComponent: HTMLElement = fixture.nativeElement;
-    const links = Array.from(authComponent.querySelectorAll('a'))
-      .filter(node => node.classList.contains('font-size-h5'))
-      .map(node => node.textContent);
-
-    expect(links.length).toBeGreaterThanOrEqual(3);
-    expect(links.join(' ')).toEqual(FOOTER_LINKS.join(' '));
+    expect(h3.textContent).toMatch(/Discover Spirebyte and start documenting your projects/i);
   });
 });
