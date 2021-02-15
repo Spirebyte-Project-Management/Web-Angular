@@ -7,7 +7,7 @@ import { ProjectHTTPService } from './_services/projects/project-http.service';
 import { ProjectComponent } from './project.component';
 import { CreateComponent } from './create/create.component';
 import { OverviewComponent } from './overview/overview.component';
-import { NgbDatepickerModule, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { DetailComponent } from './detail/detail.component';
 import { IssuesComponent } from './detail/issues/issues.component';
 import { CreateIssueComponent } from './detail/create-issue/create-issue.component';
@@ -48,6 +48,8 @@ import { WebsocketService } from './_services/websocket/websocket.service';
 import { SubIssueComponent } from './detail/widgets/sub-issue/sub-issue.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { InvitationGuard } from './_services/projects/guards/invitation.guard';
+import { CommentListComponent } from './detail/widgets/comments/comment-list/comment-list.component';
+import { PostCommentComponent } from './detail/widgets/comments/post-comment/post-comment.component';
 
 const entityMetadata: EntityMetadataMap = {
   Project: {
@@ -73,7 +75,7 @@ const entityMetadata: EntityMetadataMap = {
 };
 
 @NgModule({
-  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent, IssueDetailAsideComponent, EpicListComponent, EpicLabelComponent, UserSymbolGroupComponent, SprintBoardComponent, BoardItemComponent, SubIssueComponent],
+  declarations: [ProjectComponent, CreateComponent, OverviewComponent, DetailComponent, IssuesComponent, CreateIssueComponent, UpdateComponent, InvitationComponent, UpdateIssueComponent, DeleteIssueComponent, BacklogComponent, BacklogItemComponent, CreateSprintComponent, IssueDetailAsideComponent, EpicListComponent, EpicLabelComponent, UserSymbolGroupComponent, SprintBoardComponent, BoardItemComponent, SubIssueComponent, CommentListComponent, PostCommentComponent],
   imports: [
     ProjectRoutingModule,
     GeneralModule,
@@ -84,6 +86,7 @@ const entityMetadata: EntityMetadataMap = {
     ReactiveFormsModule,
     NgbDropdownModule,
     NgbDatepickerModule,
+    NgbNavModule,
     DragDropModule,
     CKEditorModule
   ],
@@ -104,6 +107,5 @@ export class ProjectModule {
     entityDataService.registerService('Issue', issueDataService);
     entityDataService.registerService('User', userDataService);
     entityDataService.registerService('Sprint', sprintDataService);
-
   }
 }

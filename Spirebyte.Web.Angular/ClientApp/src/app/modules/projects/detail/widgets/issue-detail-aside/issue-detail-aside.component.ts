@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
@@ -7,17 +7,17 @@ import { UserModel } from '../../../../auth/_models/user.model';
 import { IssueModel, IssueStatus, IssueType } from '../../../_models/issue.model';
 import { ProjectModel } from '../../../_models/project.model';
 import { IssueEntityService } from '../../../_services/issues/issue-entity.service';
-import { IssueHTTPService } from '../../../_services/issues/issue-http.service';
 import { UserEntityService } from '../../../_services/users/user-entity.service';
-import { UserHTTPService } from '../../../_services/users/user-http.service';
 import * as InlineEditor from 'ckeditor5-build-inline-with-base64-image-upload';
+import { KTUtil } from '../../../../../../assets/js/components/util';
+import KTLayoutStretchedCard from '../../../../../../assets/js/layout/base/stretched-card';
 
 @Component({
   selector: 'app-issue-detail-aside',
   templateUrl: './issue-detail-aside.component.html',
   styleUrls: ['./issue-detail-aside.component.scss']
 })
-export class IssueDetailAsideComponent implements OnInit, OnChanges {
+export class IssueDetailAsideComponent implements OnInit, OnChanges, AfterViewInit {
   Editor = InlineEditor;
 
   types = IssueType;
@@ -36,7 +36,15 @@ export class IssueDetailAsideComponent implements OnInit, OnChanges {
 
   epicSubIssues$: Observable<IssueModel[]>;
 
+  activeTab = 1;
+
   constructor(private userEntityService: UserEntityService, private issueEntityService: IssueEntityService, private fb: FormBuilder) {
+  }
+
+  ngAfterViewInit(): void {
+    KTUtil.ready(() => {
+      KTLayoutStretchedCard.init("issue_detail_stretched_card");
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -44,6 +52,8 @@ export class IssueDetailAsideComponent implements OnInit, OnChanges {
     this.localIssue.setIssue(this.issue);
     this.assignees$ = this.userEntityService.entities$.pipe(map(users => users.filter(user => this.issue.assignees.includes(user.id))));
     this.epicSubIssues$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.epicId == this.issue.id)));
+  
+    KTLayoutStretchedCard.init("issue_detail_stretched_card");
   }
 
   ngOnInit(): void {

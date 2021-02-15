@@ -110,7 +110,7 @@ export const DefaultLayoutConfig = {
 
   // Subheader
   subheader: {
-    display: true,
+    display: false,
     displayDesc: true,
     displayDaterangepicker: true,
     layoutVersion: 'v1', // [1..6]
@@ -167,9 +167,9 @@ export const DefaultLayoutConfig = {
 
   // Footer
   footer: {
-    display: true,
+    display: false,
     width: 'fluid',
-    fixed: true,
+    fixed: false,
   },
 
   // Extras
