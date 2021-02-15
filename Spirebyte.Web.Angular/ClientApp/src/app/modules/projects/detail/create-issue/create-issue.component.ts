@@ -6,7 +6,7 @@ import { IssueModel, IssueType } from '../../_models/issue.model';
 import { IssueHTTPService } from '../../_services/issues/issue-http.service';
 import { ProjectHTTPService } from '../../_services/projects/project-http.service';
 import { IssueEntityService } from '../../_services/issues/issue-entity.service';
-import * as InlineEditor from 'ckeditor5-build-inline-with-base64-image-upload';
+import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 
 
 @Component({
@@ -80,7 +80,7 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
         .subscribe(
           () => {
             this.router.navigateByUrl(this.returnUrl,
-            {relativeTo: this.route});
+            /* Removed unsupported properties by Angular migration: relativeTo. */ {});
           }
         );
       this.unsubscribe.push(createIssueSubscr);

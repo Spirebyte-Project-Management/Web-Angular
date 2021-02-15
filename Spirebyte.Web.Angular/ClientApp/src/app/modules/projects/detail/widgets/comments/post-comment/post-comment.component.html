@@ -1,14 +1,20 @@
-<div class="d-flex w-100">
+<div class="d-flex w-100" *ngIf="User$ | async as user">
     <!--begin::Symbol-->
     <div class="symbol symbol-40 symbol-light-success mr-5 mt-1">
-        <span class="symbol-label">
-            <img src="/metronic/theme/html/demo1/dist/assets/media/svg/avatars/009-boy-4.svg" class="h-75 align-self-end" alt="">
-        </span>
+        <div *ngIf="user.pic != null && user.pic != ''; else firstletter"
+        class="symbol-label" style="background-image:url('{{user.pic}}')"></div>
+        <ng-template #firstletter>
+            <span class="symbol-label font-size-h3 font-weight-bold">{{
+                user.fullname | firstLetter
+                    }}</span>
+        </ng-template>
     </div>
     <!--end::Symbol-->
     <!--begin::Info-->
     <div class="d-flex flex-column flex-row-fluid">
-        <ckeditor [editor]="Editor" name="description"></ckeditor>
+        <ckeditor [(ngModel)]="comment.body" [editor]="Editor" name="description"></ckeditor>
     </div>
+
+    <a *ngIf="comment.body.length > 0" class="btn btn-clean btn-lg btn-hover-light-primary btn-icon ml-1" (click)="sendComment()"><em class="flaticon2-send-1"></em></a>
     <!--end::Info-->
 </div>

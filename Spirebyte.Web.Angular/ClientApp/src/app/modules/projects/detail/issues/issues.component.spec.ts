@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AppModule } from 'src/app/app.module';
 import { ProjectModule } from '../../project.module';
 import { IssueEntityService } from '../../_services/issues/issue-entity.service';
@@ -9,7 +9,7 @@ describe('IssuesComponent', () => {
   let component: IssuesComponent;
   let fixture: ComponentFixture<IssuesComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [ AppModule],
       providers: [IssueEntityService],

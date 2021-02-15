@@ -11,7 +11,7 @@ import { select } from '@ngrx/store';
 import { SettingsModel } from 'src/app/_metronic/partials/content/general/tag-input/_models/settings.model';
 import { UserEntityService } from '../../_services/users/user-entity.service';
 import { UserModel } from 'src/app/modules/auth/_models/user.model';
-import * as InlineEditor from 'ckeditor5-build-inline-with-base64-image-upload';
+import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 
 
 @Component({

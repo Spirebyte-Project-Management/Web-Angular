@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
@@ -18,9 +18,9 @@ describe('ResetPasswordComponent', () => {
   let component: ResetPasswordComponent;
   let fixture: ComponentFixture<ResetPasswordComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [FormsModule, RouterModule.forRoot(fakeRoutes), ReactiveFormsModule, HttpClientTestingModule],
+      imports: [FormsModule, RouterModule.forRoot(fakeRoutes, { relativeLinkResolution: 'legacy' }), ReactiveFormsModule, HttpClientTestingModule],
       providers: [AuthService],
       declarations: [ ResetPasswordComponent ]
     })

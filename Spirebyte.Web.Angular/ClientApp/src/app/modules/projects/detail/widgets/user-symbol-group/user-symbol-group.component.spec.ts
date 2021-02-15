@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { UserSymbolGroupComponent } from './user-symbol-group.component';
 
@@ -6,7 +6,7 @@ describe('PeopleSymbolGroupComponent', () => {
   let component: UserSymbolGroupComponent;
   let fixture: ComponentFixture<UserSymbolGroupComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UserSymbolGroupComponent ]
     })

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EpicListComponent } from './epic-list.component';
 
@@ -6,7 +6,7 @@ describe('EpicListComponent', () => {
   let component: EpicListComponent;
   let fixture: ComponentFixture<EpicListComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ EpicListComponent ]
     })

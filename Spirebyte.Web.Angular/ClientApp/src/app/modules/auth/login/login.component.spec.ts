@@ -1,10 +1,5 @@
 // https://codecraft.tv/courses/angular/unit-testing/model-driven-forms/
-import {
-  async,
-  ComponentFixture,
-  TestBed,
-  getTestBed,
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed, getTestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule, Routes } from '@angular/router';
 import { AuthService } from '../_services/auth.service';
@@ -55,13 +50,13 @@ describe('LoginComponent', () => {
   let injector;
   let authService: AuthService;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
         FormsModule,
         HttpClientTestingModule,
-        RouterModule.forRoot(fakeRoutes),
+        RouterModule.forRoot(fakeRoutes, { relativeLinkResolution: 'legacy' }),
         TranslateModule.forRoot(),
       ],
       declarations: [LoginComponent],

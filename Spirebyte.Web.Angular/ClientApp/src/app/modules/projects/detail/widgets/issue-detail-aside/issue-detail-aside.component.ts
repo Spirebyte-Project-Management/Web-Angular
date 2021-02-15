@@ -8,7 +8,7 @@ import { IssueModel, IssueStatus, IssueType } from '../../../_models/issue.model
 import { ProjectModel } from '../../../_models/project.model';
 import { IssueEntityService } from '../../../_services/issues/issue-entity.service';
 import { UserEntityService } from '../../../_services/users/user-entity.service';
-import * as InlineEditor from 'ckeditor5-build-inline-with-base64-image-upload';
+import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { KTUtil } from '../../../../../../assets/js/components/util';
 import KTLayoutStretchedCard from '../../../../../../assets/js/layout/base/stretched-card';
 
@@ -56,6 +56,10 @@ export class IssueDetailAsideComponent implements OnInit, OnChanges, AfterViewIn
     KTLayoutStretchedCard.init("issue_detail_stretched_card");
   }
 
+  footerModified(args: any): void {
+    KTLayoutStretchedCard.init("issue_detail_stretched_card");
+  }
+
   ngOnInit(): void {
     this.epics$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.type == IssueType.Epic)));
     this.assignees$ = this.userEntityService.entities$.pipe(map(users => users.filter(user => this.issue.assignees.includes(user.id))));
@@ -66,7 +70,6 @@ export class IssueDetailAsideComponent implements OnInit, OnChanges, AfterViewIn
   }
 
   public statusColor(status: IssueStatus) {
-    console.log(this.localIssue);
     switch(status){
       case IssueStatus.TODO || 0: {
         return '#7e8299';

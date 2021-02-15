@@ -87,7 +87,7 @@
                         <!--end::Svg Icon--></span>
                 </div>
             </ng-container>
-            <div class="d-flex justify-content-between" *ngIf="project != null">
+            <div class="d-flex justify-content-between w-100" *ngIf="project != null">
                 <div class="d-flex flex-row">
                     <div class="symbol symbol-30 m-5 mr-2">
                         <div *ngIf="project.pic != null && project.pic != ''; else firstletter" class="symbol-label"
@@ -217,14 +217,14 @@
                 </ng-container>
                 <h3 class="font-size-lg text-dark font-weight-bold mb-3">Activity</h3>
                 <div class="mb-3">
-                    <ul ngbNav role="myRole" [(activeId)]="activeTab" (hidden)="ngOnChanges($event)" #nav="ngbNav" class="nav-pills nav-secondary">
+                    <ul ngbNav role="myRole" [(activeId)]="activeTab" [animation]="false" #nav="ngbNav" class="nav-pills nav-secondary">
                         <li class="mr-2 py-1 px-2">
                             Show:
                         </li>
                         <li [ngbNavItem]="1">
                             <a ngbNavLink class="py-1 px-2">Comments</a>
                             <ng-template ngbNavContent>
-                                <app-comment-list></app-comment-list>
+                                <app-comment-list [issue]="issue"></app-comment-list>
                             </ng-template>
                         </li>
                         <li [ngbNavItem]="2">
@@ -244,8 +244,10 @@
                 <div [ngbNavOutlet]="nav" class="mt-2"></div>
             </div>
         </div>
-        <div class="card-footer p-4 d-flex justify-content-between" *ngIf="activeTab == 1">
-            <app-post-comment></app-post-comment>
+        <div watchDomTree (dom-changed)="footerModified($event)">
+            <div class="card-footer p-4 d-flex justify-content-between" *ngIf="activeTab == 1">
+                <app-post-comment [issue]="issue" [project]="project"></app-post-comment>
+            </div>
         </div>
     </div>
 </form>
