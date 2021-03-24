@@ -1,0 +1,70 @@
+<div class="navi navi-bold navi-hover navi-active navi-link-rounded">
+    <div class="navi-item mb-2">
+        <a [routerLink]="['issue-tracking', 'backlog']" [routerLinkActive]="['active']"
+            queryParamsHandling="merge" class="navi-link py-4">
+            <span class="navi-icon mr-2">
+                <span class="svg-icon" cacheSVG="true"
+                    [inlineSVG]="'./assets/media/svg/icons/General/Clipboard.svg'">
+                </span>
+            </span>
+            <span class="navi-text font-size-lg">Backlog</span>
+        </a>
+    </div>
+    <div class="navi-item mb-2">
+        <a [routerLink]="['issue-tracking', 'issues']" [routerLinkActive]="['active']"
+            queryParamsHandling="merge" class="navi-link py-4">
+            <span class="navi-icon mr-2">
+                <span class="svg-icon" cacheSVG="true"
+                    [inlineSVG]="'./assets/media/svg/icons/Text/Article.svg'">
+                </span>
+            </span>
+            <span class="navi-text font-size-lg">Issues</span>
+        </a>
+    </div>
+    <ng-container *ngIf="activeSprints$ | async as activeSprints">
+        <div ngbDropdown class="navi-item mb-2" *ngIf="activeSprints.length > 1; else oneBoard">
+            <a ngbDropdownToggle class="navi-link py-4" [class.active]="isActive('/sprint/' + project.id)">
+                <span class="navi-icon mr-2">
+                    <span class="svg-icon" cacheSVG="true"
+                        [inlineSVG]="'./assets/media/svg/icons/Layout/Layout-3d.svg'">
+                    </span>
+                </span>
+                <span class="navi-text font-size-lg">Boards</span>
+            </a>
+            <div ngbDropdownMenu>
+                <a class="navi-link" *ngFor="let activeSprint of activeSprints"
+                    [routerLink]="['issue-tracking', 'sprint', activeSprint.id]" queryParamsHandling="merge">
+                    <span class="navi-text font-size-md">{{activeSprint.title}} •
+                        <small>{{activeSprint.id}}</small></span>
+                </a>
+            </div>
+        </div>
+        <ng-template #oneBoard>
+            <div class="navi-item mb-2" *ngIf="activeSprints.length == 1">
+                <a class="navi-link py-4" [class.active]="isActive('/sprint/' + project.id)"
+                    [routerLink]="['issue-tracking', 'sprint', activeSprints[0].id]"
+                    queryParamsHandling="merge">
+                    <span class="navi-icon mr-2">
+                        <span class="svg-icon" cacheSVG="true"
+                            [inlineSVG]="'./assets/media/svg/icons/Layout/Layout-3d.svg'">
+                        </span>
+                    </span>
+                    <span class="navi-text font-size-lg">Board</span>
+                </a>
+            </div>
+        </ng-template>
+    </ng-container>
+    <div class="navi-separator my-2"></div>
+    <div class="navi navi-bold navi-hover navi-active navi-link-rounded">
+        <div class="navi-item mb-2">
+            <a [routerLink]="['settings']" [routerLinkActive]="['active']" queryParamsHandling="merge"
+                class="navi-link py-4">
+                <span class="navi-icon mr-2">
+                    <span class="svg-icon" cacheSVG="true"
+                        [inlineSVG]="'./assets/media/svg/icons/General/Settings-2.svg'"></span>
+                </span>
+                <span class="navi-text font-size-lg">Project settings</span>
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,31 @@
+<td>
+    <div class="d-flex align-items-center">
+        <div class="symbol symbol-30 m-1 mr-2">
+            <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
+                style="background-image:url('{{user.pic}}')"></div>
+            <ng-template #firstletter>
+                <span class="symbol-label font-size-h6 font-weight-bold">{{
+                            user.fullname | firstLetter
+                                }}</span>
+            </ng-template>
+        </div>
+        <div>
+            {{user.fullname}}
+            <span *ngIf="owner" class="label label-light-dark label-inline mr-2">Owner</span>
+        </div>
+    </div>
+</td>
+<td>
+    <div class="m-2">
+        <span>{{user.email}}</span>
+    </div>
+</td>
+<td>
+    <select class="form-control" [disabled]="owner" id="exampleSelect1">
+        <option>User</option>
+        <option>Administrator</option>
+    </select>
+</td>
+<td *ngIf="!owner">
+    <button class="btn btn-danger">Remove</button>
+</td>

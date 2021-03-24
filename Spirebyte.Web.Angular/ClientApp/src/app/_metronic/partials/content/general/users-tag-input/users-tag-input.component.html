@@ -1,0 +1,42 @@
+<ng-select [items]="users$ | async" [multiple]="multiple" [closeOnSelect]="!multiple" [disabled]="disabled" [(ngModel)]="userIds" (change)="onChange($event)" #input bindLabel="fullname" bindValue="id">
+    <ng-template ng-label-tmp let-user="item" let-clear="clear">
+        <span class="bg-secondary rounded d-flex align-items-center">
+            <div class="symbol symbol-20 m-1 mr-2">
+                <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
+                    style="background-image:url('{{user.pic}}')"></div>
+                <ng-template #firstletter>
+                    <span class="symbol-label font-size-sm font-weight-bold">{{
+                                user.fullname | firstLetter
+                                    }}</span>
+                </ng-template>
+            </div>
+            <div>
+                {{user.fullname}}
+            </div>
+            <span class="ng-value-icon right" (click)="clear(user)" aria-hidden="true">
+                ×
+            </span>
+        </span>
+    </ng-template>
+    <ng-template ng-option-tmp let-user="item" let-item$="item$" let-index="index">
+        <span class="d-flex justify-content-between align-items-center">
+            <span class="d-flex align-items-center">
+                <div class="symbol symbol-30 m-1 mr-2">
+                    <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
+                        style="background-image:url('{{user.pic}}')"></div>
+                    <ng-template #firstletter>
+                        <span class="symbol-label font-weight-bold">{{
+                                user.fullname | firstLetter
+                                    }}</span>
+                    </ng-template>
+                </div>
+                <div>
+                    {{user.fullname}}
+                </div>
+            </span>
+            <span class="svg-icon svg-icon-dark-50" cacheSVG="true" *ngIf="item$.selected"
+                [inlineSVG]="'./assets/media/svg/icons/Navigation/Check.svg'">
+            </span>
+        </span>
+    </ng-template>
+</ng-select>

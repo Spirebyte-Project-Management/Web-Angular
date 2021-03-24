@@ -13,7 +13,6 @@
 }
 
 .ck-content{
-    min-height: 200px;
     @include border-radius($border-radius !important);
 
     &.ck-focused{
@@ -38,7 +37,6 @@
 .ck-body {
     .ck-balloon-panel{
         .ck-content{
-            min-height: 200px;
             border-color: transparent !important;
 
             &.ck-focused{

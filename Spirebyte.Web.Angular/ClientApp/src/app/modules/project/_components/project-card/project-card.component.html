@@ -1,0 +1,37 @@
+<!--begin::Project Card-->
+<div class="card card-custom">
+    <!--begin::Body-->
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
+                <div *ngIf="project.pic != null && project.pic != ''; else firstletter" class="symbol-label"
+                    style="background-image:url('{{project.pic}}')"></div>
+                <ng-template #firstletter>
+                    <span class="symbol-label font-size-h3 font-weight-bold">{{
+                                        project.title | firstLetter
+                                        }}</span>
+                </ng-template>
+            </div>
+            <div>
+                <span class="font-weight-bolder font-size-h5 text-dark-75">{{project.title}}</span>
+                <div class="text-muted">{{project.description}}</div>
+            </div>
+        </div>
+        <div class="py-4" *ngIf="!isActive(project.id + '/settings/')">
+            <div class="d-flex align-items-center justify-content-between flex-lg-fill mb-2">
+                <span class="font-weight-bold mr-2">Members:</span>
+                <app-user-symbol-group [users$]="projectUsers$" [errorMessage]="'No members'"></app-user-symbol-group>
+            </div>
+        </div>
+
+        <!--begin::Nav-->
+        <app-invitation-nav *ngIf="project.invitedUserIds.includes(userId); else normalNav" [userId]="userId"></app-invitation-nav>
+        <ng-template #normalNav>
+            <app-default-nav [project]="project" *ngIf="!isActive(project.id + '/settings/')"></app-default-nav>
+            <app-settings-nav *ngIf="isActive(project.id + '/settings/')"></app-settings-nav>
+        </ng-template>
+        <!--end::Nav-->
+    </div>
+    <!--end::Body-->
+</div>
+<!--end::Project Card-->

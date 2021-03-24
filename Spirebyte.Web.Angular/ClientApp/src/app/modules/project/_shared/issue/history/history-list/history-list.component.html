@@ -1,0 +1,8 @@
+<div class="timeline timeline-3" *ngIf="historyItems$ | async as historyItems">
+    <div class="timeline-items" *ngIf="historyItems.length > 0; else noHistory">
+        <app-history-item [history]="historyItem" [lastItem]="isLast" *ngFor="let historyItem of historyItems; let isLast = last"></app-history-item>
+    </div>
+    <ng-template #noHistory>
+        Nothing has happened yet.
+    </ng-template>
+</div>

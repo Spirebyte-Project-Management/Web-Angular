@@ -1,0 +1,13 @@
+<div class="navi navi-bold navi-hover navi-active navi-link-rounded">
+    <div class="navi-item mb-2">
+        <a [routerLink]="['invitation', userId]" [routerLinkActive]="['active']" queryParamsHandling="merge"
+            class="navi-link py-4">
+            <span class="navi-icon mr-2">
+                <span class="svg-icon" cacheSVG="true"
+                    [inlineSVG]="'./assets/media/svg/icons/Communication/Mail-opened.svg'">
+                </span>
+            </span>
+            <span class="navi-text font-size-lg">Invitation</span>
+        </a>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<div class="card card-custom" *ngIf="projectGroup$ | async as projectGroup">
+
+    <div class="card-header">
+        <div class="card-title">
+            <h3 class="card-label font-weight-bolder text-dark">{{projectGroup.name}} Group</h3>
+        </div>
+        <div class="card-toolbar">
+            <!-- <button (click)="deleteGroup(project)" class="btn btn-secondary">Delete Group</button> -->
+            <a routerLink="../" class="btn btn-secondary">Return</a>
+        </div>
+    </div>
+    <div class="card-body">
+        {{projectGroup.name}}
+    </div>
+</div>

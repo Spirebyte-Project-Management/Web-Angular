@@ -1,0 +1,22 @@
+<div class="timeline-item" [class.timeline-item-other]="!lastItem" [class.timeline-item-last]="lastItem" *ngIf="user$ | async as user">
+    <div class="timeline-media">
+        <img alt="Pic" *ngIf="user.pic != null && user.pic != ''; else firstletter" [src]="user.pic" />
+        <ng-template #firstletter>
+            <span class="font-size-h3 font-weight-bold">{{user.fullname | firstLetter}}</span>
+        </ng-template>
+    </div>
+    <div class="timeline-content">
+        <div class="d-flex align-items-center justify-content-between mb-1">
+            <div class="mr-2">
+                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold"><strong>{{user.fullname}}</strong> {{ getActionString() }} <strong *ngIf="history.changedFields.length == 1">{{history.changedFields[0].fieldName}}</strong></a>
+                <span class="text-muted ml-2" ngbTooltip="{{history.createdAt | date:'medium'}}">{{history.createdAt | dateAgo}}</span>
+            </div>
+        </div>
+        <div class="p-0 d-flex" *ngFor="let field of history.changedFields">
+            <span class="pr-2" *ngIf="history.changedFields.length > 1"><strong>{{field.fieldName}}:</strong></span>
+            <span>{{field.valueBefore}}</span>
+            <span class="px-1">→</span>
+            <span>{{field.valueAfter}}</span>
+        </div>
+    </div>
+</div>

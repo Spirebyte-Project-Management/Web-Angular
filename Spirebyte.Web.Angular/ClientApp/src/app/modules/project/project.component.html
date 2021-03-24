@@ -1,0 +1,19 @@
+<div class="d-flex flex-row">
+    <!--begin::Aside-->
+    <div class="flex-row-auto offcanvas-mobile w-200px w-xxl-300px" id="kt_profile_aside">
+        <app-project-card [project]="project$ | async"></app-project-card>
+    </div>
+    <!--end::Aside-->
+    <!--begin::Content-->
+    <div class="flex-row-fluid ml-lg-8">
+        <div class="row">
+            <div class="col">
+                <router-outlet></router-outlet>
+            </div>
+            <div class="col-md-6 col-lg-5 col-xl-4 col-xxl-4 col-xxxxl-3" *ngIf="issue$ | async as issue">
+                <app-issue-detail-aside [issue]="issue" [project]="project$ | async"></app-issue-detail-aside>
+            </div>
+        </div>
+        <!--end::Content-->
+    </div>
+</div>

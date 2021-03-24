@@ -9,9 +9,14 @@ import { CodePreviewComponent } from './code-preview/code-preview.component';
 import { CoreModule } from '../../../core';
 import { AvatarFileUploadComponent } from './avatar-file-upload/avatar-file-upload.component';
 import { TagInputComponent } from './tag-input/tag-input.component';
+import { UserSymbolGroupComponent } from './user-symbol-group/user-symbol-group.component';
+import { UsersTagInputComponent } from './users-tag-input/users-tag-input.component';
+import { DataModule } from 'src/app/modules/data/data.module';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent],
+  declarations: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent, UserSymbolGroupComponent, UsersTagInputComponent],
   imports: [
     CommonModule,
     CoreModule,
@@ -21,7 +26,10 @@ import { TagInputComponent } from './tag-input/tag-input.component';
     NgbNavModule,
     NgbTooltipModule,
     InlineSVGModule,
+    DataModule,
+    NgSelectModule,
+    FormsModule
   ],
-  exports: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent],
+  exports: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent, UserSymbolGroupComponent, UsersTagInputComponent],
 })
 export class GeneralModule {}
