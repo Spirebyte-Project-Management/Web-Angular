@@ -1,0 +1,35 @@
+<ng-container *ngIf="project$ | async as project">
+    <div class="card card-custom"  *ngIf="permissionScheme$ | async as permissionScheme">
+        <div class="card-header pt-2">
+            <h3 class="card-title align-items-start flex-column">
+                <span class="card-label font-weight-bolder text-dark">{{permissionScheme.name}}</span>
+                <span class="text-muted mt-3 font-weight-bold font-size-sm">{{permissionScheme.description}}</span>
+            </h3>
+            <div class="card-toolbar">
+                <button *ngIf="permissionScheme.id == defaultPermissionSchemeId" (click)="createCustomPermissionScheme(project)" class="btn btn-primary">Customize permissions</button>
+                <ng-container *ngIf="permissionScheme.id != defaultPermissionSchemeId">
+                    <button (click)="changeDescription(permissionScheme)" class="btn btn-primary mr-2">Change description</button>
+                    <button (click)="revertPermissionScheme(permissionScheme)" class="btn btn-danger">Revert to default</button>
+                </ng-container>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="mb-4" *ngFor="let permissionGroup of permissionScheme.permissions | groupBy: 'permissionGroup'">
+                <div class="h6 font-weight-bolder">{{permissionGroup.key}}</div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Permission</th>
+                            <th scope="col">Granted to</th>
+                            <th *ngIf="permissionScheme.id != defaultPermissionSchemeId" scope="col">Modify grants</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr app-permission [permissionScheme]="permissionScheme" [canEdit]="permissionScheme.id != defaultPermissionSchemeId" [permission]="permission" *ngFor="let permission of permissionGroup.value"></tr>
+                    </tbody>
+                </table>
+                <div class="separator separator-solid"></div>
+            </div>
+        </div>
+    </div>
+</ng-container>

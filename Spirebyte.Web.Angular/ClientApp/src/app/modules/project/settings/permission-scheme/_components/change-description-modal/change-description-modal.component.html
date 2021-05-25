@@ -1,0 +1,40 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Change description
+        </div>
+    </div>
+    <div class="modal-body">
+        <form action="#" class="form form-label-right" [formGroup]="formGroup">
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Name</label>
+                <div class="col-lg-9">
+                    <input class="form-control form-control-lg form-control-solid" type="text" name="name"
+                        formControlName="name" autocomplete="off" [class.is-valid]="isControlValid('name')" [class.is-invalid]="isControlInvalid('name')"/>
+                    <div class="valid-feedback" *ngIf="isControlValid('name')">Name was entered correct</div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('required', 'name')">Name is required
+                    </div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('minlength', 'name')">Name should have
+                        at
+                        least 3 symbols</div>
+                    <div class="invalid-feedback" *ngIf="controlHasError('maxLength', 'name')">Name should have
+                        maximum
+                        100 symbols</div>
+                    </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Description</label>
+                <div class="col-lg-9">
+                    <input class="form-control form-control-lg form-control-solid" type="text" name="description"
+                        formControlName="description" autocomplete="off" [class.is-valid]="isControlValid('description')" [class.is-invalid]="isControlInvalid('description')"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="update()"
+            [disabled]="formGroup.invalid">Save</button>
+    </div>
+</div>

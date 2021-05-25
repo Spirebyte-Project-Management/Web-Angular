@@ -3,7 +3,7 @@
         <div class="card-title">
             <h3 class="card-label">Issues</h3>
         </div>
-        <div class="card-toolbar">
+        <div class="card-toolbar" *requirePermission="issuePermissionKeys.CreateIssues">
             <!--begin::Button-->
             <a [routerLink]="['create']" class="btn btn-primary font-weight-bolder">
                 <span class="svg-icon svg-icon-md">
@@ -144,7 +144,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <a [routerLink]="['create']">
+                        <a [routerLink]="['create']" *requirePermission="issuePermissionKeys.CreateIssues">
                             <div class="d-flex align-items-center p-1">
                                 <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

@@ -12,7 +12,7 @@ import { InvitationComponent } from './invitation/invitation.component';
 import { SharedModule } from './_shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { SettingsNavComponent } from './_components/project-card/_components/settings-nav/settings-nav.component';
 import { DefaultNavComponent } from './_components/project-card/_components/default-nav/default-nav.component';
 import { InvitationNavComponent } from './_components/project-card/_components/invitation-nav/invitation-nav.component';
@@ -30,7 +30,8 @@ import { InvitationNavComponent } from './_components/project-card/_components/i
     FormsModule,
     ReactiveFormsModule,
     CKEditorModule,
-    NgbNavModule
+    NgbNavModule,
+    NgbDropdownModule
   ]
 })
 export class ProjectModule { }

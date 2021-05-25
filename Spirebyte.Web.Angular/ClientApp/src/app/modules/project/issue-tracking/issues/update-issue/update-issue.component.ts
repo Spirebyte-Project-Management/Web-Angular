@@ -33,53 +33,6 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
 
   private unsubscribe: Subscription[] = [];
 
-  public assigneeSettings: SettingsModel = {
-    skipInvalid: true,
-    dropdown: {
-      enabled: 1,
-      highlightFirst: true,
-      classname : 'extra-properties',
-      searchKeys: ['fullname']
-    },
-    enforceWhitelist: true,
-      templates: {
-        tag(tagData){
-          try{
-          return `<tag title='${tagData.value}' contenteditable='false' spellcheck="false" class='tagify__tag ${tagData.class ? tagData.class : ""}' ${this.getAttributes(tagData)}>
-                      <div class="d-flex align-items-center">
-                          <span class="symbol symbol-30 symbol-circle mr-2">
-                              ${tagData.pic ?
-                              `<img class="symbol-label" onerror="this.style.visibility='hidden'" src='${tagData.pic}'>` : `<span class="symbol-label">${tagData.fullname[0]}</span>`
-                              }
-                          </span>
-                          <span class='tagify__tag-text'>${tagData.fullname}</span>
-                      </div>
-                  </tag>`
-          }
-          catch(err){}
-      },
-      dropdownItem(tagData){
-        try {
-            let html = '';
-
-            html += `<div class="tagify__dropdown__item ${tagData.class ? tagData.class : ""}" tagifySuggestionIdx="${tagData.tagifySuggestionIdx}">`;
-            html += '   <div class="d-flex align-items-center">';
-            html += '       <span class="symbol mr-2">';
-            html += '           <span class="symbol-label" style="background-image: url(\'' + (tagData.pic ? tagData.pic : '') + '\')">' + (tagData.fullname ? tagData.fullname[0] : '') + '</span>';
-            html += '       </span>';
-            html += '       <div class="d-flex flex-column">';
-            html += '           <a href="#" class="text-dark-75 text-hover-primary font-weight-bold">' + (tagData.fullname ? tagData.fullname : '') + '</a>';
-            html += '           <span class="text-muted font-weight-bold">' + (tagData.email ? tagData.email : '') + '</span>';
-            html += '       </div>';
-            html += '   </div>';
-            html += '</div>';
-
-            return html;
-        } catch (err) {}
-      }
-    }
-  };
-
   constructor(private fb: FormBuilder, 
               private issueEntityService: IssueEntityService,
               private userEntityService: UserEntityService,
@@ -108,33 +61,11 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
   }
 
   loadIssue() {
-    const issueSubscription = this.issueEntityService.entities$.pipe(map(issues => issues.find(issue => issue.id == this.issueId))).subscribe(async issue => {
-      if(issue != null){
-        const issueCopy = new IssueModel();
-        issueCopy.setIssue(issue);
-        const issueEditable: any = issueCopy;
-          this.userEntityService.entities$.subscribe((res) => {
-
-            const users = this.usersToValue(res);
-            if(users.length > 0) {
-              issueEditable.assignees = this.usersToValue(res.filter(user => issue.assignees.includes(user.id)));
-              this.assignees = issueEditable.assignees;
-              this.assigneeSettings.whitelist = users;
-              this.updateIssueForm.patchValue(issueEditable);
-              this.isLoadingSubject.next(false);
-            }
-          });
-      }
+    const issueSubscription = this.issueEntityService.entities$.pipe(map(issues => issues.find(issue => issue.id == this.issueId))).subscribe(issue => {
+      this.updateIssueForm.patchValue(issue);
+      this.isLoadingSubject.next(false);
     });
     this.unsubscribe.push(issueSubscription);
-  }
-
-  usersToValue(users: UserModel[]): any[]{
-    const convertedUsers = [];
-    users.forEach(item => {
-      convertedUsers.push({ value: item.id, fullname: item.fullname, pic: item.pic });
-    });
-    return convertedUsers;
   }
 
   initForm() {
@@ -180,9 +111,6 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
       Object.keys(this.f).forEach(key => {
         result[key] = this.f[key].value;
       });
-      const assigneeIdList = [];
-      result['assignees'].map(item => assigneeIdList.push(item.value));
-      result['assignees'] = assigneeIdList;
 
       const issue = new IssueModel();
       issue.setIssue(result);

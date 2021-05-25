@@ -105,7 +105,7 @@
                     </ol>
                 </div>
                 <!--begin::Toolbar-->
-                <div class="card-toolbar m-5">
+                <div class="card-toolbar m-5" *hasAPermission="[issuePermissionKeys.EditIssues, issuePermissionKeys.DeleteIssues]">
                     <div ngbDropdown class="dropdown dropdown-inline" data-toggle="tooltip" title=""
                         data-placement="left" data-original-title="Quick actions">
                         <a ngbDropdownToggle class="btn btn-clean btn-hover-light-primary btn-sm btn-icon"
@@ -115,8 +115,8 @@
                         <div ngbDropdownMenu class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <!--begin::Navigation-->
                             <ul class="navi navi-hover">
-                                <li class="navi-item">
-                                    <a [routerLink]="['/projects', project.id, 'issues', issue.id, 'update']"
+                                <li class="navi-item" *requirePermission="issuePermissionKeys.EditIssues">
+                                    <a [routerLink]="['/project', project.id, 'issue-tracking','issues', issue.id, 'update']"
                                         class="navi-link">
                                         <span class="navi-icon">
                                             <em class="flaticon2-edit"></em>
@@ -124,8 +124,8 @@
                                         <span class="navi-text">Edit</span>
                                     </a>
                                 </li>
-                                <li class="navi-item">
-                                    <a [routerLink]="['/projects', project.id, 'issues', issue.id, 'delete']"
+                                <li class="navi-item" *requirePermission="issuePermissionKeys.DeleteIssues">
+                                    <a [routerLink]="['/project', project.id, 'issue-tracking', 'issues', issue.id, 'delete']"
                                         class="navi-link">
                                         <span class="navi-icon">
                                             <em class="flaticon2-delete"></em>

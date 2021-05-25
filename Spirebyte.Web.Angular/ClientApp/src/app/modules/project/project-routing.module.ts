@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { IssuesResolver } from '../data/_services/issues/issues.resolver';
+import { PermissionSchemeResolver } from '../data/_services/permission-scheme/permission-schemes.resolver';
 import { ProjectGroupResolver } from '../data/_services/projectGroups/projectGroup.resolver';
 import { InvitationGuard } from '../data/_services/projects/guards/invitation.guard';
 import { ProjectResolver } from '../data/_services/projects/project.resolver';
@@ -15,6 +16,7 @@ const routes: Routes = [
     component: ProjectComponent,
     resolve: {
       projects: ProjectResolver,
+      permissionSchemes: PermissionSchemeResolver,
       users: UsersResolver,
     },
     canActivate: [InvitationGuard],

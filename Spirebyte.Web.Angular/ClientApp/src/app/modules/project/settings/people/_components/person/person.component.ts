@@ -10,6 +10,7 @@ export class PersonComponent implements OnInit {
 
   @Input() user: UserModel;
   @Input() owner = false;
+  @Input() invited = false;
 
   constructor() { }
 

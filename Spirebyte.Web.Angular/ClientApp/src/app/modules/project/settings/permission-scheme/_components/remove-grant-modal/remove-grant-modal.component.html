@@ -1,0 +1,84 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Remove grant(s)
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <label class="col-3 font-weight-bolder">Permission</label>
+            <div class="col-9">
+                <div class="font-weight-bolder">{{permission.name}}</div>
+                <div class="font-size-sm text-muted">{{permission.description}}</div>
+            </div>
+        </div>
+
+        <span class="font-weight-bolder">Grants</span>
+        <div  *ngIf="currentGrants.length == 0">U have removed all grants of this permission.</div>
+        <ul *ngIf="currentGrants.length > 0">
+            <li *ngFor="let grant of currentGrants; let i = index">
+                <ng-container [ngSwitch]="grant.type">
+                    <ng-container *ngSwitchCase="grantTypes.Anyone">
+                        <span class="font-weight-bolder">Any User or guest</span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="grantTypes.ProjectGroup">
+                        <span class="font-weight-bolder">Groups</span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="grantTypes.ProjectLead">
+                        <span class="font-weight-bolder">Users - <small>Project leader</small></span>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="grantTypes.ProjectUser">
+                        <span *ngIf="grant.value == ''" class="font-weight-bolder">Users - <small>All logged in project users</small></span>
+                        <span *ngIf="grant.value != ''" class="font-weight-bolder">Users</span>
+                    </ng-container>
+                </ng-container>
+                <span class="ml-2"> - </span> <button (click)="removeGrant(i)" class="btn btn-small btn-text-danger btn-hover-light-danger font-weight-bold mr-2">remove</button>
+                <ul *ngIf="grant.value != ''">
+                    <li *ngFor="let value of getArray(grant.value); let j = index">
+                        <ng-container [ngSwitch]="grant.type">
+                            <ng-container *ngSwitchCase="grantTypes.ProjectGroup">
+                                <span *ngIf="getProjectGroupById(value) | async as projectGroup">
+                                    <span class="mr-2">
+                                        {{projectGroup.name}}
+                                    </span>
+                                    <ng-container *ngIf="projectGroup.userIds.length > 0">
+                                        <app-user-symbol-group [users$]="getUsersByIds(projectGroup.userIds)">
+                                        </app-user-symbol-group>
+                                    </ng-container>
+                                    <ng-container *ngIf="projectGroup.userIds.length == 0">
+                                        <span><small>Empty</small></span>
+                                    </ng-container>
+                                </span>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="grantTypes.ProjectUser">
+                                <span *ngIf="getUserById(value) | async as user">
+                                    <span class="symbol symbol-30 m-1 mr-2">
+                                        <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
+                                            style="background-image:url('{{user.pic}}')"></div>
+                                        <ng-template #firstletter>
+                                            <span class="symbol-label font-weight-bold">{{
+                                                    user.fullname | firstLetter
+                                                        }}</span>
+                                        </ng-template>
+                                    </span>
+                                    <span>
+                                        {{user.fullname}}
+                                    </span>
+                                </span>
+                            </ng-container>
+                        </ng-container>
+                        <span class="ml-2"> - </span> <button (click)="removeGrantValue(i, j)" class="btn btn-small btn-text-danger btn-hover-light-danger font-weight-bold mr-2">remove</button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="reset()">Reset</button>
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="remove()">Save</button>
+    </div>
+</div>

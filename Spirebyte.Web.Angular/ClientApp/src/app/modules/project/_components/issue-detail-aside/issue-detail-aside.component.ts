@@ -11,6 +11,7 @@ import stc from 'string-to-color';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { KTUtil } from '../../../../../assets/js/components/util';
 import KTLayoutStretchedCard from '../../../../../assets/js/layout/base/stretched-card.js';
+import { IssuePermissionKeys } from 'src/app/_metronic/core/constants/IssuePermissionKeys';
 
 @Component({
   selector: 'app-issue-detail-aside',
@@ -19,6 +20,8 @@ import KTLayoutStretchedCard from '../../../../../assets/js/layout/base/stretche
 })
 export class IssueDetailAsideComponent implements OnInit, OnChanges, AfterViewInit {
   Editor = InlineEditor;
+
+  issuePermissionKeys = IssuePermissionKeys;
 
   types = IssueType;
   statusus = IssueStatus;

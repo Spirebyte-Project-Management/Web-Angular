@@ -1,0 +1,28 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Are u certain u wish to remove this user?
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex align-items-center">
+            <div class="symbol symbol-30 m-1 mr-2">
+                <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
+                    style="background-image:url('{{user.pic}}')"></div>
+                <ng-template #firstletter>
+                    <span class="symbol-label font-size-h6 font-weight-bold">{{
+                                user.fullname | firstLetter
+                                    }}</span>
+                </ng-template>
+            </div>
+            <div>
+                {{user.fullname}}
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+        <button type="submit" class="btn btn-danger btn-elevate" (click)="removeUser()">Remove user</button>
+    </div>
+</div>

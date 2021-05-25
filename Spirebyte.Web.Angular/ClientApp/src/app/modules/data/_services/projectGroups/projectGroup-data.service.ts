@@ -21,7 +21,7 @@ export class ProjectGroupDataService implements EntityCollectionDataService<Proj
         return this.http.post<ProjectGroupModel>(`${API_PROJECT_GROUPS_URL}`, entity);
     }
     delete(id: string | number): Observable<string | number> {
-        throw new Error('Method not implemented.');
+        return this.http.delete<string>(`${API_PROJECT_GROUPS_URL}/${id}`);
     }
     getAll(): Observable<ProjectGroupModel[]> {
         return this.http.get<ProjectGroupModel[]>(`${API_PROJECT_GROUPS_URL}`);

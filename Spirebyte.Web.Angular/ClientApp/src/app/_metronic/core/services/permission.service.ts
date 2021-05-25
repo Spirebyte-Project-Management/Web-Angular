@@ -1,0 +1,120 @@
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { combineLatest, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { AuthService } from 'src/app/modules/auth/_services/auth.service';
+import { GrantTypes } from 'src/app/modules/data/_models/grant.model';
+import { PermissionSchemeModel } from 'src/app/modules/data/_models/permission-scheme.model';
+import { PermissionModel } from 'src/app/modules/data/_models/permission.model';
+import { ProjectModel } from 'src/app/modules/data/_models/project.model';
+import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
+import { PermissionSchemeEntityService } from 'src/app/modules/data/_services/permission-scheme/permission-scheme-entity.service';
+import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
+import { ProjectEntityService } from 'src/app/modules/data/_services/projects/project-entity.service';
+
+@Injectable()
+export class PermissionService {
+
+    constructor(private projectEntityService: ProjectEntityService, private projectGroupEntityService: ProjectGroupEntityService, private permissionSchemeEntityService: PermissionSchemeEntityService, private authService: AuthService) {}
+
+    getAllowanceByKeys(permissionKey: string | string[], projectId: string): Observable<boolean> {
+        let permissionKeys: string[] = [];
+        permissionKeys = permissionKeys.concat(permissionKey);
+
+        let projectGroups = this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.filter(projectGroup => projectGroup.projectId == projectId)));
+        let permissionSchemes = this.permissionSchemeEntityService.entities$;
+        let project = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == projectId)));
+
+        return combineLatest([project, projectGroups, permissionSchemes]).pipe(
+            map(([project, projectGroups, permissionSchemes]) => {
+                let result = false;
+
+                const permissionScheme = permissionSchemes.find(permSchem => permSchem.id == project.permissionSchemeId);
+
+                for (const permissionKey of permissionKeys){
+                    const permission = permissionScheme.permissions.find(perm => perm.key == permissionKey);
+                    result = this.hasPermission(permission, project, this.authService.currentUserValue.id, projectGroups);
+                }
+
+                return result;
+            })
+        );
+    }
+
+    hasAPermissionByKeys(permissionKey: string | string[], projectId: string): Observable<boolean> {
+        let permissionKeys: string[] = [];
+        permissionKeys = permissionKeys.concat(permissionKey);
+
+        let projectGroups = this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.filter(projectGroup => projectGroup.projectId == projectId)));
+        let permissionSchemes = this.permissionSchemeEntityService.entities$;
+        let project = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == projectId)));
+
+        return combineLatest([project, projectGroups, permissionSchemes]).pipe(
+            map(([project, projectGroups, permissionSchemes]) => {
+                const permissionScheme = permissionSchemes.find(permSchem => permSchem.id == project.permissionSchemeId);
+
+                for (const permissionKey of permissionKeys){
+                    const permission = permissionScheme.permissions.find(perm => perm.key == permissionKey);
+                    if(this.hasPermission(permission, project, this.authService.currentUserValue.id, projectGroups)){
+                        return true
+                    }
+                }
+
+                return false;
+            })
+        );
+    }
+
+
+
+    hasPermission(permission: PermissionModel, project: ProjectModel, userId: string, projectGroups: ProjectGroupModel[]): boolean {
+        for (const permissionGrant of permission.grants) {
+            switch (permissionGrant.type) {
+                case GrantTypes.Anyone:
+                    return true;
+                    break;
+                case GrantTypes.ProjectGroup:
+                    // Is user part of project group
+                    const groupIds: string[] = JSON.parse(permissionGrant.value);
+
+                    for (var groupId of groupIds) {
+
+                        var group = projectGroups.find(pg => pg.id == groupId);
+                        if (group.userIds.includes(userId)) {
+                            return true;
+                        }
+                    }
+                    break;
+                case GrantTypes.ProjectLead:
+                    // If user is project leader
+                    if (project.ownerUserId == userId) {
+                        return true;
+                    }
+                    break;
+                case GrantTypes.ProjectUser:
+                    if (permissionGrant.value.length == 0) {
+                        // Is project owner
+                        if (project.ownerUserId == userId) {
+                            return true;
+                        }
+
+                        // Is project user
+                        if (project.projectUserIds.includes(userId)) {
+                            return true;
+                        }
+
+                        continue;
+                    }
+
+                    var userIds: string[] = JSON.parse(permissionGrant.value);
+
+                    // Is specifically allowed
+                    if (userIds.includes(userId)) {
+                        return true;
+                    }
+                    break;
+            }
+        }
+        return false;
+    }
+}

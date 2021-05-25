@@ -1,0 +1,24 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Add Users to Project Group
+        </div>
+    </div>
+    <div class="modal-body">
+        <form action="#" class="form form-label-right" [formGroup]="formGroup">
+            <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Users</label>
+                <div class="col-lg-9">
+                    <app-users-tag-input *ngIf="addableUsers.length != 0" [allIds]="addableUsers" class="select-control-lg select-control-solid" formControlName="userIds"></app-users-tag-input>
+                    <span class="text-danger" *ngIf="addableUsers.length == 0">No more users to add</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="addUsers()"
+            [disabled]="formGroup.invalid || addableUsers.length == 0">Add users</button>
+    </div>
+</div>

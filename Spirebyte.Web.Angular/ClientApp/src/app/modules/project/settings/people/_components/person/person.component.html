@@ -11,7 +11,8 @@
         </div>
         <div>
             {{user.fullname}}
-            <span *ngIf="owner" class="label label-light-dark label-inline mr-2">Owner</span>
+            <span *ngIf="owner" class="label label-light-primary label-inline mr-2">Owner</span>
+            <span *ngIf="invited" class="label label-light-dark label-inline mr-2">Invited</span>
         </div>
     </div>
 </td>
@@ -19,12 +20,6 @@
     <div class="m-2">
         <span>{{user.email}}</span>
     </div>
-</td>
-<td>
-    <select class="form-control" [disabled]="owner" id="exampleSelect1">
-        <option>User</option>
-        <option>Administrator</option>
-    </select>
 </td>
 <td *ngIf="!owner">
     <button class="btn btn-danger">Remove</button>

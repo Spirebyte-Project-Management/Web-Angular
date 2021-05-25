@@ -21,6 +21,8 @@ export class AuthService implements OnDestroy {
   isLoading$: Observable<boolean>;
   currentUserSubject: BehaviorSubject<UserModel>;
 
+  timeoutInterval: any;
+
   get currentUserValue(): UserModel {
     return this.currentUserSubject.value;
   }
@@ -43,6 +45,7 @@ export class AuthService implements OnDestroy {
     return this.authHttpService.login(email, password).pipe(
       map((auth: AuthModel) => {
         const result = this.setAuthFromLocalStorage(auth);
+        this.runTimeoutInterval(auth);
         return result;
       }),
       switchMap(() => this.getUserByToken()),
@@ -59,6 +62,32 @@ export class AuthService implements OnDestroy {
     this.router.navigate(['/auth/login'], {
       queryParams: {},
     });
+  }
+
+  refreshToken(refreshToken: string): Observable<any> {
+    this.isLoadingSubject.next(true);
+    return this.authHttpService.refreshToken(refreshToken).pipe(
+      map((auth: AuthModel) => {
+        const result = this.setAuthFromLocalStorage(auth);
+        return result;
+      }),
+      switchMap(() => this.getUserByToken()),
+      catchError((err) => {
+        this.logout();
+        return of(undefined);
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  private runTimeoutInterval(auth: AuthModel) {
+    const todaysDate = new Date().getTime();
+    const expirationDate = new Date(auth.expires * 1000).getTime();
+    const timeInterval = expirationDate - todaysDate;
+
+    this.timeoutInterval = setTimeout(() => {
+      this.refreshToken(this.currentUserValue.refreshToken);
+    }, timeInterval);
   }
 
   getUserByToken(): Observable<UserModel> {
@@ -107,7 +136,6 @@ export class AuthService implements OnDestroy {
       }),
       switchMap(() => this.login(user.email, user.password)),
       catchError((err) => {
-        console.error('err', err);
         return of(undefined);
       }),
       finalize(() => this.isLoadingSubject.next(false))

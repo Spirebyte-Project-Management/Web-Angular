@@ -30,6 +30,10 @@ export class AuthHTTPService {
     });
   }
 
+  refreshToken(refreshToken: string): Observable<any> {
+    return this.http.post<AuthModel>(`${API_USERS_URL}/refresh-tokens/use`, { refreshToken });
+  }
+
   // Server should check token for user id and if true change password
   resetPassword(userId: string, token: string, password: string): Observable<boolean> {
     return this.http.post<boolean>(`${API_USERS_URL}/reset-password`, {

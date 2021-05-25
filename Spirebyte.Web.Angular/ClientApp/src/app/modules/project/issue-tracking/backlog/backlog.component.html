@@ -17,12 +17,14 @@
                                 <p class="font-size-sm text-muted">{{sprint.startDate | date}} &#8226; {{sprint.endDate | date}}</p>
                             </div>
                         </div>
-                        <div class="card-toolbar align-items-start" *ngIf="sprint.startedAt == minDate">
-                            <!--begin::Button-->
-                            <button (click)="startSprint(sprint)" class="btn btn-secondary btn-sm font-weight-bolder">
-                                Start sprint</button>
-                            <!--end::Button-->
-                        </div>
+                        <ng-container *requirePermission="sprintPermissionKeys.ManageSprints">
+                            <div class="card-toolbar align-items-start" *ngIf="sprint.startedAt == minDate">
+                                <!--begin::Button-->
+                                <button (click)="startSprint(sprint)" class="btn btn-secondary btn-sm font-weight-bolder">
+                                    Start sprint</button>
+                                <!--end::Button-->
+                            </div>
+                        </ng-container>
                     </div>
                     <div class="card-body" *ngIf="!(loadedIssues | async); else sprintIssues">
                         <div class="spinner spinner-primary"></div>
@@ -54,7 +56,7 @@
                         <h3 class="card-label">Backlog</h3>
                         <small *ngIf="backlogCount$ | async as backlogCount">{{backlogCount}} Issue{{backlogCount == 1 ? '' : 's'}}</small>
                     </div>
-                    <div class="card-toolbar">
+                    <div class="card-toolbar" *requirePermission="sprintPermissionKeys.ManageSprints">
                         <!--begin::Button-->
                         <a [routerLink]="['../sprint/create']" class="btn btn-secondary btn-sm font-weight-bolder">
                             <span class="svg-icon svg-icon-md">
@@ -91,7 +93,7 @@
                                     </div>
                                 </div>
                             </ng-template>
-                            <a [routerLink]="['../issues/create']" [queryParams]="{returnUrl: router.url}">
+                            <a *requirePermission="issuePermissionKeys.CreateIssues" [routerLink]="['../issues/create']" [queryParams]="{returnUrl: router.url}">
                                 <div class="d-flex align-items-center p-2">
                                     <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
                                         <svg xmlns="http://www.w3.org/2000/svg"

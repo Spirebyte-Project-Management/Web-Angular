@@ -21,7 +21,7 @@ export class SprintBoardComponent implements OnInit {
   statuses = IssueStatus;
   issueType = IssueType;
 
-  minDate = '0001-01-01T00:00:00';
+  minDate = '0001-01-01T00:00:00Z';
 
   constructor(private sprintEntityService: SprintEntityService,
     private sprintHttpService: SprintHTTPService,

@@ -110,7 +110,7 @@
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Assignees</label>
                 <div class="col-lg-9 col-xl-6">
-                    <app-tag-input formControlName="assignees" [value]="assignees" [settings]="assigneeSettings"></app-tag-input>
+                    <app-users-tag-input class="select-control-lg select-control-solid" formControlName="assignees"></app-users-tag-input>
                 </div>
             </div>
             <ng-template #formError let-control="control" let-message="message" let-validation="validation">

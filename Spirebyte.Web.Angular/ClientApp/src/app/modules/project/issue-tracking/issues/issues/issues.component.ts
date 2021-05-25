@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { IssueModel, IssueType, IssueStatus } from 'src/app/modules/data/_models/issue.model';
 import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
+import { IssuePermissionKeys } from 'src/app/_metronic/core/constants/IssuePermissionKeys';
 
 @Component({
   selector: 'app-issues',
@@ -16,6 +17,8 @@ export class IssuesComponent implements OnInit {
   issueType = IssueType;
   doneStatus = IssueStatus.DONE;
   projectKey: string;
+
+  issuePermissionKeys = IssuePermissionKeys;
 
   constructor(
     private issueEntityService: IssueEntityService,

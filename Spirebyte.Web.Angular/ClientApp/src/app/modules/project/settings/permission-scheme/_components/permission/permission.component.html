@@ -1,0 +1,61 @@
+<td>
+    <div class="m-2">
+        <div class="font-weight-bolder">{{permission.name}}</div>
+        <div class="font-size-sm text-muted">{{permission.description}}</div>
+    </div>
+</td>
+<td>
+    <div *ngIf="permission.grants.length == 0">
+        No grants given
+    </div>
+    <ng-container [ngSwitch]="grant.type" *ngFor="let grant of otherGrants()">
+        <ng-container *ngSwitchCase="grantTypes.Anyone">
+            <div class="font-weight-bolder">Any User or guest</div>
+        </ng-container>
+        <ng-container *ngSwitchCase="grantTypes.ProjectGroup">
+            <div class="font-weight-bolder">Groups</div>
+            <ul>
+                <li *ngFor="let projectGroup of getProjectGroupsByJson(grant.value) | async">
+                    <div class="d-flex align-items-center">
+                        <div class="mr-2">
+                            {{projectGroup.name}} -
+                        </div>
+                        <ng-container *ngIf="projectGroup.userIds.length > 0">
+                            <app-user-symbol-group [users$]="getUsersByIds(projectGroup.userIds)">
+                            </app-user-symbol-group>
+                        </ng-container>
+                        <ng-container *ngIf="projectGroup.userIds.length == 0">
+                            <span><small>Empty</small></span>
+                        </ng-container>
+                    </div>
+                </li>
+            </ul>
+        </ng-container>
+    </ng-container>
+    <div class="font-weight-bolder" *ngIf="projectRoles().length > 0">Users</div>
+    <ng-container [ngSwitch]="grant.type" *ngFor="let grant of projectRoles()">
+        <ul>
+            <ng-container *ngSwitchCase="grantTypes.ProjectLead">
+                <li>Project leader</li>
+            </ng-container>
+            <ng-container *ngSwitchCase="grantTypes.ProjectUser">
+
+                <ng-container *ngIf="grant.value.length > 0">
+                    <li>
+                        <app-user-symbol-group [users$]="getUsersByValue(grant.value)"></app-user-symbol-group>
+                    </li>
+                </ng-container>
+                <ng-container *ngIf="grant.value.length == 0">
+                    <li>All logged in project users</li>
+                </ng-container>
+            </ng-container>
+        </ul>
+    </ng-container>
+</td>
+<td *ngIf="canEdit">
+    <div class="d-flex flex-row">
+        <button (click)="addGrant()"
+            class="btn btn-text-primary btn-hover-light-primary font-weight-bold mr-2">Add</button>
+        <button (click)="removeGrant()" class="btn btn-text-danger btn-hover-light-danger font-weight-bold mr-2">Remove</button>
+    </div>
+</td>

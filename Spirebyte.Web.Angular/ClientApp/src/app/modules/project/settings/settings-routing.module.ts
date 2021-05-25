@@ -4,6 +4,7 @@ import { DetailsComponent } from './details/details.component';
 import { GroupDetailComponent } from './groups/group-detail/group-detail.component';
 import { GroupsComponent } from './groups/groups.component';
 import { PeopleComponent } from './people/people.component';
+import { PermissionSchemeComponent } from './permission-scheme/permission-scheme.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'people',
     component: PeopleComponent,
+  },
+  {
+    path: 'permission-scheme',
+    component: PermissionSchemeComponent,
   },
   {
     path: 'groups',

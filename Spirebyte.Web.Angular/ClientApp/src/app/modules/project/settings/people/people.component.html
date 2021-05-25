@@ -8,12 +8,29 @@
         </div>
     </div>
     <div class="card-body">
+        <ng-container *ngIf="invitedUsers$ | async as invitedUsers">
+            <ng-container *ngIf="invitedUsers.length != 0">
+                <div class="h6 font-weight-bolder">Invited users</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Manage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr app-person [user]="user" [invited]="true" *ngFor="let user of invitedUsers"></tr>
+                    </tbody>
+                </table>
+            </ng-container>
+        </ng-container>
+        <div class="h6 font-weight-bolder">Project members</div>
         <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Role</th>
                     <th scope="col">Manage</th>
                 </tr>
             </thead>

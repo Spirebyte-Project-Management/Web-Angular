@@ -14,9 +14,10 @@ import { UsersTagInputComponent } from './users-tag-input/users-tag-input.compon
 import { DataModule } from 'src/app/modules/data/data.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
+import { ProjectGroupsTagInputComponent } from './project-groups-tag-input/project-groups-tag-input.component';
 
 @NgModule({
-  declarations: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent, UserSymbolGroupComponent, UsersTagInputComponent],
+  declarations: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent, UserSymbolGroupComponent, UsersTagInputComponent, ProjectGroupsTagInputComponent],
   imports: [
     CommonModule,
     CoreModule,
@@ -30,6 +31,6 @@ import { FormsModule } from '@angular/forms';
     NgSelectModule,
     FormsModule
   ],
-  exports: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent, UserSymbolGroupComponent, UsersTagInputComponent],
+  exports: [NoticeComponent, CodePreviewComponent, AvatarFileUploadComponent, TagInputComponent, UserSymbolGroupComponent, UsersTagInputComponent, ProjectGroupsTagInputComponent],
 })
 export class GeneralModule {}

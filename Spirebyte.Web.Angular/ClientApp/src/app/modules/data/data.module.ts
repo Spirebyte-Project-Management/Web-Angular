@@ -27,6 +27,9 @@ import { InvitationGuard } from './_services/projects/guards/invitation.guard';
 import { ProjectGroupDataService } from './_services/projectGroups/projectGroup-data.service';
 import { ProjectGroupEntityService } from './_services/projectGroups/projectGroup-entity.service';
 import { ProjectGroupResolver } from './_services/projectGroups/projectGroup.resolver';
+import { PermissionSchemeEntityService } from './_services/permission-scheme/permission-scheme-entity.service';
+import { PermissionSchemeDataService } from './_services/permission-scheme/permission-scheme-data.service';
+import { PermissionSchemeResolver } from './_services/permission-scheme/permission-schemes.resolver';
 
 const entityMetadata: EntityMetadataMap = {
   Project: {
@@ -35,6 +38,11 @@ const entityMetadata: EntityMetadataMap = {
     }
   },
   ProjectGroup: {
+    entityDispatcherOptions: {
+      optimisticUpdate: true
+    }
+  },
+  PermissionScheme: {
     entityDispatcherOptions: {
       optimisticUpdate: true
     }
@@ -96,6 +104,9 @@ const entityMetadata: EntityMetadataMap = {
     ProjectGroupEntityService,
     ProjectGroupDataService,
     ProjectGroupResolver,
+    PermissionSchemeEntityService,
+    PermissionSchemeDataService,
+    PermissionSchemeResolver,
     WebsocketService,
     InvitationGuard]
 })
@@ -109,7 +120,8 @@ export class DataModule {
     private sprintDataService: SprintDataService,
     private issueCommentDataService: IssueCommentDataService,
     private issueHistoryDataService: IssueHistoryDataService,
-    private projectGroupDataService: ProjectGroupDataService) {
+    private projectGroupDataService: ProjectGroupDataService,
+    private permissionSchemeDataScervice: PermissionSchemeDataService) {
 
     eds.registerMetadataMap(entityMetadata);
 
@@ -120,5 +132,6 @@ export class DataModule {
     entityDataService.registerService('IssueComment', issueCommentDataService);
     entityDataService.registerService('IssueHistory', issueHistoryDataService);
     entityDataService.registerService('ProjectGroup', projectGroupDataService);
+    entityDataService.registerService('PermissionScheme', permissionSchemeDataScervice);
   }
 }

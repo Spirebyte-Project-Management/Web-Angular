@@ -9,9 +9,15 @@
             <div class="form-group row">
               <label class="col-lg-3 col-form-label">Invitations</label>
               <div class="col-lg-9">
-                <app-users-tag-input formControlName="invitations"></app-users-tag-input>
+                <app-users-tag-input [useApi]="true" [excludeIds]="excludeIds" formControlName="invitations"></app-users-tag-input>
               </div>
             </div>
         </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+  
+          <button type="submit" class="btn btn-primary btn-elevate" (click)="update()"
+              [disabled]="formGroup.invalid">Save</button>
+      </div>
     </div>
 </div>

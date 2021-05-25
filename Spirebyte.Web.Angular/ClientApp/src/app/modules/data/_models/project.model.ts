@@ -3,6 +3,7 @@ export class ProjectModel {
     ownerUserId: string;
     projectUserIds: string[];
     invitedUserIds: string[];
+    permissionSchemeId: string;
     pic: string;
     title: string;
     description: string;
@@ -14,9 +15,14 @@ export class ProjectModel {
         this.ownerUserId = project.ownerUserId;
         this.projectUserIds = project.projectUserIds || [];
         this.invitedUserIds = project.invitedUserIds || [];
+        this.permissionSchemeId = project.permissionSchemeId;
         this.pic = project.pic;
         this.title = project.title || '';
         this.description = project.description;
         this.createdAt = project.createdAt;
+    }
+
+    setPermissionSchemeId(permissionSchemeId: string){
+        this.permissionSchemeId = permissionSchemeId;
     }
 }

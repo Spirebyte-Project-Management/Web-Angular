@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { SprintModel } from 'src/app/modules/data/_models/sprint.model';
 import { SprintEntityService } from 'src/app/modules/data/_services/sprints/sprint-entity.service';
+import { ProjectPermissionKeys } from 'src/app/_metronic/core/constants/ProjectPermissionKeys';
 
 @Component({
   selector: 'app-default-nav',
@@ -13,10 +14,12 @@ import { SprintEntityService } from 'src/app/modules/data/_services/sprints/spri
 })
 export class DefaultNavComponent implements OnInit {
 
+  projectPermissionKeys = ProjectPermissionKeys;
+
   @Input() project: ProjectModel;
 
   activeSprints$: Observable<SprintModel[]>;
-  minDate = '0001-01-01T00:00:00';
+  minDate = '0001-01-01T00:00:00Z';
 
   constructor(
     private router: Router,

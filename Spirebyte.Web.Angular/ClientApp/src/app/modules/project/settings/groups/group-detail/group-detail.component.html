@@ -4,12 +4,67 @@
         <div class="card-title">
             <h3 class="card-label font-weight-bolder text-dark">{{projectGroup.name}} Group</h3>
         </div>
-        <div class="card-toolbar">
+        <div class="card-toolbar" *ngIf="project$ | async as project">
             <!-- <button (click)="deleteGroup(project)" class="btn btn-secondary">Delete Group</button> -->
+            <button (click)="addUsers(project, projectGroup)" class="btn btn-primary mr-2">Add users</button>
+            <button (click)="deleteProjectGroup(projectGroup)" class="btn btn-danger mr-2">Delete Group</button>
             <a routerLink="../" class="btn btn-secondary">Return</a>
         </div>
     </div>
     <div class="card-body">
-        {{projectGroup.name}}
+        <div class="row">
+            <div class="col-md-8">
+                <div *ngIf="projectGroupUsers$ | async as projectGroupUsers">
+                    <p class="font-size-lg text-dark-65">Group members:</p>
+                    <span class="display-4 mb-4">{{projectGroupUsers.length}}</span>
+                    <table class="table table-hover" *ngIf="projectGroupUsers.length != 0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Users</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of projectGroupUsers">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="symbol symbol-30 m-1 mr-2">
+                                            <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
+                                                style="background-image:url('{{user.pic}}')"></div>
+                                            <ng-template #firstletter>
+                                                <span class="symbol-label font-size-h6 font-weight-bold">{{
+                                                            user.fullname | firstLetter
+                                                                }}</span>
+                                            </ng-template>
+                                        </div>
+                                        <div>
+                                            {{user.fullname}}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="m-2">
+                                        <span>{{user.email}}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" (click)="removeUser(user, projectGroup)">Remove</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-4" *ngIf="projectGroupUsers.length == 0">This group doesn't have any users yet. Go add some!</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="display-5 mb-4">Permissions</h3>
+                        <span>There are currently no permissions assigned to this group.</span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
