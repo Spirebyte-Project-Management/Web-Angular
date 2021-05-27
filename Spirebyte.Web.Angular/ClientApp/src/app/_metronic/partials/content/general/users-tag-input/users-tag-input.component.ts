@@ -1,4 +1,4 @@
-import { ElementRef, ViewChild } from '@angular/core';
+import { ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Component, forwardRef, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -24,6 +24,8 @@ export class UsersTagInputComponent implements OnInit, ControlValueAccessor {
 
   @Input() allIds: string[] = [];
   @Input() excludeIds: string[] = [];
+  @Input() smallDisplay = false;
+  @Input() bigSymbol = false;
   @Input() multiple = true;
   @Input() useApi = false;
 
@@ -37,6 +39,8 @@ export class UsersTagInputComponent implements OnInit, ControlValueAccessor {
 
   @ViewChild('input') inputRef: ElementRef;
 
+  @Output() changes = new EventEmitter<Object>();
+
   constructor(private userEntityService: UserEntityService, private userHttpService: UserHTTPService) { }
 
   propagateChange = (_: any) => { }
@@ -48,6 +52,7 @@ export class UsersTagInputComponent implements OnInit, ControlValueAccessor {
     this.userIds = ids;
     // propagate value into form control using control value accessor interface
     this.propagateChange(this.userIds);
+    this.changes.emit(this.userIds)
   }
 
   //get accessor

@@ -33,7 +33,7 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
     });
     this.unsubscribe.push(paramsSubscription);
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '../';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || `project/${this.projectId}/issue-tracking/issues`;
 
     this.initForm();
   }

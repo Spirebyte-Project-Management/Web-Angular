@@ -16,7 +16,7 @@
                 <div *ngIf="epics.length == 0; else epicList">This project does not yet have any epics</div>
 
                 <ng-template #epicList>
-                    <div class="d-flex align-items-center mb-2" *ngFor="let epic of epics"
+                    <div class="d-flex align-items-center cursor-pointer mb-2" *ngFor="let epic of epics"
                         (click)="setSelectedIssue(epic.id)">
                         <!--begin::Bullet-->
                         <span class="bullet bullet-bar align-self-stretch"
@@ -24,9 +24,8 @@
                         <!--end::Bullet-->
                         <!--begin::Text-->
                         <div class="d-flex flex-column flex-grow-1 mx-2">
-                            <span
-                                class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">{{epic.id}}</span>
-                            <span class="text-muted font-weight-bold">{{epic.title}}</span>
+                            <span class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">{{epic.title}}</span>
+                            <span class="text-muted font-weight-bold">{{epic.id}}</span>
                         </div>
                         <!--end::Text-->
                     </div>

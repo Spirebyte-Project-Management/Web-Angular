@@ -71,3 +71,28 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+.ng-select-hidden .ng-select {
+  .ng-select-container{
+    border: none;
+  }
+  .ng-clear-wrapper,
+  .ng-arrow-wrapper{
+    display: none;
+  }
+  .ng-select-container .ng-value-container .ng-value{
+    background-color: transparent;
+  }
+  &:hover{
+    .ng-select-container{
+      border: 1px solid #E4E6EF;
+    }
+    .ng-clear-wrapper,
+    .ng-arrow-wrapper{
+      display: block;
+    }
+    .ng-select-container .ng-value-container .ng-value{
+      background-color: #ebf5ff;
+    }
+  }
+}

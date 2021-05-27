@@ -157,7 +157,7 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-form-label text-right text-dark-65">Status:</label>
                         <div class="col-lg-6">
-                            <select class="form-control form-control-hidden px-0 text-white" name="status"
+                            <select class="form-control form-control-hidden cursor-pointer px-0 text-white" name="status"
                                 [style.background]="statusColor(localIssue.status)" (change)="issueChanged()"
                                 [(ngModel)]="localIssue.status">
                                 <option *ngFor="let status of statusus | enumToArray" [ngValue]="status.index">
@@ -168,7 +168,7 @@
                     <div class="form-group row" *ngIf="issue.type != issueType.Epic && project != null">
                         <label class="col-lg-4 col-form-label text-right text-dark-65">Epic link:</label>
                         <div class="col-lg-6">
-                            <select class="form-control form-control-hidden px-0" name="epicId"
+                            <select class="form-control form-control-hidden cursor-pointer px-0" name="epicId"
                                 [style.background]="epicColor(localIssue.epicId)"
                                 [class.text-black]="localIssue.epicId == null"
                                 *ngIf="epics$ | async as epics; else loadingEpics" (change)="issueChanged()"
@@ -189,8 +189,8 @@
                     <div class="form-group row">
                         <label class="col-lg-4 col-form-label text-right text-dark-65">Assignees:</label>
                         <div class="col-lg-6">
-                            <app-user-symbol-group [users$]="assignees$" [errorMessage]="'No assignees'">
-                            </app-user-symbol-group>
+                            <!-- <app-user-symbol-group [users$]="assignees$" [errorMessage]="'No assignees'"></app-user-symbol-group> -->
+                            <app-users-tag-input class="ng-select-hidden cursor-pointer" name="assignees" [bigSymbol]="true" [smallDisplay]="true" [(ngModel)]="localIssue.assignees" (changes)="issueChanged()"></app-users-tag-input>
                         </div>
                     </div>
                 </div>
