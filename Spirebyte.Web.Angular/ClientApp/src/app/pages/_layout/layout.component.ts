@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { LayoutService, LayoutInitService } from '../../_metronic/core';
 import KTLayoutContent from '../../../assets/js/layout/base/content';
+import { WebsocketService } from 'src/app/modules/data/_services/websocket/websocket.service';
 
 @Component({
   selector: 'app-layout',
@@ -43,6 +44,8 @@ export class LayoutComponent implements OnInit, AfterViewInit {
 
   constructor(
     private initService: LayoutInitService,
+    // Leave this it initializes it
+    private websocketService: WebsocketService,
     private layout: LayoutService
   ) {
     this.initService.init();

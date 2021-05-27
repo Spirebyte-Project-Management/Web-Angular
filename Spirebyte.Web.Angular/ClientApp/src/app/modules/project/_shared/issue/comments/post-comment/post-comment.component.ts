@@ -42,9 +42,6 @@ export class PostCommentComponent implements OnInit, OnChanges {
     this.User$ = this.authService.currentUserSubject.pipe(tap(user => {
       this.comment.authorId = user.id;
     }));
-
-    console.log(this.comment);
-
   }
 
   sendComment(): void {
