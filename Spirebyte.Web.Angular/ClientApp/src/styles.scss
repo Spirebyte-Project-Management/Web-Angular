@@ -80,8 +80,15 @@
   .ng-arrow-wrapper{
     display: none;
   }
-  .ng-select-container .ng-value-container .ng-value{
-    background-color: transparent;
+  .ng-select-container .ng-value-container {
+    .ng-value{
+      &:nth-child(2) {
+        margin-left: 0;
+      }
+      background-color: transparent;
+      margin-left: -15px;
+      margin-right: 0;
+    }
   }
   &:hover{
     .ng-select-container{
@@ -90,9 +97,6 @@
     .ng-clear-wrapper,
     .ng-arrow-wrapper{
       display: block;
-    }
-    .ng-select-container .ng-value-container .ng-value{
-      background-color: #ebf5ff;
     }
   }
 }

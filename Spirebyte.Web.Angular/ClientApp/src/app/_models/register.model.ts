@@ -1,10 +1,10 @@
 export class RegisterModel {
-    username: string;
+    fullname: string;
     password: string;
     email: string;
 
     setRegisterModel(register: any){
-        this.username = register.username || '';
+        this.fullname = register.fullname || '';
         this.password = register.password || '';
         this.email = register.email || '';
     }

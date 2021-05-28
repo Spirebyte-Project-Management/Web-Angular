@@ -1,6 +1,6 @@
 <ng-select [items]="users$ | async" [multiple]="multiple" [typeahead]="userInput$" typeToSearchText="Please enter 2 or more characters" [closeOnSelect]="!multiple" [disabled]="disabled" [(ngModel)]="userIds" (change)="onChange($event)" #input bindLabel="fullname" bindValue="id">
-    <ng-template ng-label-tmp let-user="item" let-clear="clear">
-        <span [class.bg-secondary]="!smallDisplay" class="rounded d-flex align-items-center">
+    <ng-template ng-label-tmp let-index="index" let-user="item" let-clear="clear">
+        <span [class.bg-secondary]="!smallDisplay" [class.first]="index == 0" class="rounded d-flex align-items-center">
             <div [class.symbol-20]="!bigSymbol" [class.symbol-circle]="smallDisplay" [class.symbol-30]="bigSymbol" class="symbol m-1" [class.mr-2]="!smallDisplay">
                 <div *ngIf="user.pic != null && user.pic != ''; else firstletter" class="symbol-label"
                     style="background-image:url('{{user.pic}}')"></div>

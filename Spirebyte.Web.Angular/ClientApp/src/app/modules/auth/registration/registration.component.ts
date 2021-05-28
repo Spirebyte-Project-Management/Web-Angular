@@ -33,7 +33,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     this.hasError$ = this.store.select(authHasError);
     this.error$ = this.store.select(getAuthError);
     // redirect to home if already logged in
-    // redirect to home if already logged in
     this.unsubscribe.push(this.store.select(isAuthenticated).subscribe(res => {
       if (res) {
         this.router.navigate(['/']);

@@ -85,7 +85,7 @@ export class AuthEffects implements OnInitEffects {
         ofType(...[AuthActions.logout, AuthActions.autoLogout]),
         tap((action) => {
           this.authService.removeAuthFromLocalStorage();
-          this.router.navigate(['/']);
+          this.router.navigate(['/auth/login']);
         })
       );
     },
