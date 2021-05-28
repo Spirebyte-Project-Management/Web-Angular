@@ -20,11 +20,11 @@
     <!--end::Title-->
 
     <!-- begin::Alert error-->
-    <ng-container *ngIf="hasError">
+    <ng-container *ngIf="hasError$ | async">
       <div
         class="mb-10 alert alert-custom alert-light-danger alert-dismissible"
       >
-        <div class="alert-text">The registration details are incorrect</div>
+        <div class="alert-text" *ngIf="error$ | async as error">{{error.reason}}</div>
       </div>
     </ng-container>
     <!-- end::Alert error-->

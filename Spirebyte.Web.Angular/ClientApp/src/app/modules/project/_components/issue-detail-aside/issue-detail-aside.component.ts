@@ -2,7 +2,7 @@ import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, View
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { filter, map, tap } from 'rxjs/operators';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
 import { IssueType, IssueStatus, IssueModel } from 'src/app/modules/data/_models/issue.model';
 import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';

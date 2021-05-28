@@ -1,10 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { AuthService } from 'src/app/modules/auth/_services/auth.service';
+import { map } from 'rxjs/operators';
 import { GrantTypes } from 'src/app/modules/data/_models/grant.model';
-import { PermissionSchemeModel } from 'src/app/modules/data/_models/permission-scheme.model';
 import { PermissionModel } from 'src/app/modules/data/_models/permission.model';
 import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
@@ -15,9 +12,9 @@ import { ProjectEntityService } from 'src/app/modules/data/_services/projects/pr
 @Injectable()
 export class PermissionService {
 
-    constructor(private projectEntityService: ProjectEntityService, private projectGroupEntityService: ProjectGroupEntityService, private permissionSchemeEntityService: PermissionSchemeEntityService, private authService: AuthService) {}
+    constructor(private projectEntityService: ProjectEntityService, private projectGroupEntityService: ProjectGroupEntityService, private permissionSchemeEntityService: PermissionSchemeEntityService) {}
 
-    getAllowanceByKeys(permissionKey: string | string[], projectId: string): Observable<boolean> {
+    getAllowanceByKeys(permissionKey: string | string[], projectId: string, userId: string): Observable<boolean> {
         let permissionKeys: string[] = [];
         permissionKeys = permissionKeys.concat(permissionKey);
 
@@ -33,7 +30,7 @@ export class PermissionService {
 
                 for (const permissionKey of permissionKeys){
                     const permission = permissionScheme.permissions.find(perm => perm.key == permissionKey);
-                    result = this.hasPermission(permission, project, this.authService.currentUserValue.id, projectGroups);
+                    result = this.hasPermission(permission, project, userId, projectGroups);
                 }
 
                 return result;
@@ -41,7 +38,7 @@ export class PermissionService {
         );
     }
 
-    hasAPermissionByKeys(permissionKey: string | string[], projectId: string): Observable<boolean> {
+    hasAPermissionByKeys(permissionKey: string | string[], projectId: string, userId: string): Observable<boolean> {
         let permissionKeys: string[] = [];
         permissionKeys = permissionKeys.concat(permissionKey);
 
@@ -55,7 +52,7 @@ export class PermissionService {
 
                 for (const permissionKey of permissionKeys){
                     const permission = permissionScheme.permissions.find(perm => perm.key == permissionKey);
-                    if(this.hasPermission(permission, project, this.authService.currentUserValue.id, projectGroups)){
+                    if(this.hasPermission(permission, project, userId, projectGroups)){
                         return true
                     }
                 }

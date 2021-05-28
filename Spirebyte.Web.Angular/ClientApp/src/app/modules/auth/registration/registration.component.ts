@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
 import { ConfirmPasswordValidator } from './confirm-password.validator';
-import { UserModel } from '../_models/user.model';
-import { first } from 'rxjs/operators';
+import * as AuthActions from '../../../_store/auth/auth.actions'
+import { Store } from '@ngrx/store';
+import { authHasError, getAuthError, isAuthenticated } from 'src/app/_store/auth/auth.selectors';
+import { RegisterModel } from 'src/app/_models/register.model';
 
 @Component({
   selector: 'app-registration',
@@ -14,22 +15,30 @@ import { first } from 'rxjs/operators';
 })
 export class RegistrationComponent implements OnInit, OnDestroy {
   registrationForm: FormGroup;
+  
   hasError: boolean;
   isLoading$: Observable<boolean>;
+
+  hasError$: Observable<boolean>;
+  error$: Observable<any>;
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private store: Store,
     private router: Router
   ) {
-    this.isLoading$ = this.authService.isLoading$;
+    this.hasError$ = this.store.select(authHasError);
+    this.error$ = this.store.select(getAuthError);
     // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
+    // redirect to home if already logged in
+    this.unsubscribe.push(this.store.select(isAuthenticated).subscribe(res => {
+      if (res) {
+        this.router.navigate(['/']);
+      }
+    }));
   }
 
   ngOnInit(): void {
@@ -53,7 +62,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
           ]),
         ],
         email: [
-          'qwe@qwe.qwe',
+          '',
           Validators.compose([
             Validators.required,
             Validators.email,
@@ -86,24 +95,9 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.hasError = false;
-    const result = {};
-    Object.keys(this.f).forEach(key => {
-      result[key] = this.f[key].value;
-    });
-    const newUser = new UserModel();
-    newUser.setUser(result);
-    const registrationSubscr = this.authService
-      .registration(newUser)
-      .pipe(first())
-      .subscribe((user: UserModel) => {
-        if (user) {
-          this.router.navigate(['/']);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(registrationSubscr);
+    const registerModel = new RegisterModel();
+    registerModel.setRegisterModel(this.registrationForm.value);
+    this.store.dispatch(AuthActions.registerStart({ registerModel }));
   }
 
   ngOnDestroy() {

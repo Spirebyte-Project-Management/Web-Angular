@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { AuthGuard } from './modules/auth/_services/auth.guard';
+import { AuthGuard } from './_services/auth.guard';
 
 export const routingConfiguration: ExtraOptions = {
     paramsInheritanceStrategy: 'always',

@@ -1,5 +1,7 @@
 import { Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core'
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { getAuthenticatedUserId } from 'src/app/_store/auth/auth.selectors';
 import { PermissionService } from '../services/permission.service';
 
 @Directive({
@@ -7,7 +9,7 @@ import { PermissionService } from '../services/permission.service';
 })
 export class HasAPermissionDirective {
 
-    constructor(private view: ViewContainerRef, private route: ActivatedRoute, private templateRef: TemplateRef<any>, private permissionService: PermissionService) { }
+    constructor(private view: ViewContainerRef, private route: ActivatedRoute, private templateRef: TemplateRef<any>, private permissionService: PermissionService, private store: Store) { }
 
     @Input() set hasAPermission(permissionKey: string | string[]) {
         if (!permissionKey) {
@@ -19,13 +21,14 @@ export class HasAPermissionDirective {
 
         this.route.paramMap.subscribe(params => {
             const projectId = params.get('key');
-
-            this.permissionService.hasAPermissionByKeys(permissionKeys, projectId).subscribe(res => {
-                this.view.clear();
-                if(res){
-                    this.view.createEmbeddedView(this.templateRef);
-                }
-            })
+            this.store.select(getAuthenticatedUserId).subscribe(userId => {
+                this.permissionService.hasAPermissionByKeys(permissionKeys, projectId, userId).subscribe(res => {
+                    this.view.clear();
+                    if(res){
+                        this.view.createEmbeddedView(this.templateRef);
+                    }
+                });
+            });
         });
     }
 }

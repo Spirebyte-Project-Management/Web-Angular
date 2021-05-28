@@ -1,8 +1,8 @@
-import { UserModel } from '../../../auth/_models/user.model';
 import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { UserModel } from 'src/app/_models/user.model';
 
 const API_USERS_URL = `${environment.apiUrl}/identity/users`;
 

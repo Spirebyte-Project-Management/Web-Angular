@@ -7,7 +7,6 @@ import { IssueDataService } from './_services/issues/issue-data.service';
 import { ProjectDataService } from './_services/projects/project-data.service';
 import { SprintDataService } from './_services/sprints/sprint-data.service';
 import { UserDataService } from './_services/users/user-data.service';
-import { UserHTTPService } from '../user/_services/user-http.service';
 import { IssueCommentEntityService } from './_services/issues/comments/issue-comment-entity.service';
 import { IssueHistoryEntityService } from './_services/issues/history/issue-history-entity.service';
 import { IssueEntityService } from './_services/issues/issue-entity.service';
@@ -91,7 +90,6 @@ const entityMetadata: EntityMetadataMap = {
     UserEntityService, 
     UserDataService, 
     UsersResolver, 
-    UserHTTPService, 
     SprintEntityService, 
     SprintDataService, 
     SprintsResolver, 

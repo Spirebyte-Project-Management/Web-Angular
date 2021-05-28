@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
-import { AuthService } from '../_services/auth.service';
-import { first } from 'rxjs/operators';
-
-enum ErrorStates {
-  NotSubmitted,
-  HasError,
-  NoError,
-}
+import { Observable } from 'rxjs';
+import * as AuthActions from '../../../_store/auth/auth.actions'
+import { Store } from '@ngrx/store';
+import { authHasError, getAuthError, isAuthLoading, isForgotPasswordSent } from 'src/app/_store/auth/auth.selectors';
 
 @Component({
   selector: 'app-forgot-password',
@@ -17,17 +12,19 @@ enum ErrorStates {
 })
 export class ForgotPasswordComponent implements OnInit {
   forgotPasswordForm: FormGroup;
-  errorState: ErrorStates = ErrorStates.NotSubmitted;
-  errorStates = ErrorStates;
+  hasError$: Observable<boolean>;
+  error$: Observable<any>;
   isLoading$: Observable<boolean>;
+  isForgotPasswordSent$: Observable<boolean>;
 
-  // private fields
-  private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private store: Store
   ) {
-    this.isLoading$ = this.authService.isLoading$;
+    this.isLoading$ = this.store.select(isAuthLoading);
+    this.hasError$ = this.store.select(authHasError);
+    this.error$ = this.store.select(getAuthError);
+    this.isForgotPasswordSent$ = this.store.select(isForgotPasswordSent);
   }
 
   ngOnInit(): void {
@@ -54,20 +51,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   submit() {
-    this.errorState = ErrorStates.NotSubmitted;
-    const forgotPasswordSubscr = this.authService
-      .forgotPassword(this.f.email.value)
-      .pipe(first())
-      .subscribe(
-        result => {
-          this.errorState = ErrorStates.NoError;
-        },
-        error => {
-          this.errorState = ErrorStates.HasError;
-        },
-        () => {
-        }
-      );
-    this.unsubscribe.push(forgotPasswordSubscr);
+    this.store.dispatch(AuthActions.forgotPasswordStart({ email: this.f.email.value }));
   }
 }

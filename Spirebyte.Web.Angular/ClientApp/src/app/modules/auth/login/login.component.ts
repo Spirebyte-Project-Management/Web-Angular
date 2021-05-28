@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { UserModel } from '../_models/user.model';
-import { AuthService } from '../_services/auth.service';
+import * as AuthActions from '../../../_store/auth/auth.actions'
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { authHasError, getAuthError, isAuthenticated, isAuthLoading } from 'src/app/_store/auth/auth.selectors';
 
 @Component({
   selector: 'app-login',
@@ -22,24 +22,30 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: 'demo',
   };
   loginForm: FormGroup;
-  hasError: boolean;
   returnUrl: string;
-  isLoading$: Observable<boolean>;
 
+  isLoading$: Observable<boolean>;
+  hasError$: Observable<boolean>;
+  error$: Observable<any>;
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private store: Store,
     private route: ActivatedRoute,
     private router: Router
   ) {
-    this.isLoading$ = this.authService.isLoading$;
+    this.isLoading$ = this.store.select(isAuthLoading);
+    this.hasError$ = this.store.select(authHasError);
+    this.error$ = this.store.select(getAuthError);
+
     // redirect to home if already logged in
-    if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
-    }
+    this.unsubscribe.push(this.store.select(isAuthenticated).subscribe(res => {
+      if (res) {
+        this.router.navigate(['/']);
+      }
+    }));
   }
 
   ngOnInit(): void {
@@ -77,18 +83,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.hasError = false;
-    const loginSubscr = this.authService
-      .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe((user: UserModel) => {
-        if (user) {
-          this.router.navigate([this.returnUrl]);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(loginSubscr);
+    this.store.dispatch(AuthActions.loginStart({ email: this.f.email.value, password: this.f.password.value}))
   }
 
   ngOnDestroy() {

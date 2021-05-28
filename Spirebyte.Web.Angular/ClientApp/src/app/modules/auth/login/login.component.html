@@ -26,22 +26,20 @@
     <!--end::Title-->
 
     <!-- begin::Alert info-->
-    <ng-container *ngIf="!hasError">
+    <ng-template #noError>
       <div class="mb-10 alert alert-custom alert-light-info alert-dismissible">
         <div class="alert-text">
           Use account <strong>{{ defaultAuth.email }}</strong> and password
           <strong>{{ defaultAuth.password }}</strong> to continue.
         </div>
       </div>
-    </ng-container>
+    </ng-template>
     <!-- end::Alert info-->
 
     <!-- begin::Alert error-->
-    <ng-container *ngIf="hasError">
-      <div
-        class="mb-10 alert alert-custom alert-light-danger alert-dismissible"
-      >
-        <div class="alert-text">The login details are incorrect</div>
+    <ng-container *ngIf="hasError$ | async; else noError">
+      <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+        <div class="alert-text" *ngIf="error$ | async as error">{{error.reason}}</div>
       </div>
     </ng-container>
     <!-- end::Alert error-->

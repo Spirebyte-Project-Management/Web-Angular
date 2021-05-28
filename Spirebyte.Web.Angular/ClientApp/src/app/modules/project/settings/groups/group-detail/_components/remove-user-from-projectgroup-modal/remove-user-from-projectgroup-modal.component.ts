@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
 import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
 import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
 

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { UserModel } from '../auth/_models/user.model';
-import { AuthService } from '../auth/_services/auth.service';
+import { UserModel } from 'src/app/_models/user.model';
+import { getAuthenticatedUser } from 'src/app/_store/auth/auth.selectors';
 
 @Component({
   selector: 'app-user',
@@ -11,8 +12,8 @@ import { AuthService } from '../auth/_services/auth.service';
 export class UserComponent implements OnInit {
   user$: Observable<UserModel>;
   
-  constructor(private auth: AuthService) {
-    this.user$ = this.auth.currentUserSubject.pipe();
+  constructor(private store: Store) {
+    this.user$ = this.store.select(getAuthenticatedUser);
   }
 
   ngOnInit(): void {

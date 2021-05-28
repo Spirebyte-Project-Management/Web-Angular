@@ -5,7 +5,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { Update } from '@ngrx/entity';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
 
 const API_USERS_URL = `${environment.apiUrl}/identity/users`;
 

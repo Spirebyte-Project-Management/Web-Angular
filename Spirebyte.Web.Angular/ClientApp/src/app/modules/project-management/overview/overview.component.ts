@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../auth/_services/auth.service';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { ProjectModel } from '../../data/_models/project.model';
 import { ProjectEntityService } from '../../data/_services/projects/project-entity.service';
+import { Store } from '@ngrx/store';
+import { getAuthenticatedUserId } from 'src/app/_store/auth/auth.selectors';
 
 @Component({
   selector: 'app-overview',
@@ -13,11 +14,12 @@ import { ProjectEntityService } from '../../data/_services/projects/project-enti
 export class OverviewComponent implements OnInit {
 
   projects$: Observable<ProjectModel[]>;
-  userId: string;
-  constructor(private projectEntityService: ProjectEntityService, private authService: AuthService) { }
+  userId$: Observable<string>;
+  constructor(private projectEntityService: ProjectEntityService, private store: Store) { }
 
   ngOnInit(): void {
-    this.userId = this.authService.currentUserValue.id;
-    this.projects$ = this.projectEntityService.entities$.pipe(map(projects => projects.filter(project => project.ownerUserId == this.userId || project.projectUserIds.includes(this.userId) || project.invitedUserIds.includes(this.userId))));
+    this.userId$ = this.store.select(getAuthenticatedUserId).pipe(tap(userId => {
+      this.projects$ = this.projectEntityService.entities$.pipe(map(projects => projects.filter(project => project.ownerUserId == userId || project.projectUserIds.includes(userId) || project.invitedUserIds.includes(userId))));
+    }));
   }
 }

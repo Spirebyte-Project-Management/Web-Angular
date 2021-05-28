@@ -8,31 +8,25 @@ import { InlineSVGModule } from 'ng-inline-svg';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthService } from './modules/auth/_services/auth.service';
 import { environment } from '../environments/environment';
 // Highlight JS
 import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
-import highlight from 'highlight.js/lib/highlight';
 import xml from 'highlight.js/lib/languages/xml';
 import json from 'highlight.js/lib/languages/json';
 import scss from 'highlight.js/lib/languages/scss';
 import typescript from 'highlight.js/lib/languages/typescript';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
-import { AuthHttpInterceptor } from './modules/auth/_services/auth.http.interceptor';
 import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EntityDataModule } from '@ngrx/data';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
-
-function appInitializer(authService: AuthService) {
-  return () => {
-    return new Promise((resolve) => {
-      authService.getUserByToken().subscribe().add(resolve);
-    });
-  };
-}
+import { reducers } from './_store/app.state';
+import { AuthEffects } from './_store/auth/auth.effects';
+import { UserEffects } from './_store/user/user.effects';
+import { AuthTokenInterceptor } from './_services/authtoken.interceptor';
+import { authFeatureKey } from './_store/auth/auth.state';
+import { authReducer } from './_store/auth/auth.reducer';
 
 /**
  * Import specific languages to avoid importing everything
@@ -60,9 +54,11 @@ export function getHighlightLanguages() {
     AppRoutingModule,
     InlineSVGModule.forRoot(),
     NgbModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers),
+    StoreModule.forFeature(authFeatureKey, authReducer),
+    EffectsModule.forFeature([AuthEffects, UserEffects]),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([AuthEffects, UserEffects]),
     EntityDataModule.forRoot({}),
     StoreRouterConnectingModule.forRoot({
       stateKey: 'router',
@@ -71,14 +67,8 @@ export function getHighlightLanguages() {
   ],
   providers: [
     {
-      provide: APP_INITIALIZER,
-      useFactory: appInitializer,
-      multi: true,
-      deps: [AuthService],
-    },
-    {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthHttpInterceptor,
+      useClass: AuthTokenInterceptor,
       multi: true
     },
     {

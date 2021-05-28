@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserHTTPService } from '../_services/user-http.service';
-import { UpdateModel } from '../_models/update.model';
 import { Subscription } from 'rxjs';
-import { first, map } from 'rxjs/operators';
-import { AuthService } from '../../auth/_services/auth.service';
-import { UserModel } from '../../auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
+import { Store } from '@ngrx/store';
+import { getAuthenticatedUser } from 'src/app/_store/auth/auth.selectors';
+import * as UserActions from '../../../_store/user/user.actions';
+import { ProfileModel } from 'src/app/_models/updateProfile.model';
 
 @Component({
   selector: 'app-personal-info',
@@ -20,7 +20,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
 
   private unsubscribe: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, private userHttpService: UserHTTPService, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private store: Store) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -44,7 +44,7 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
         ],
         file: []
       });
-    const getUserSubscr = this.authService.currentUserSubject.asObservable().subscribe(res => {
+    const getUserSubscr = this.store.select(getAuthenticatedUser).subscribe(res => {
       this.personalInfoForm.patchValue(res);
       this.currentUser = res;
     });
@@ -52,20 +52,9 @@ export class PersonalInfoComponent implements OnInit, OnDestroy {
     }
 
     submit() {
-      this.hasError = false;
-      const result = {};
-      Object.keys(this.f).forEach(key => {
-        result[key] = this.f[key].value;
-      });
-      const updateUser = new UpdateModel();
-      updateUser.setUpdateModel(result);
-      const updateUserSubscr = this.userHttpService
-        .updateUser(updateUser)
-        .pipe(first())
-        .subscribe((user: UpdateModel) => {
-            this.authService.updateUserByToken().subscribe();
-        });
-      this.unsubscribe.push(updateUserSubscr);
+      const updateProfile = new ProfileModel();
+      updateProfile.setProfile(this.personalInfoForm.value);
+      this.store.dispatch(UserActions.updateProfile({ profile: updateProfile}));
     }
 
     ngOnDestroy() {

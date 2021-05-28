@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
 import { IssueHistoryModel, HistoryTypes } from 'src/app/modules/data/_models/issue-history.model';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
 

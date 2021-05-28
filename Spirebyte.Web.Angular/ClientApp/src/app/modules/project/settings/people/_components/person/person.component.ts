@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
 
 @Component({
   selector: 'tr[app-person]',

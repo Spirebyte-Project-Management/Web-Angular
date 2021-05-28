@@ -6,7 +6,6 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
-import { LogoutComponent } from './logout/logout.component';
 import { AuthComponent } from './auth.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
@@ -15,7 +14,6 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
     LoginComponent,
     RegistrationComponent,
     ForgotPasswordComponent,
-    LogoutComponent,
     AuthComponent,
     ResetPasswordComponent,
   ],

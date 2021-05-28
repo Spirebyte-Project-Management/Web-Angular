@@ -23,9 +23,10 @@
                 <app-user-symbol-group [users$]="projectUsers$" [errorMessage]="'No members'"></app-user-symbol-group>
             </div>
         </div>
-
+        <ng-container *ngIf="userId$ | async as userId">
+            <app-invitation-nav *ngIf="project.invitedUserIds.includes(userId); else normalNav" [userId]="userId"></app-invitation-nav>
+        </ng-container>
         <!--begin::Nav-->
-        <app-invitation-nav *ngIf="project.invitedUserIds.includes(userId); else normalNav" [userId]="userId"></app-invitation-nav>
         <ng-template #normalNav>
             <app-default-nav [project]="project" *ngIf="!isActive(project.id + '/settings/')"></app-default-nav>
             <app-settings-nav *ngIf="isActive(project.id + '/settings/')"></app-settings-nav>

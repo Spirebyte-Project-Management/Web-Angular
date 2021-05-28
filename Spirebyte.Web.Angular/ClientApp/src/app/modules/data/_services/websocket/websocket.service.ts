@@ -8,7 +8,8 @@ import { ProjectEntityService } from '../projects/project-entity.service';
 import { IssueEntityService } from '../issues/issue-entity.service';
 import { SprintEntityService } from '../sprints/sprint-entity.service';
 import { UserEntityService } from '../users/user-entity.service';
-import { AuthService } from 'src/app/modules/auth/_services/auth.service';
+import { Store } from '@ngrx/store';
+import { getAuthenticatedUserId } from 'src/app/_store/auth/auth.selectors';
 
 @Injectable()
 export class WebsocketService {
@@ -28,7 +29,7 @@ export class WebsocketService {
             private issueEntityService: IssueEntityService,
             private sprintEntityService: SprintEntityService,
             private userEntityService: UserEntityService,
-            private authService: AuthService) {
+            private store: Store) {
     this.connection.onclose(async () => {
       await this.start();
     });
@@ -46,18 +47,20 @@ export class WebsocketService {
   });
 
   this.connection.on('operation_completed', (operation) => {
-    const smallId = this.authService.currentUserValue.id.split('-').join('')
-    if (smallId != operation.sentBy){
-      if (operation.projectId != null){
-        this.projectEntityService.getByKey(operation.projectId);
+    this.store.select(getAuthenticatedUserId).subscribe(res => {
+      const smallId = res.split('-').join('')
+      if (smallId != operation.sentBy){
+        if (operation.projectId != null){
+          this.projectEntityService.getByKey(operation.projectId);
+        }
+        if (operation.issueId != null){
+          this.issueEntityService.getByKey(operation.issueId);
+        }
+        if (operation.sprintId != null){
+          this.sprintEntityService.getByKey(operation.sprintId);
+        }
       }
-      if (operation.issueId != null){
-        this.issueEntityService.getByKey(operation.issueId);
-      }
-      if (operation.sprintId != null){
-        this.sprintEntityService.getByKey(operation.sprintId);
-      }
-    }
+    })
   });
 
   this.connection.on('operation_rejected', (operation) => {

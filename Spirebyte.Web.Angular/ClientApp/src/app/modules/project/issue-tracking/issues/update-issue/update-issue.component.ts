@@ -4,7 +4,7 @@ import { Subscription, BehaviorSubject, Observable } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { SettingsModel } from 'src/app/_metronic/partials/content/general/tag-input/_models/settings.model';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { IssueType, IssueStatus, IssueModel } from 'src/app/modules/data/_models/issue.model';
 import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';

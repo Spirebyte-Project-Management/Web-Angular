@@ -2,13 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
 import { GrantModel, GrantTypes } from 'src/app/modules/data/_models/grant.model';
 import { PermissionSchemeModel } from 'src/app/modules/data/_models/permission-scheme.model';
 import { PermissionModel } from 'src/app/modules/data/_models/permission.model';
 import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
 import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
+import { UserModel } from 'src/app/_models/user.model';
 import { AddGrantModalComponent } from '../add-grant-modal/add-grant-modal.component';
 import { RemoveGrantModalComponent } from '../remove-grant-modal/remove-grant-modal.component';
 

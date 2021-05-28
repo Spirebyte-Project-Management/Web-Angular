@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { AuthService } from '../_services/auth.service';
 import { ConfirmPasswordValidator } from '../registration/confirm-password.validator';
-import { first } from 'rxjs/operators';
-import { thistle } from 'color-name';
+import * as AuthActions from '../../../_store/auth/auth.actions'
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { authHasError, getAuthError, isPasswordReset } from 'src/app/_store/auth/auth.selectors';
 
 enum ErrorStates {
   NotSubmitted,
@@ -21,29 +21,30 @@ enum ErrorStates {
 export class ResetPasswordComponent implements OnInit, OnDestroy {
 
   resetPasswordForm: FormGroup;
-  errorState: ErrorStates = ErrorStates.NotSubmitted;
-  errorStates = ErrorStates;
-  isLoading$: Observable<boolean>;
   userId: string;
   token: string;
+
+  isPasswordReset$: Observable<boolean>;
+  hasError$: Observable<boolean>;
+  error$: Observable<any>;
 
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private store: Store,
     private route: ActivatedRoute
   ) {
-    this.isLoading$ = this.authService.isLoading$;
+    this.hasError$ = this.store.select(authHasError);
+    this.error$ = this.store.select(getAuthError);
+    this.isPasswordReset$ = this.store.select(isPasswordReset);
   }
 
   ngOnInit(): void {
     const paramsSubscription =   this.route.queryParamMap.subscribe( params => {
       this.userId = params.get('userId');
       this.token = params.get('token');
-      console.log(this.userId);
-      console.log(this.token);
     });
     this.unsubscribe.push(paramsSubscription);
 
@@ -80,21 +81,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.errorState = ErrorStates.NotSubmitted;
-    const forgotPasswordSubscr = this.authService
-      .resetPassword(this.userId, this.token, this.f.password.value)
-      .pipe(first())
-      .subscribe(
-        result => {
-          this.errorState = ErrorStates.NoError;
-        },
-        error => {
-          this.errorState = ErrorStates.HasError;
-        },
-        () => {
-        }
-      );
-    this.unsubscribe.push(forgotPasswordSubscr);
+    this.store.dispatch(AuthActions.resetPasswordStart({ userId: this.userId, token: this.token, password: this.f.password.value }));
   }
 
   ngOnDestroy() {

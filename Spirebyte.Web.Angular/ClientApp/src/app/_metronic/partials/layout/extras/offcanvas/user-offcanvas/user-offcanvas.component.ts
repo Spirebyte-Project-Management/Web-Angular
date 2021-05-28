@@ -1,8 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { LayoutService } from '../../../../../core';
 import { Observable } from 'rxjs';
-import { UserModel } from '../../../../../../modules/auth/_models/user.model';
-import { AuthService } from '../../../../../../modules/auth/_services/auth.service';
+import { Store } from '@ngrx/store';
+import { getAuthenticatedUser, getAuthenticatedUserId } from 'src/app/_store/auth/auth.selectors';
+import { UserModel } from 'src/app/_models/user.model';
+
+import * as AuthActions from '../../../../../../_store/auth/auth.actions';
+import { AuthEffects } from 'src/app/_store/auth/auth.effects';
 
 @Component({
   selector: 'app-user-offcanvas',
@@ -15,13 +19,13 @@ export class UserOffcanvasComponent implements OnInit {
 
   @ViewChild('closeBtn') closeBtn: ElementRef<HTMLElement>;
 
-  constructor(private layout: LayoutService, private auth: AuthService) {}
+  constructor(private layout: LayoutService, private store: Store) {}
 
   ngOnInit(): void {
     this.extrasUserOffcanvasDirection = `offcanvas-${this.layout.getProp(
       'extras.user.offcanvas.direction'
     )}`;
-    this.user$ = this.auth.currentUserSubject.asObservable();
+    this.user$ = this.store.select(getAuthenticatedUser);
   }
 
   close() {
@@ -30,7 +34,6 @@ export class UserOffcanvasComponent implements OnInit {
   }
 
   logout() {
-    this.auth.logout();
-    document.location.reload();
+    this.store.dispatch(AuthActions.logout());
   }
 }

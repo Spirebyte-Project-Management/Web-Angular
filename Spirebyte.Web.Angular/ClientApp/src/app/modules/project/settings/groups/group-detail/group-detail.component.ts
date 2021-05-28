@@ -4,7 +4,7 @@ import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.mod
 import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
 import { map, tap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { UserModel } from 'src/app/modules/auth/_models/user.model';
+import { UserModel } from 'src/app/_models/user.model';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
 import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { AddUsersToProjectgroupModalComponent } from './_components/add-users-to-projectgroup-modal/add-users-to-projectgroup-modal.component';
