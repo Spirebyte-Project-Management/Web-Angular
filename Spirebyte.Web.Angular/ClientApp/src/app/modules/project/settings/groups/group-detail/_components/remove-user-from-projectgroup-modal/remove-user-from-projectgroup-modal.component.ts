@@ -3,8 +3,9 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of, Subscription } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { UserModel } from 'src/app/_models/user.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
-import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
+import { Store } from '@ngrx/store';
+import * as ProjectActions from '../../../../../_store/project.actions';
 
 @Component({
   selector: 'app-remove-user-from-projectgroup-modal',
@@ -18,31 +19,21 @@ export class RemoveUserFromProjectgroupModalComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(public modal: NgbActiveModal, private projectGroupEntityService: ProjectGroupEntityService) { }
+  constructor(public modal: NgbActiveModal, private store: Store) { }
 
   ngOnInit(): void {
   }
 
   removeUser() {
-    const upatedProjectGroup = new ProjectGroupModel();
-    upatedProjectGroup.id = this.projectGroup.id;
-    upatedProjectGroup.name = this.projectGroup.name;
-    upatedProjectGroup.projectId = this.projectGroup.projectId;
+    const updatedProjectGroup = new ProjectGroupModel();
+    updatedProjectGroup.setProjectGroup(this.projectGroup);
     const scopedUser = this.user;
-    upatedProjectGroup.userIds = this.projectGroup.userIds.filter(function (value, index, arr) {
+    updatedProjectGroup.userIds = this.projectGroup.userIds.filter(function (value, index, arr) {
       return scopedUser.id != value;
     });
 
-    const sbUpdate = this.projectGroupEntityService.update(upatedProjectGroup).pipe(
-      tap(() => {
-        this.modal.close();
-      }),
-      catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
-        return of(upatedProjectGroup);
-      }),
-    ).subscribe((res: ProjectGroupModel) => this.projectGroup = res);
-    this.subscriptions.push(sbUpdate);
+    this.store.dispatch(ProjectActions.updateProjectGroup({ projectGroup: updatedProjectGroup}))
+    this.modal.close();
   }
 
   ngOnDestroy(): void {

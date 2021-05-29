@@ -2,9 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { SprintModel } from 'src/app/modules/data/_models/sprint.model';
 import { SprintEntityService } from 'src/app/modules/data/_services/sprints/sprint-entity.service';
+import { ProjectModel } from 'src/app/modules/project/_models/project.model';
 import { ProjectPermissionKeys } from 'src/app/_metronic/core/constants/ProjectPermissionKeys';
 
 @Component({

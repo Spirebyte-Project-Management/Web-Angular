@@ -1,7 +1,7 @@
 import { AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
 
 export function uniqueProjectGroup(projectGroups: Observable<ProjectGroupModel[]>): AsyncValidatorFn {
     return (control: AbstractControl): Promise<ValidationErrors | null> | Observable<ValidationErrors | null> => {

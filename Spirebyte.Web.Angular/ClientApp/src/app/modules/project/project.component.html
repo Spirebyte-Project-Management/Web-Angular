@@ -1,4 +1,4 @@
-<div class="d-flex flex-row">
+<div class="d-flex flex-row" *ngIf="hasSelectedProject$ | async">
     <!--begin::Aside-->
     <div class="flex-row-auto offcanvas-mobile w-200px w-xxl-300px" id="kt_profile_aside">
         <app-project-card [project]="project$ | async"></app-project-card>

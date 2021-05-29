@@ -1,10 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
-import { ProjectUpdateModel } from 'src/app/modules/data/_models/updateProject.model';
-import { ProjectEntityService } from 'src/app/modules/data/_services/projects/project-entity.service';
+import { ProjectModel } from 'src/app/modules/project/_models/project.model';
+import { ProjectUpdateModel } from 'src/app/modules/project/_models/updateProject.model';
+import * as ProjectActions from '../../../../_store/project.actions';
 
 @Component({
   selector: 'app-invite-users-modal',
@@ -17,15 +18,13 @@ export class InviteUsersModalComponent implements OnInit {
 
   formGroup: FormGroup;
   excludeIds: string[] = [];
-  private subscriptions: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, public modal: NgbActiveModal, public projectEnityService: ProjectEntityService) { }
+  constructor(private fb: FormBuilder, public modal: NgbActiveModal, public store: Store) { }
 
   ngOnInit(): void {
     this.excludeIds.push(this.project.ownerUserId)
     this.excludeIds = this.excludeIds.concat(this.project.invitedUserIds);
     this.excludeIds = this.excludeIds.concat(this.project.projectUserIds);
-    console.log(this.excludeIds);
     this.loadForm();
   }
 
@@ -34,7 +33,7 @@ export class InviteUsersModalComponent implements OnInit {
     updateProject.setUpdateModel(this.project);
     updateProject.invitedUserIds = updateProject.invitedUserIds.concat(this.formGroup.value.invitations);
 
-    this.projectEnityService.update(updateProject);
+    this.store.dispatch(ProjectActions.updateProject({ project: updateProject }));
     this.modal.close();
   }
 

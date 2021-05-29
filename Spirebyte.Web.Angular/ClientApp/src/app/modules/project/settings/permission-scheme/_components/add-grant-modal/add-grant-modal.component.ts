@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { GrantModel, GrantTypes } from 'src/app/modules/data/_models/grant.model';
 import { PermissionSchemeModel } from 'src/app/modules/data/_models/permission-scheme.model';
 import { PermissionModel } from 'src/app/modules/data/_models/permission.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
 import { PermissionSchemeEntityService } from 'src/app/modules/data/_services/permission-scheme/permission-scheme-entity.service';
 
 @Component({

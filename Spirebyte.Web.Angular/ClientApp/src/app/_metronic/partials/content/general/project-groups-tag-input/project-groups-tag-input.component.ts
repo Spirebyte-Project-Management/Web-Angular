@@ -4,9 +4,10 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/_models/user.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
-import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
+import { Store } from '@ngrx/store';
+import { getSelectedProjectGroups } from 'src/app/modules/project/_store/project.selectors';
 
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
@@ -31,7 +32,7 @@ export class ProjectGroupsTagInputComponent implements OnInit, ControlValueAcces
 
   @ViewChild('input')  inputRef: ElementRef; 
 
-  constructor(private projectGroupEntityService: ProjectGroupEntityService, private userEntityService: UserEntityService) { }
+  constructor(private store: Store, private userEntityService: UserEntityService) { }
 
   propagateChange = (_: any) => { }
 
@@ -73,6 +74,6 @@ export class ProjectGroupsTagInputComponent implements OnInit, ControlValueAcces
   }
 
   ngOnInit(): void {
-    this.projectGroups$ = this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.filter(projectGroup => this.allIds.length > 0 ? this.allIds.includes(projectGroup.id) : true)));
+    this.projectGroups$ = this.store.select(getSelectedProjectGroups).pipe(map(projectGroups => projectGroups.filter(projectGroup => this.allIds.length > 0 ? this.allIds.includes(projectGroup.id) : true)));
   }
 }

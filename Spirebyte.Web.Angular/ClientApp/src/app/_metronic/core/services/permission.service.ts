@@ -3,25 +3,24 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GrantTypes } from 'src/app/modules/data/_models/grant.model';
 import { PermissionModel } from 'src/app/modules/data/_models/permission.model';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
 import { PermissionSchemeEntityService } from 'src/app/modules/data/_services/permission-scheme/permission-scheme-entity.service';
-import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
-import { ProjectEntityService } from 'src/app/modules/data/_services/projects/project-entity.service';
+import { Store } from '@ngrx/store';
+import { getSelectedProject, getSelectedProjectGroups } from 'src/app/modules/project/_store/project.selectors';
+import { ProjectModel } from 'src/app/modules/project/_models/project.model';
 
 @Injectable()
 export class PermissionService {
 
-    constructor(private projectEntityService: ProjectEntityService, private projectGroupEntityService: ProjectGroupEntityService, private permissionSchemeEntityService: PermissionSchemeEntityService) {}
+    constructor(private store: Store, private permissionSchemeEntityService: PermissionSchemeEntityService) {}
 
     getAllowanceByKeys(permissionKey: string | string[], projectId: string, userId: string): Observable<boolean> {
         let permissionKeys: string[] = [];
         permissionKeys = permissionKeys.concat(permissionKey);
 
-        let projectGroups = this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.filter(projectGroup => projectGroup.projectId == projectId)));
+        let projectGroups = this.store.select(getSelectedProjectGroups);
         let permissionSchemes = this.permissionSchemeEntityService.entities$;
-        let project = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == projectId)));
-
+        let project = this.store.select(getSelectedProject);
         return combineLatest([project, projectGroups, permissionSchemes]).pipe(
             map(([project, projectGroups, permissionSchemes]) => {
                 let result = false;
@@ -42,9 +41,9 @@ export class PermissionService {
         let permissionKeys: string[] = [];
         permissionKeys = permissionKeys.concat(permissionKey);
 
-        let projectGroups = this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.filter(projectGroup => projectGroup.projectId == projectId)));
+        let projectGroups = this.store.select(getSelectedProjectGroups);
         let permissionSchemes = this.permissionSchemeEntityService.entities$;
-        let project = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == projectId)));
+        let project = this.store.select(getSelectedProject);
 
         return combineLatest([project, projectGroups, permissionSchemes]).pipe(
             map(([project, projectGroups, permissionSchemes]) => {

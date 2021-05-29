@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IssueModel } from '../data/_models/issue.model';
-import { ProjectModel } from '../data/_models/project.model';
 import { IssueEntityService } from '../data/_services/issues/issue-entity.service';
-import { ProjectEntityService } from '../data/_services/projects/project-entity.service';
+import { ProjectModel } from './_models/project.model';
+import { getSelectedProject, hasSelectedProject } from './_store/project.selectors';
 
 @Component({
   selector: 'app-project',
@@ -16,6 +17,7 @@ export class ProjectComponent implements OnInit {
 
   issue$: Observable<IssueModel>;
   project$: Observable<ProjectModel>;
+  hasSelectedProject$: Observable<boolean>;
 
   private subscriptions: Subscription[] = [];
 
@@ -23,16 +25,13 @@ export class ProjectComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public router: Router,
-    private projectEntityService: ProjectEntityService,
+    public store: Store,
     private issueEntityService: IssueEntityService) 
     { }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.route.paramMap.subscribe(params => {
-        this.project$ = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == params.get('key'))));
-      })
-    );
+    this.project$ = this.store.select(getSelectedProject);
+    this.hasSelectedProject$ = this.store.select(hasSelectedProject);
 
     this.subscriptions.push(
       this.route.queryParamMap.subscribe(params => {

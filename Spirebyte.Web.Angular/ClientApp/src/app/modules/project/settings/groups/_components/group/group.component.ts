@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/_models/user.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
 
 @Component({

@@ -5,12 +5,13 @@ import { map } from 'rxjs/operators';
 import { GrantModel, GrantTypes } from 'src/app/modules/data/_models/grant.model';
 import { PermissionSchemeModel } from 'src/app/modules/data/_models/permission-scheme.model';
 import { PermissionModel } from 'src/app/modules/data/_models/permission.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
-import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
 import { UserModel } from 'src/app/_models/user.model';
 import { AddGrantModalComponent } from '../add-grant-modal/add-grant-modal.component';
 import { RemoveGrantModalComponent } from '../remove-grant-modal/remove-grant-modal.component';
+import { Store } from '@ngrx/store';
+import { getProjectGroupsByIds } from 'src/app/modules/project/_store/project.selectors';
 
 @Component({
   selector: 'tr[app-permission]',
@@ -24,7 +25,7 @@ export class PermissionComponent implements OnInit {
 
   grantTypes = GrantTypes;
 
-  constructor(private modalService: NgbModal, private userEntityService: UserEntityService, private projectGroupEntityService: ProjectGroupEntityService) { }
+  constructor(private modalService: NgbModal, private userEntityService: UserEntityService, private store: Store) { }
 
   ngOnInit(): void {
   }
@@ -57,7 +58,7 @@ export class PermissionComponent implements OnInit {
 
   getProjectGroupsByJson(value: string): Observable<ProjectGroupModel[]> {
     let projectGroupIds: string[] = JSON.parse(value);
-    return this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.filter(projectGroup => projectGroupIds.includes(projectGroup.id))));
+    return this.store.select(getProjectGroupsByIds, { ids: projectGroupIds});
   }
   
   getUsersByIds(userIds: string[]): Observable<UserModel[]> {

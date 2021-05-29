@@ -1,10 +1,9 @@
-import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, of } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/_models/user.model';
 import { IssueType, IssueStatus, IssueModel } from 'src/app/modules/data/_models/issue.model';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
 import stc from 'string-to-color';
@@ -12,6 +11,7 @@ import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { KTUtil } from '../../../../../assets/js/components/util';
 import KTLayoutStretchedCard from '../../../../../assets/js/layout/base/stretched-card.js';
 import { IssuePermissionKeys } from 'src/app/_metronic/core/constants/IssuePermissionKeys';
+import { ProjectModel } from '../../_models/project.model';
 
 @Component({
   selector: 'app-issue-detail-aside',

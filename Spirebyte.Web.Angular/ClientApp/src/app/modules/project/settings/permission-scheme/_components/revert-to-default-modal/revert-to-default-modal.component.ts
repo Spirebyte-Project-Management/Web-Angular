@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
 import { Subscription, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { PermissionSchemeModel } from 'src/app/modules/data/_models/permission-scheme.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
 import { PermissionSchemeEntityService } from 'src/app/modules/data/_services/permission-scheme/permission-scheme-entity.service';
-import { ProjectEntityService } from 'src/app/modules/data/_services/projects/project-entity.service';
+import * as ProjectActions from '../../../../_store/project.actions';
 
 @Component({
   selector: 'app-revert-to-default-modal',
@@ -18,7 +18,7 @@ export class RevertToDefaultModalComponent implements OnInit {
 
   private subscriptions: Subscription[] = [];
 
-  constructor(public modal: NgbActiveModal, private permissionSchemeEntityService: PermissionSchemeEntityService, private projectEntityService: ProjectEntityService) { }
+  constructor(public modal: NgbActiveModal, private permissionSchemeEntityService: PermissionSchemeEntityService, private store: Store) { }
 
   ngOnInit(): void {
   }
@@ -28,7 +28,7 @@ export class RevertToDefaultModalComponent implements OnInit {
       tap(() => {
         this.modal.close();
       }),
-    ).subscribe(() => this.projectEntityService.getByKey(this.permissionScheme.projectId));
+    ).subscribe(() => this.store.dispatch(ProjectActions.getSingleProject({ projectId: this.permissionScheme.projectId })));
     this.subscriptions.push(sbUpdate);
   }
 

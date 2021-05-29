@@ -1,18 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { doesKeyExistValidator } from './does-key-exist.validator';
-import { ProjectModel } from '../../data/_models/project.model';
-import { ProjectEntityService } from '../../data/_services/projects/project-entity.service';
-import { ProjectHTTPService } from '../../data/_services/projects/project-http.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { doesKeyExistValidator } from 'src/app/modules/project-management/_components/create-project-modal/does-key-exist.validator';
+import { ProjectModel } from '../../../project/_models/project.model';
+import { ProjectService } from '../../../project/_services/project.service';
+import * as ProjectActions from '../../../project/_store/project.actions';
 
 @Component({
-  selector: 'app-create',
-  templateUrl: './create.component.html',
-  styleUrls: ['./create.component.scss']
+  selector: 'app-create-project-modal',
+  templateUrl: './create-project-modal.component.html',
+  styleUrls: ['./create-project-modal.component.scss']
 })
-export class CreateComponent implements OnInit, OnDestroy {
+export class CreateProjectModalComponent implements OnInit {
 
   createProjectForm: FormGroup;
   hasError: boolean;
@@ -20,8 +22,9 @@ export class CreateComponent implements OnInit, OnDestroy {
   private unsubscribe: Subscription[] = [];
 
   constructor(private fb: FormBuilder,
-              private projectEntityService: ProjectEntityService,
-              private projectHttpService: ProjectHTTPService,
+              private store: Store,
+              private projectService: ProjectService,
+              public modal: NgbActiveModal,
               private router: Router) { }
 
   ngOnInit(): void {
@@ -50,14 +53,14 @@ export class CreateComponent implements OnInit, OnDestroy {
             Validators.required,
           ]),
           Validators.composeAsync([
-            doesKeyExistValidator(this.projectHttpService)
+            doesKeyExistValidator(this.projectService)
           ]),
         ],
         description: []
       });
     }
 
-    submit() {
+    create() {
       this.hasError = false;
       const result = {};
       Object.keys(this.f).forEach(key => {
@@ -65,18 +68,13 @@ export class CreateComponent implements OnInit, OnDestroy {
       });
       const project = new ProjectModel();
       project.setProject(result);
-      const createProjectSubscr = this.projectEntityService
-        .add(project)
-        .subscribe(
-          () => {
-            this.router.navigate(['/projects']);
-          }
-        );
-      this.unsubscribe.push(createProjectSubscr);
+      this.store.dispatch(ProjectActions.createProject({ project }))
+      this.modal.close();
     }
 
     ngOnDestroy() {
       this.unsubscribe.forEach((sb) => sb.unsubscribe());
     }
+
 
 }

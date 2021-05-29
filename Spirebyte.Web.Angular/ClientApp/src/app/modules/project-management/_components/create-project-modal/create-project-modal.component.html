@@ -1,0 +1,92 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Create Project
+        </div>
+    </div>
+    <div class="modal-body">
+        <!--begin::Form-->
+        <form class="form" novalidate="novalidate" [formGroup]="createProjectForm">
+            <!-- begin::Alert error-->
+            <ng-container *ngIf="hasError">
+                <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
+                    <div class="alert-text">The create project fields are incorrect</div>
+                </div>
+            </ng-container>
+            <!-- end::Alert error-->
+            <div class="row">
+                <label class="col-xl-3"></label>
+                <div class="col-lg-9">
+                    <h5 class="font-weight-bold mb-6">Project Details</h5>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Title</label>
+                <div class="col-lg-9">
+                    <input class="form-control form-control-lg form-control-solid" type="text" name="title"
+                        formControlName="title" autocomplete="off" [ngClass]="{
+                'is-invalid': createProjectForm.controls['title'].invalid
+            }" />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Title is required',
+                control: createProjectForm.controls['title']
+            }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'minlength',
+                message: 'Title should have at least 3 symbols',
+                control: createProjectForm.controls['title']
+            }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'maxLength',
+                message: 'Title should have maximum 100 symbols',
+                control: createProjectForm.controls['title']
+            }"></ng-container>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Key</label>
+                <div class="col-lg-9">
+                    <input class="form-control form-control-lg form-control-solid" type="text" name="projectId"
+                        formControlName="projectId" autocomplete="off" [ngClass]="{
+                    'is-invalid': createProjectForm.controls['projectId'].invalid
+                }" />
+                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'required',
+                    message: 'Key is required',
+                    control: createProjectForm.controls['projectId']
+                }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    validation: 'keyExist',
+                    message: 'Key already exists',
+                    control: createProjectForm.controls['projectId']
+                }"></ng-container>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
+                <div class="col-lg-9">
+                    <textarea class="form-control form-control-lg form-control-solid" type="text" name="description"
+                        formControlName="description" autocomplete="off"></textarea>
+                </div>
+            </div>
+            <ng-template #formError let-control="control" let-message="message" let-validation="validation">
+                <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
+                    <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                            {{ message }}
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+
+        </form>
+        <!--end::Form-->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="create()"
+            [disabled]="createProjectForm.invalid">Save</button>
+    </div>
+</div>

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
-import { ProjectUpdateModel } from 'src/app/modules/data/_models/updateProject.model';
-import { ProjectEntityService } from 'src/app/modules/data/_services/projects/project-entity.service';
 import { UserHTTPService } from 'src/app/modules/data/_services/users/user-http.service';
-import { SettingsModel } from 'src/app/_metronic/partials/content/general/tag-input/_models/settings.model';
+import { ProjectModel } from '../../_models/project.model';
+import { ProjectUpdateModel } from '../../_models/updateProject.model';
+import { getSelectedProject } from '../../_store/project.selectors';
+import * as ProjectActions from '../../_store/project.actions';
 
 @Component({
   selector: 'app-details',
@@ -27,8 +28,8 @@ export class DetailsComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private projectEntityService: ProjectEntityService,
     private userHttpservice: UserHTTPService,
+    private store: Store,
     private route: ActivatedRoute,
     private router: Router,
   ) {
@@ -61,17 +62,14 @@ export class DetailsComponent implements OnInit {
       projectUserIds: [],
       file: []
     });
-    const getParamsSubscription = this.route.paramMap.subscribe(params => {
-      const getProjectSubscription = this.projectEntityService.entities$.pipe(map(projects => projects.find(project => project.id == params.get('key'))))
-        .subscribe(async project => {
-          this.currentProject = project;
-          this.updateProjectForm.patchValue(project);
-          this.isLoadingSubject.next(false);
-        });
+    const getProjectSubscription = this.store.select(getSelectedProject)
+      .subscribe(async project => {
+        this.currentProject = project;
+        this.updateProjectForm.patchValue(project);
+        this.isLoadingSubject.next(false);
+      });
 
-      this.unsubscribe.push(getProjectSubscription);
-    });
-    this.unsubscribe.push(getParamsSubscription);
+    this.unsubscribe.push(getProjectSubscription);
   }
 
   submit() {
@@ -84,12 +82,8 @@ export class DetailsComponent implements OnInit {
     updateProject.setUpdateModel(result);
     updateProject.id = this.currentProject.id;
     if (updateProject.file != null) updateProject.pic = updateProject.file;
-    const updateProjectSubscr = this.projectEntityService
-      .update(updateProject)
-      .subscribe((project: ProjectModel) => {
-        this.router.navigate([this.returnUrl]);
-      });
-    this.unsubscribe.push(updateProjectSubscr);
+
+    this.store.dispatch(ProjectActions.updateProject({ project: updateProject, returnUrl: this.returnUrl }));
   }
 
   searchUsers(term: string) {

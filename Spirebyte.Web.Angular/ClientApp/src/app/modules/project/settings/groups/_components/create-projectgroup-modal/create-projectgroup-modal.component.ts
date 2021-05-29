@@ -1,12 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Observable, of, Subscription } from 'rxjs';
-import { tap, catchError, map, take, first } from 'rxjs/operators';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
-import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
+import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
+import { ProjectModel } from 'src/app/modules/project/_models/project.model';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
+import { getSelectedProjectGroups } from 'src/app/modules/project/_store/project.selectors';
 import { uniqueProjectGroup } from './_validators/unique-group.validator';
+import * as ProjectActions from '../../../../_store/project.actions';
 
 @Component({
   selector: 'app-create-projectgroup-modal',
@@ -21,14 +22,14 @@ export class CreateProjectgroupModalComponent implements OnInit, OnDestroy {
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
 
-  constructor(private fb: FormBuilder, public modal: NgbActiveModal, private projectGroupEntityService: ProjectGroupEntityService) { }
+  constructor(private fb: FormBuilder, public modal: NgbActiveModal, private store: Store) { }
 
   ngOnInit(): void {
     this.loadForm();
   }
 
   loadForm() {
-    let currentProjectGroups = this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.filter(projectGroup => projectGroup.projectId == this.project.id)));
+    let currentProjectGroups = this.store.select(getSelectedProjectGroups)
     this.formGroup = this.fb.group({
       name: [
         '', 
@@ -50,16 +51,8 @@ export class CreateProjectgroupModalComponent implements OnInit, OnDestroy {
     projectGroup.setProjectGroup(this.formGroup.value);
     projectGroup.projectId = this.project.id;
 
-    const sbCreate = this.projectGroupEntityService.add(projectGroup).pipe(
-      tap(() => {
-        this.modal.close();
-      }),
-      catchError((errorMessage) => {
-        this.modal.dismiss(errorMessage);
-        return of(projectGroup);
-      }),
-    ).subscribe((res: ProjectGroupModel) => this.projectGroup = res);
-    this.subscriptions.push(sbCreate);
+    this.store.dispatch(ProjectActions.addProjectGroup({ projectGroup }))
+    this.modal.close();
   }
 
   ngOnDestroy(): void {

@@ -6,8 +6,8 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IssueCommentModel } from 'src/app/modules/data/_models/issue-comment.model';
 import { IssueModel } from 'src/app/modules/data/_models/issue.model';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { IssueCommentEntityService } from 'src/app/modules/data/_services/issues/comments/issue-comment-entity.service';
+import { ProjectModel } from 'src/app/modules/project/_models/project.model';
 import { UserModel } from 'src/app/_models/user.model';
 import { getAuthenticatedUser } from 'src/app/_store/auth/auth.selectors';
 

@@ -1,3 +1,5 @@
+import { ProjectGroupModel } from "./projectGroup.model";
+
 export class ProjectModel {
     id: string;
     ownerUserId: string;
@@ -9,6 +11,10 @@ export class ProjectModel {
     description: string;
     issueCount: number;
     createdAt: string;
+
+    // added dynamicly
+    projectGroupsLoaded = false;
+    projectGroups: ProjectGroupModel[];
 
     setProject(project: any) {
         this.id = project.id || project.projectId;

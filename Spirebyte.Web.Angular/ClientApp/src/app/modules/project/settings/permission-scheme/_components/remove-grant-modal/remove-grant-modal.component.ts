@@ -6,11 +6,12 @@ import { map } from 'rxjs/operators';
 import { GrantModel, GrantTypes } from 'src/app/modules/data/_models/grant.model';
 import { PermissionSchemeModel } from 'src/app/modules/data/_models/permission-scheme.model';
 import { PermissionModel } from 'src/app/modules/data/_models/permission.model';
-import { ProjectGroupModel } from 'src/app/modules/data/_models/projectGroup.model';
+import { ProjectGroupModel } from 'src/app/modules/project/_models/projectGroup.model';
 import { PermissionSchemeEntityService } from 'src/app/modules/data/_services/permission-scheme/permission-scheme-entity.service';
-import { ProjectGroupEntityService } from 'src/app/modules/data/_services/projectGroups/projectGroup-entity.service';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
 import { UserModel } from 'src/app/_models/user.model';
+import { Store } from '@ngrx/store';
+import { getSingleProjectGroup } from 'src/app/modules/project/_store/project.selectors';
 
 @Component({
   selector: 'app-remove-grant-modal',
@@ -26,7 +27,7 @@ export class RemoveGrantModalComponent implements OnInit {
 
   currentGrants: GrantModel[];
 
-  constructor(private fb: FormBuilder, public modal: NgbActiveModal, private permissionSchemeEntityService: PermissionSchemeEntityService, private userEntityService: UserEntityService, private projectGroupEntityService: ProjectGroupEntityService) { }
+  constructor(private fb: FormBuilder, public modal: NgbActiveModal, private permissionSchemeEntityService: PermissionSchemeEntityService, private userEntityService: UserEntityService, private store: Store) { }
 
   ngOnInit(): void {
     this.reset();
@@ -60,7 +61,7 @@ export class RemoveGrantModalComponent implements OnInit {
   }
 
   getProjectGroupById(projectGroupId: string): Observable<ProjectGroupModel> {
-    return this.projectGroupEntityService.entities$.pipe(map(projectGroups => projectGroups.find(projectGroup => projectGroup.id == projectGroupId)));
+    return this.store.select(getSingleProjectGroup, { id: projectGroupId});
   }
   
   getUserById(userId: string): Observable<UserModel> {

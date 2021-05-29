@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectEntityService } from '../../data/_services/projects/project-entity.service';
-import { ProjectHTTPService } from '../../data/_services/projects/project-http.service';
 import { UserEntityService } from '../../data/_services/users/user-entity.service';
 import { Store } from '@ngrx/store';
 import { getAuthenticatedUser } from 'src/app/_store/auth/auth.selectors';
+import * as ProjectActions from '../_store/project.actions';
 
 @Component({
   selector: 'app-invitation',
@@ -14,21 +13,17 @@ import { getAuthenticatedUser } from 'src/app/_store/auth/auth.selectors';
 })
 export class InvitationComponent implements OnInit {
   
-  projectId: string;
   userId: string;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
 
-  constructor(private projectHttpService: ProjectHTTPService, private projectEntityService: ProjectEntityService, private userEntityService: UserEntityService, private route: ActivatedRoute, private router: Router, private store: Store) {
+  constructor(private userEntityService: UserEntityService, private route: ActivatedRoute, private router: Router, private store: Store) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
   ngOnInit(): void {
-    this.route.parent.paramMap.subscribe((params) => {
-      this.projectId = params.get('key');
-    });
     this.route.paramMap.subscribe((params) => {
       this.userId = params.get('userId');
     });
@@ -38,21 +33,12 @@ export class InvitationComponent implements OnInit {
   joinProject() {
     this.isLoadingSubject.next(true);
     
-    this.projectHttpService.joinProject(this.projectId, this.userId).subscribe(() => {
-      this.projectEntityService.getByKey(this.projectId);
-      this.store.select(getAuthenticatedUser).subscribe(res => {
-        this.userEntityService.addOneToCache(res);
-        this.router.navigate(['../'],
-        {relativeTo: this.route});
-      });
-    });
+    this.store.dispatch(ProjectActions.joinProject({ userId: this.userId }))
   }
 
   leaveProject() {
     this.isLoadingSubject.next(true);
-    this.projectHttpService.leaveProject(this.projectId, this.userId).subscribe(() => {
-      this.projectEntityService.removeOneFromCache(this.projectId);
-      this.router.navigate(['/']);
-    });
+    this.store.dispatch(ProjectActions.leaveProject({ userId: this.userId }))
+
   }
 }

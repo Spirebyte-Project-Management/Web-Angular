@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/_models/user.model';
-import { ProjectModel } from 'src/app/modules/data/_models/project.model';
 import { SprintEntityService } from 'src/app/modules/data/_services/sprints/sprint-entity.service';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
 import { Store } from '@ngrx/store';
 import { getAuthenticatedUserId } from 'src/app/_store/auth/auth.selectors';
+import { ProjectModel } from '../../_models/project.model';
 
 @Component({
   selector: 'app-project-card',
