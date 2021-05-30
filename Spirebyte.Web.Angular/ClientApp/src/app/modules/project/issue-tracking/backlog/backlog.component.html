@@ -58,7 +58,7 @@
                     </div>
                     <div class="card-toolbar" *requirePermission="sprintPermissionKeys.ManageSprints">
                         <!--begin::Button-->
-                        <a [routerLink]="['../sprint/create']" class="btn btn-secondary btn-sm font-weight-bolder">
+                        <a *ngIf="projectId$ | async as projectId" (click)="createSprint(projectId)" class="btn btn-secondary btn-sm font-weight-bolder">
                             <span class="svg-icon svg-icon-md">
                                 <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/Flatten.svg-->
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

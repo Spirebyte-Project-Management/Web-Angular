@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { SprintModel } from 'src/app/modules/data/_models/sprint.model';
 import { SprintEntityService } from 'src/app/modules/data/_services/sprints/sprint-entity.service';
@@ -13,21 +13,16 @@ import { SprintEntityService } from 'src/app/modules/data/_services/sprints/spri
 export class CreateSprintComponent implements OnInit, OnDestroy {
   createSprintForm: FormGroup;
   hasError: boolean;
-  projectId: string;
+  
+  @Input() projectId: string;
 
   private unsubscribe: Subscription[] = [];
 
   constructor(private fb: FormBuilder, 
               private sprintEntityService: SprintEntityService,
-              private router: Router, private route: ActivatedRoute) { }
+              public modal: NgbActiveModal) { }
 
   ngOnInit(): void {
-    const paramsSubscription = this.route.parent.paramMap.subscribe( params => {
-      this.projectId = params.get('key');
-      console.log(this.projectId)
-    });
-    this.unsubscribe.push(paramsSubscription);
-
     this.initForm();
   }
 
@@ -63,7 +58,7 @@ export class CreateSprintComponent implements OnInit, OnDestroy {
       });
     }
 
-    submit() {
+    create() {
       this.hasError = false;
       const result = {};
       Object.keys(this.f).forEach(key => {
@@ -76,8 +71,7 @@ export class CreateSprintComponent implements OnInit, OnDestroy {
         .add(sprint)
         .subscribe(
           () => {
-            this.router.navigate(['../../backlog'],
-            {relativeTo: this.route});
+            this.modal.close();
           }
         );
       this.unsubscribe.push(createSprintSubscr);

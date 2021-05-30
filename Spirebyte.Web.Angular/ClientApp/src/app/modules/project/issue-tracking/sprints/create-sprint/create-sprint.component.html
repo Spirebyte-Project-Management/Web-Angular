@@ -1,24 +1,14 @@
-<!--begin::Form-->
-<form class="form" novalidate="novalidate" [formGroup]="createSprintForm" (ngSubmit)="submit()">
-    <!--begin::Card-->
-    <div class="card card-custom card-stretch">
-        <!--begin::Header-->
-        <div class="card-header py-3">
-            <div class="card-title align-items-start flex-column">
-                <h3 class="card-label font-weight-bolder text-dark">Create Sprint</h3>
-                <span class="text-muted font-weight-bold font-size-sm mt-1">Start documenting as quickly as
-                    possible.</span>
-            </div>
-            <div class="card-toolbar">
-                <button type="submit" class="btn btn-success mr-2" [disabled]="
-    createSprintForm.invalid
-    ">Save Changes</button>
-                <a [routerLink]="'../'" class="btn btn-secondary">Cancel</a>
-            </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Create new Sprint
         </div>
-        <!--end::Header-->
-        <!--begin::Body-->
-        <div class="card-body">
+    </div>
+    <div class="modal-body">
+
+        <!--begin::Form-->
+        <form class="form" novalidate="novalidate" [formGroup]="createSprintForm">
+
             <!-- begin::Alert error-->
             <ng-container *ngIf="hasError">
                 <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
@@ -28,19 +18,19 @@
             <!-- end::Alert error-->
             <div class="row">
                 <label class="col-xl-3"></label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <h5 class="font-weight-bold mb-6">Sprint Details</h5>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Title
                     <span class="text-danger">*</span></label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <input class="form-control form-control-lg form-control-solid" type="text" name="title"
                         formControlName="title" autocomplete="off" [ngClass]="{
                 'is-invalid': createSprintForm.controls['title'].invalid
             }" />
-            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                 validation: 'required',
                 message: 'Title is required',
                 control: createSprintForm.controls['title']
@@ -59,16 +49,17 @@
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <textarea class="form-control form-control-lg form-control-solid" type="text" name="description"
                         formControlName="description" autocomplete="off"></textarea>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Start date</label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <div class="input-group input-group-solid">
-                        <input ngbDatepicker #d="ngbDatepicker" formControlName="startDate" class="form-control form-control-lg form-control-solid" [ngClass]="{
+                        <input ngbDatepicker #d="ngbDatepicker" formControlName="startDate"
+                            class="form-control form-control-lg form-control-solid" [ngClass]="{
                             'is-invalid': createSprintForm.controls['startDate'].invalid
                         }" />
                         <div class="input-group-append" (click)="d.toggle()">
@@ -76,7 +67,7 @@
                                 <em class="text-dark-50 flaticon-calendar"></em>
                             </span>
                         </div>
-                    </div> 
+                    </div>
                     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                         validation: 'required',
                         message: 'Start date is required',
@@ -86,9 +77,10 @@
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">End date</label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <div class="input-group input-group-solid">
-                        <input ngbDatepicker #t="ngbDatepicker" formControlName="endDate" class="form-control form-control-lg form-control-solid" [ngClass]="{
+                        <input ngbDatepicker #t="ngbDatepicker" formControlName="endDate"
+                            class="form-control form-control-lg form-control-solid" [ngClass]="{
                             'is-invalid': createSprintForm.controls['endDate'].invalid
                         }" />
                         <div class="input-group-append" (click)="t.toggle()">
@@ -96,7 +88,7 @@
                                 <em class="text-dark-50 flaticon-calendar"></em>
                             </span>
                         </div>
-                    </div> 
+                    </div>
                     <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
                         validation: 'required',
                         message: 'End date is required',
@@ -114,8 +106,13 @@
                 </ng-container>
             </ng-template>
 
-        </div>
-        <!--end::Body-->
+        </form>
+        <!--end::Form-->
     </div>
-</form>
-<!--end::Form-->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="create()"
+            [disabled]="createSprintForm.invalid">Save</button>
+    </div>
+</div>

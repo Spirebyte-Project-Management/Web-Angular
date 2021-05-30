@@ -13,6 +13,7 @@ import { IssuePermissionKeys } from 'src/app/_metronic/core/constants/IssuePermi
 import { SprintPermissionKeys } from 'src/app/_metronic/core/constants/SprintPermissionKeys';
 import { getSelectedProjectId } from '../../_store/project.selectors';
 import { CreateIssueComponent } from '../issues/create-issue/create-issue.component';
+import { CreateSprintComponent } from '../sprints/create-sprint/create-sprint.component';
 import { IssueUpdateModel } from '../_models/issue-update.model';
 import { IssueModel, IssueType } from '../_models/issue.model';
 import { updateIssueInStore } from '../_store/issue.actions';
@@ -112,6 +113,11 @@ export class BacklogComponent implements OnInit {
 
   createIssue(projectId: string) {
     const modalRef = this.modalService.open(CreateIssueComponent, { size: 'md' });
+    modalRef.componentInstance.projectId = projectId;
+  }
+
+  createSprint(projectId: string) {
+    const modalRef = this.modalService.open(CreateSprintComponent, { size: 'md' });
     modalRef.componentInstance.projectId = projectId;
   }
 }
