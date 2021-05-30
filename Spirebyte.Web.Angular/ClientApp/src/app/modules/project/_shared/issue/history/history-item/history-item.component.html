@@ -21,12 +21,12 @@
                     <app-history-string-template [value]="field.valueAfter"></app-history-string-template>
                 </ng-container>
                 <ng-container *ngSwitchCase="fieldTypes.Assignees">
-                    <app-history-assignees-template [value]="field.valueAfter"></app-history-assignees-template>
+                    <app-history-assignees-template [value]="field.valueBefore"></app-history-assignees-template>
                     <span class="px-1 d-inline-flex align-items-center">→</span>
                     <app-history-assignees-template [value]="field.valueAfter"></app-history-assignees-template>
                 </ng-container>
                 <ng-container *ngSwitchCase="fieldTypes.Epic">
-                    <app-history-epic-id-template [value]="field.valueAfter"></app-history-epic-id-template>
+                    <app-history-epic-id-template [value]="field.valueBefore"></app-history-epic-id-template>
                     <span class="px-1 d-inline-flex align-items-center">→</span>
                     <app-history-epic-id-template [value]="field.valueAfter"></app-history-epic-id-template>
                 </ng-container>
