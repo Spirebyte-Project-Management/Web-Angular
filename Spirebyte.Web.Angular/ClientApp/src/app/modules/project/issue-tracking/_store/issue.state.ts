@@ -6,6 +6,7 @@ export const IssueFeatureKey = 'issues';
 export interface IssueState extends EntityState<IssueModel> {
     error: any;
     currentIssueId: string;
+    selectedEpicId: string;
 }
 
 export const IssueAdapter = createEntityAdapter<IssueModel>();
@@ -13,5 +14,6 @@ export const IssueAdapter = createEntityAdapter<IssueModel>();
 
 export const initialState: IssueState = IssueAdapter.getInitialState({
     error: null,
-    currentIssueId: null
+    currentIssueId: null,
+    selectedEpicId: null
 });

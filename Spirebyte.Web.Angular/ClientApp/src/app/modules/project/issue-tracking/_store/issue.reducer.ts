@@ -31,6 +31,9 @@ export const IssueReducer = createReducer(
     on(IssueActions.selectIssue, (state, action) => {
         return {...state, currentIssueId: action.issueId};
     }),
+    on(IssueActions.selectEpic, (state, action) => {
+        return {...state, selectedEpicId: action.epicId};
+    }),
     on(IssueActions.createIssueSuccess, (state, action) => {
         return IssueAdapter.addOne(action.issue, {...state, error: initialState.error});
     }),

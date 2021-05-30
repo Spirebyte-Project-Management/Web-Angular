@@ -14,20 +14,26 @@
         <div class="card-body pt-2">
             <div class="table-responsive" *ngIf="epics$ | async as epics">
                 <div *ngIf="epics.length == 0; else epicList">This project does not yet have any epics</div>
-
                 <ng-template #epicList>
-                    <div class="d-flex align-items-center cursor-pointer mb-2" *ngFor="let epic of epics"
-                        (click)="setSelectedIssue(epic.id)">
-                        <!--begin::Bullet-->
-                        <span class="bullet bullet-bar align-self-stretch"
-                            [style.background]="epicColor(epic.id)"></span>
-                        <!--end::Bullet-->
-                        <!--begin::Text-->
-                        <div class="d-flex flex-column flex-grow-1 mx-2">
-                            <span class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">{{epic.title}}</span>
-                            <span class="text-muted font-weight-bold">{{epic.id}}</span>
+                    <div class="mb-2" [class.active]="isSelected(epic.id)" *ngFor="let epic of epics">
+                        <div class="d-flex align-items-center m-1">
+                            <!--begin::Bullet-->
+                            <span class="bullet bullet-bar align-self-stretch"
+                                [style.background]="epicColor(epic.id)"></span>
+                            <!--end::Bullet-->
+                            <!--begin::Text-->
+                            <div class="d-flex flex-column flex-grow-1 mx-2 cursor-pointer" (click)="setSelectedIssue(epic.id)">
+                                <span class="text-dark-75 text-hover-primary font-weight-bold font-size-lg mb-1">{{epic.title}}</span>
+                                <span class="text-muted font-weight-bold">{{epic.id}}</span>
+                            </div>
+                            <!--end::Text-->
+                            <button *ngIf="(selectedEpic$ | async) !== epic.id" class="btn btn-hover-light-secondary btn-sm btn-icon" (click)="selectEpic(epic.id)">
+                                <span class="svg-icon svg-icon-secondary" cacheSVG="true" [inlineSVG]="'./assets/media/svg/icons/Text/Filter.svg'"></span>
+                            </button>
+                            <button *ngIf="(selectedEpic$ | async) === epic.id" class="btn btn-hover-light-primary btn-sm btn-icon" (click)="selectEpic(null)">
+                                <span class="svg-icon svg-icon-primary" cacheSVG="true" [inlineSVG]="'./assets/media/svg/icons/Text/Filter.svg'"></span>
+                            </button>
                         </div>
-                        <!--end::Text-->
                     </div>
                 </ng-template>
             </div>

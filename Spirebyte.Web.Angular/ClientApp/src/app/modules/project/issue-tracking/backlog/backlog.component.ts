@@ -16,7 +16,7 @@ import { CreateIssueComponent } from '../issues/create-issue/create-issue.compon
 import { IssueUpdateModel } from '../_models/issue-update.model';
 import { IssueModel, IssueType } from '../_models/issue.model';
 import { updateIssueInStore } from '../_store/issue.actions';
-import { getSelectedProjectBacklog, getSelectedProjectBacklogIssueCount, getSelectedProjectIssuesBySprint, projectHasIssues } from '../_store/issue.selectors';
+import { getSelectedProjectBacklog, getSelectedProjectBacklogFiltered, getSelectedProjectBacklogIssueCount, getSelectedProjectIssuesBySprint, getSelectedProjectIssuesBySprintFiltered, projectHasIssues } from '../_store/issue.selectors';
 
 
 @Component({
@@ -60,17 +60,17 @@ export class BacklogComponent implements OnInit {
       this.loadedIssues = this.store.select(projectHasIssues);
       this.sprints$ = this.sprintEntityService.entities$.pipe(map(sprints => sprints.filter(sprint => sprint.projectId == this.projectId && sprint.endedAt == this.minDate)));
 
-      this.backlog$ = this.store.select(getSelectedProjectBacklog);
-      this.backlogCount$ = this.store.select(getSelectedProjectBacklogIssueCount);
+      this.backlog$ = this.store.select(getSelectedProjectBacklogFiltered);
+      this.backlogCount$ = this.store.select(getSelectedProjectBacklogFiltered).pipe(map(issues => issues.length));
     });
   }
 
   getIssuesForSprint(sprintId: string): Observable<IssueModel[]> {
-    return this.store.select(getSelectedProjectIssuesBySprint, { sprintId })
+    return this.store.select(getSelectedProjectIssuesBySprintFiltered, { sprintId })
   }
 
   getIssueCountForSprint(sprintId: string): Observable<number> {
-    return this.store.select(getSelectedProjectIssuesBySprint, { sprintId }).pipe(map(issues => issues.length));
+    return this.store.select(getSelectedProjectIssuesBySprintFiltered, { sprintId }).pipe(map(issues => issues.length));
   }
 
   startSprint(sprint: SprintModel){

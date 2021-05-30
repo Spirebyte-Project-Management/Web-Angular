@@ -21,6 +21,16 @@ export const hasIssues = createSelector(
   IssuesState => IssuesState.ids.length > 0
 );
 
+export const getSelectedEpicId = createSelector(
+  getIssueState,
+  IssueState => IssueState.selectedEpicId
+);
+
+export const hasSelectedEpic = createSelector(
+  getSelectedEpicId,
+  selectedEpicId => selectedEpicId ? true : false
+);
+
 export const projectHasIssues = createSelector(
   selectAll,
   getSelectedProjectId,
@@ -45,6 +55,13 @@ export const getSelectedProjectBacklog = createSelector(
   (issues, projectId) => issues.filter(i => i.projectId === projectId && i.sprintId === null && i.type != IssueType.Epic && i.status !== IssueStatus.DONE)
 );
 
+export const getSelectedProjectBacklogFiltered = createSelector(
+  selectAll,
+  getSelectedProjectId,
+  getSelectedEpicId,
+  (issues, projectId, epicId) => issues.filter(i => i.projectId === projectId && i.sprintId === null && i.type != IssueType.Epic && (epicId === null ? true : i.epicId === epicId) && i.status !== IssueStatus.DONE)
+);
+
 export const getSelectedProjectBacklogIssueCount = createSelector(
   getSelectedProjectBacklog,
   (backlog) => backlog.length
@@ -54,6 +71,13 @@ export const getSelectedProjectIssuesBySprint= createSelector(
   selectAll,
   getSelectedProjectId,
   (issues, projectId, props) => issues.filter(i => i.projectId === projectId && i.sprintId === props.sprintId && i.type !== IssueType.Epic)
+);
+
+export const getSelectedProjectIssuesBySprintFiltered = createSelector(
+  selectAll,
+  getSelectedProjectId,
+  getSelectedEpicId,
+  (issues, projectId, epicId, props) => issues.filter(i => i.projectId === projectId && i.sprintId === props.sprintId && (epicId === null ? true : i.epicId === epicId) && i.type !== IssueType.Epic && i.status !== IssueStatus.DONE)
 );
 
 export const getSelectedProjectIssuesByEpic= createSelector(
@@ -81,7 +105,6 @@ export const getSelectedIssueId = createSelector(
   selectQueryParams,
   ({ selectedIssue }) => selectedIssue
 );
-
 
 export const hasSelectedIssue = createSelector(
   getSelectedIssueId,

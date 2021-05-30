@@ -1,3 +1,6 @@
 .card:hover{
     background: #ebedf3;
 }
+.card.active{
+    border: solid 2px #3699FF;
+}

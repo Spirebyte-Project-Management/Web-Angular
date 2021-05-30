@@ -27,7 +27,9 @@ export const DELETE_ISSUE_FAILURE = '[Issue effect] Delete issue failure';
 
 export const ADD_ISSUE_TO_STORE = '[Issue effect] Add issue to store';
 export const UPDATE_ISSUE_IN_STORE = '[system] Update issue In store';
+
 export const SELECT_ISSUE = '[system] Select issue';
+export const SELECT_EPIC = '[system] Select epic';
 
 export const LOAD_ISSUE_HISTORY = '[system] Load issue history';
 export const LOAD_ISSUE_HISTORY_SUCCESS = '[Issue effect] Load issue history success';
@@ -137,6 +139,11 @@ export const updateIssueInStore = createAction(
 export const selectIssue = createAction(
     SELECT_ISSUE,
     props<{ issueId: string }>()
+);
+
+export const selectEpic = createAction(
+    SELECT_EPIC,
+    props<{ epicId: string }>()
 );
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
