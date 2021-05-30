@@ -21,6 +21,7 @@ export class IssueUpdateModel {
         this.description = issue.description;
         this.storyPoints = issue.storyPoints;
         this.epicId = issue.epicId;
+        this.sprintId = issue.sprintId;
         this.assignees = issue.assignees;
         this.linkedIssues = issue.linkedIssues;
     }
