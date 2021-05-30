@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { IssuesResolver } from '../data/_services/issues/issues.resolver';
 import { PermissionSchemeResolver } from '../data/_services/permission-scheme/permission-schemes.resolver';
 import { InvitationResolver } from './_store/invitation.resolver';
 import { SprintsResolver } from '../data/_services/sprints/sprints.resolver';
 import { InvitationComponent } from './invitation/invitation.component';
 import { ProjectComponent } from './project.component';
 import { ProjectResolver } from './_store/project.resolver';
+import { IssuesResolver } from './issue-tracking/_store/issues.resolver';
 
 const routes: Routes = [
   {
@@ -25,10 +25,6 @@ const routes: Routes = [
       },
       {
         path: 'issue-tracking',
-        resolve: {
-          issues: IssuesResolver,
-          sprints: SprintsResolver,
-        },
         loadChildren: () => import('./issue-tracking/issue-tracking.module').then((m) => m.IssueTrackingModule),
       },
       {

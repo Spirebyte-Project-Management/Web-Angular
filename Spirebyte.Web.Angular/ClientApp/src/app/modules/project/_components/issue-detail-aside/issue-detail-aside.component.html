@@ -116,7 +116,7 @@
                             <!--begin::Navigation-->
                             <ul class="navi navi-hover">
                                 <li class="navi-item" *requirePermission="issuePermissionKeys.EditIssues">
-                                    <a [routerLink]="['/project', project.id, 'issue-tracking','issues', issue.id, 'update']"
+                                    <a (click)="updateIssue(issue.id)"
                                         class="navi-link">
                                         <span class="navi-icon">
                                             <em class="flaticon2-edit"></em>
@@ -125,7 +125,7 @@
                                     </a>
                                 </li>
                                 <li class="navi-item" *requirePermission="issuePermissionKeys.DeleteIssues">
-                                    <a [routerLink]="['/project', project.id, 'issue-tracking', 'issues', issue.id, 'delete']"
+                                    <a (click)="deleteIssue(issue.id)"
                                         class="navi-link">
                                         <span class="navi-icon">
                                             <em class="flaticon2-delete"></em>

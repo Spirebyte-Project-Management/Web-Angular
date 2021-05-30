@@ -1,11 +1,10 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { timingSafeEqual } from 'crypto';
-import { comment } from 'postcss';
 import { Observable } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
-import { IssueCommentModel } from 'src/app/modules/data/_models/issue-comment.model';
-import { IssueModel } from 'src/app/modules/data/_models/issue.model';
-import { IssueCommentEntityService } from 'src/app/modules/data/_services/issues/comments/issue-comment-entity.service';
+import { IssueCommentModel } from 'src/app/modules/project/issue-tracking/_models/issue-comment.model';
+import { Store } from '@ngrx/store';
+import { IssueModel } from 'src/app/modules/project/issue-tracking/_models/issue.model';
+import { getSelectedIssueComments } from 'src/app/modules/project/issue-tracking/_store/issue.selectors';
+import { loadIssueComments } from 'src/app/modules/project/issue-tracking/_store/issue.actions';
 
 @Component({
   selector: 'app-comment-list',
@@ -18,24 +17,13 @@ export class CommentListComponent implements OnInit, OnChanges {
 
   comments$: Observable<IssueCommentModel[]>;
 
-  constructor(private commentEntityService: IssueCommentEntityService) { }
+  constructor(private store: Store) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getComments().then();
-    this.comments$ = this.commentEntityService.entities$.pipe(map(comments => comments.filter(comment => comment.issueId == this.issue.id)));
+    this.comments$ = this.store.select(getSelectedIssueComments);
   }
 
   ngOnInit(): void {
-    this.getComments().then();
-    this.comments$ = this.commentEntityService.entities$.pipe(map(comments => comments.filter(comment => comment.issueId == this.issue.id)));
+    this.comments$ = this.store.select(getSelectedIssueComments);
   }
-
-  async getComments() {
-    const result = await this.commentEntityService.getWithQuery({issueId: this.issue.id}).toPromise();
- 
-    // do what you want with result 
- 
-    return result;
- }
-
 }

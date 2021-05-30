@@ -1,10 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
-import { IssueType, IssueModel } from 'src/app/modules/data/_models/issue.model';
-import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
+import { Store } from '@ngrx/store';
+import { IssueType, IssueModel } from '../../_models/issue.model';
+import { createIssue } from '../../_store/issue.actions';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -18,23 +20,16 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
   types = IssueType;
   createIssueForm: FormGroup;
   hasError: boolean;
-  projectId: string;
-  returnUrl: string;
+  @Input() projectId: string;
 
   private unsubscribe: Subscription[] = [];
 
   constructor(private fb: FormBuilder, 
-              private issueEntityService: IssueEntityService,
+              private store: Store,
+              public modal: NgbActiveModal,
               private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    const paramsSubscription = this.route.parent.paramMap.subscribe( params => {
-      this.projectId = params.get('key');
-    });
-    this.unsubscribe.push(paramsSubscription);
-
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || `project/${this.projectId}/issue-tracking/issues`;
-
     this.initForm();
   }
 
@@ -64,7 +59,7 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
       });
     }
 
-    submit() {
+    create() {
       this.hasError = false;
       const result = {};
       Object.keys(this.f).forEach(key => {
@@ -72,16 +67,10 @@ export class CreateIssueComponent implements OnInit, OnDestroy {
       });
       const issue = new IssueModel();
       issue.setIssue(result);
+      console.log(this.projectId)
       issue.projectId = this.projectId;
-      const createIssueSubscr = this.issueEntityService
-        .add(issue)
-        .subscribe(
-          () => {
-            this.router.navigateByUrl(this.returnUrl,
-            /* Removed unsupported properties by Angular migration: relativeTo. */ {});
-          }
-        );
-      this.unsubscribe.push(createIssueSubscr);
+      this.store.dispatch(createIssue({ issue }));
+      this.modal.close();
     }
 
     ngOnDestroy() {

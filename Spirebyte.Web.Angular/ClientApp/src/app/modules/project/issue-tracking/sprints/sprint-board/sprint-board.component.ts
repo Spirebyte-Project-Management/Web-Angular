@@ -1,13 +1,17 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IssueStatus, IssueType, IssueModel } from 'src/app/modules/data/_models/issue.model';
 import { SprintModel } from 'src/app/modules/data/_models/sprint.model';
-import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
 import { SprintEntityService } from 'src/app/modules/data/_services/sprints/sprint-entity.service';
 import { SprintHTTPService } from 'src/app/modules/data/_services/sprints/sprint-http.service';
+import { IssueStatus, IssueType, IssueModel } from '../../_models/issue.model';
+import { getSelectedProjectIssuesBySprint } from '../../_store/issue.selectors';
+import * as IssueActions from '../../_store/issue.actions';
+import { IssueUpdateModel } from '../../_models/issue-update.model';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-sprint-board',
@@ -25,7 +29,7 @@ export class SprintBoardComponent implements OnInit {
 
   constructor(private sprintEntityService: SprintEntityService,
     private sprintHttpService: SprintHTTPService,
-    private issueEntityService: IssueEntityService,
+    private store: Store,
     private route: ActivatedRoute,
     private router: Router) { }
 
@@ -37,22 +41,28 @@ export class SprintBoardComponent implements OnInit {
   }
 
   getIssuesForSprintByStatus(sprintId: string, status: string): Observable<IssueModel[]> {
-    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.status == IssueStatus[status as keyof typeof IssueStatus] && issue.type != IssueType.Epic)));
+    return this.store.select(getSelectedProjectIssuesBySprint, { sprintId }).pipe(map(issues => issues.filter(issue => issue.status == IssueStatus[status as keyof typeof IssueStatus])));
   }
 
   endSprint(sprint: SprintModel) {
+        // TODO: Update sprint id in issue when ending sprint
+        // TODO: Update sprint id in issue when ending sprint
+        // TODO: Update sprint id in issue when ending sprint
+        // TODO: Update sprint id in issue when ending sprint
+
     this.sprintHttpService.endSprint(sprint.id).subscribe();
     let updateSprint = new SprintModel();
     updateSprint.setSprint(sprint);
     updateSprint.endedAt = new Date().toISOString();
     this.sprintEntityService.updateOneInCache(updateSprint);
 
-    this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprint.id && issue.status != IssueStatus.DONE && issue.type != IssueType.Epic))).subscribe(issues => {
+    this.store.select(getSelectedProjectIssuesBySprint, { sprintId: sprint.id }).pipe(map(issues => issues.filter(issue => issue.status != IssueStatus.DONE))).subscribe(issues => {
       issues.forEach(doneIssue => {
-        let issue = new IssueModel();
-        issue.setIssue(doneIssue);
-        issue.sprintId = null;
-        this.issueEntityService.updateOneInCache(issue);
+        let updateissue: Update<IssueUpdateModel> = {
+          id: doneIssue.id,
+          changes: { sprintId: null, status: IssueStatus.DONE }
+        };
+        this.store.dispatch(IssueActions.updateIssueInStore({ issue: updateissue }));
       });
     });
 
@@ -65,15 +75,19 @@ export class SprintBoardComponent implements OnInit {
     if (event.container.id == event.previousContainer.id)
       return;
 
-    let issue = new IssueModel();
-    issue.setIssue(event.item.data);
+    let issue = new IssueUpdateModel();
+    issue.setIssueUpdate(event.item.data);
     issue.status = IssueStatus[event.container.id as keyof typeof IssueStatus]
-    this.issueEntityService.update(issue);
 
-    transferArrayItem(event.previousContainer.data,
-      event.container.data,
-      event.previousIndex,
-      event.currentIndex);
+    let updateissue: Update<IssueUpdateModel> = {
+      id: event.item.data.id,
+      changes: { sprintId: event.container.id }
+    };
+    this.store.dispatch(IssueActions.updateIssueInStore({ issue: updateissue }));
+
+    this.store.dispatch(IssueActions.updateIssue({ issue }));
+
+   
   }
 
   daysRemaining(endDate) {

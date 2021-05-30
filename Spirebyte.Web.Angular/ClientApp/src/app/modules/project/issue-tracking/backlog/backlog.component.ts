@@ -1,15 +1,22 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Update } from '@ngrx/entity';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IssueModel, IssueType, IssueStatus } from 'src/app/modules/data/_models/issue.model';
 import { SprintModel } from 'src/app/modules/data/_models/sprint.model';
-import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
 import { SprintEntityService } from 'src/app/modules/data/_services/sprints/sprint-entity.service';
 import { SprintHTTPService } from 'src/app/modules/data/_services/sprints/sprint-http.service';
 import { IssuePermissionKeys } from 'src/app/_metronic/core/constants/IssuePermissionKeys';
 import { SprintPermissionKeys } from 'src/app/_metronic/core/constants/SprintPermissionKeys';
+import { getSelectedProjectId } from '../../_store/project.selectors';
+import { CreateIssueComponent } from '../issues/create-issue/create-issue.component';
+import { IssueUpdateModel } from '../_models/issue-update.model';
+import { IssueModel, IssueType } from '../_models/issue.model';
+import { updateIssueInStore } from '../_store/issue.actions';
+import { getSelectedProjectBacklog, getSelectedProjectBacklogIssueCount, getSelectedProjectIssuesBySprint, projectHasIssues } from '../_store/issue.selectors';
 
 
 @Component({
@@ -25,42 +32,45 @@ export class BacklogComponent implements OnInit {
   issueType = IssueType;
   projectId: string;
 
+  projectId$: Observable<string>;
+
+
   sprintPermissionKeys = SprintPermissionKeys;
   issuePermissionKeys = IssuePermissionKeys;
 
   minDate = '0001-01-01T00:00:00Z';
 
   backlogKey = 'backlog';
-  private sprintIssues: Map<string, IssueModel[]>;
-
 
   constructor(
-    private issueEntityService: IssueEntityService,
+    private store: Store,
     private sprintEntityService: SprintEntityService,
     private sprintHttpService: SprintHTTPService,
+    private modalService: NgbModal,
     public route: ActivatedRoute,
     public router: Router,
   ) {
+    this.projectId$ = this.store.select(getSelectedProjectId);
   }
 
   ngOnInit(): void {
     const paramsSubscription = this.route.parent.paramMap.subscribe(params => {
       this.projectId = params.get('key');
 
-      this.loadedIssues = this.issueEntityService.loaded$;
+      this.loadedIssues = this.store.select(projectHasIssues);
       this.sprints$ = this.sprintEntityService.entities$.pipe(map(sprints => sprints.filter(sprint => sprint.projectId == this.projectId && sprint.endedAt == this.minDate)));
 
-      this.backlog$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE)));
-      this.backlogCount$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == this.projectId &&  issue.sprintId == null && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE).length));
+      this.backlog$ = this.store.select(getSelectedProjectBacklog);
+      this.backlogCount$ = this.store.select(getSelectedProjectBacklogIssueCount);
     });
   }
 
   getIssuesForSprint(sprintId: string): Observable<IssueModel[]> {
-    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE)));
+    return this.store.select(getSelectedProjectIssuesBySprint, { sprintId })
   }
 
   getIssueCountForSprint(sprintId: string): Observable<number> {
-    return this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.sprintId == sprintId && issue.type != IssueType.Epic && issue.status != IssueStatus.DONE).length));
+    return this.store.select(getSelectedProjectIssuesBySprint, { sprintId }).pipe(map(issues => issues.length));
   }
 
   startSprint(sprint: SprintModel){
@@ -77,19 +87,20 @@ export class BacklogComponent implements OnInit {
 
     if (event.container.id === this.backlogKey && event.previousContainer.id !== this.backlogKey){
       this.sprintHttpService.removeIssueFromSprint(event.previousContainer.id, event.item.data.id).subscribe();
-      let issue = new IssueModel();
-      issue.setIssue(event.item.data);
-      issue.sprintId = null;
-      this.issueEntityService.updateOneInCache(issue);
+      let issue: Update<IssueUpdateModel> = {
+        id: event.item.data.id,
+        changes: { sprintId: null }
+      };
+      this.store.dispatch(updateIssueInStore({ issue }));
 
     }
     else{
       this.sprintHttpService.addIssueToSprint(event.container.id, event.item.data.id).subscribe();
-      let issue = new IssueModel();
-      issue.setIssue(event.item.data);
-      issue.sprintId = event.container.id;
-      this.issueEntityService.updateOneInCache(issue);
-
+      let issue: Update<IssueUpdateModel> = {
+        id: event.item.data.id,
+        changes: { sprintId: event.container.id }
+      };
+      this.store.dispatch(updateIssueInStore({ issue }));
     }
 
     transferArrayItem(event.previousContainer.data,
@@ -97,5 +108,10 @@ export class BacklogComponent implements OnInit {
       event.previousIndex,
       event.currentIndex);
 
+  }
+
+  createIssue(projectId: string) {
+    const modalRef = this.modalService.open(CreateIssueComponent, { size: 'md' });
+    modalRef.componentInstance.projectId = projectId;
   }
 }

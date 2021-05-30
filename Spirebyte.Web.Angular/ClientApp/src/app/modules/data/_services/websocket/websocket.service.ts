@@ -3,13 +3,13 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import * as signalR from '@aspnet/signalr';
 import { OperationModel } from '../../_models/operation.model';
-import { Observable, Subject } from 'rxjs';
-import { IssueEntityService } from '../issues/issue-entity.service';
+import { Observable, Subject } from 'rxjs';3
 import { SprintEntityService } from '../sprints/sprint-entity.service';
 import { UserEntityService } from '../users/user-entity.service';
 import { Store } from '@ngrx/store';
 import { getAuthenticatedUserId } from 'src/app/_store/auth/auth.selectors';
 import { getSingleProject } from 'src/app/modules/project/_store/project.actions';
+import { getSingleIssue } from 'src/app/modules/project/issue-tracking/_store/issue.actions';
 
 @Injectable()
 export class WebsocketService {
@@ -25,7 +25,6 @@ export class WebsocketService {
     .build();
 
   constructor(private http: HttpClient,
-            private issueEntityService: IssueEntityService,
             private sprintEntityService: SprintEntityService,
             private userEntityService: UserEntityService,
             private store: Store) {
@@ -53,7 +52,7 @@ export class WebsocketService {
           this.store.dispatch(getSingleProject({ projectId: operation.projectId }));
         }
         if (operation.issueId != null){
-          this.issueEntityService.getByKey(operation.issueId);
+          this.store.dispatch(getSingleIssue({ issueId: operation.issueId }));
         }
         if (operation.sprintId != null){
           this.sprintEntityService.getByKey(operation.sprintId);

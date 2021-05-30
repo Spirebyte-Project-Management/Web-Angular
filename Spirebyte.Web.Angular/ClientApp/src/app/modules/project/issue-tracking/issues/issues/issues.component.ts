@@ -1,10 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { IssueModel, IssueType, IssueStatus } from 'src/app/modules/data/_models/issue.model';
-import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
 import { IssuePermissionKeys } from 'src/app/_metronic/core/constants/IssuePermissionKeys';
+import { Store } from '@ngrx/store';
+import { getSelectedProjectIssues, projectHasIssues } from '../../_store/issue.selectors';
+import { IssueModel, IssueType, IssueStatus } from '../../_models/issue.model';
+import { CreateIssueComponent } from '../create-issue/create-issue.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { getSelectedProjectId } from '../../../_store/project.selectors';
 
 @Component({
   selector: 'app-issues',
@@ -16,22 +19,23 @@ export class IssuesComponent implements OnInit {
   issues$: Observable<IssueModel[]>;
   issueType = IssueType;
   doneStatus = IssueStatus.DONE;
-  projectKey: string;
+
+  projectId$: Observable<string>;
+
 
   issuePermissionKeys = IssuePermissionKeys;
 
   constructor(
-    private issueEntityService: IssueEntityService,
+    private store: Store,
+    private modalService: NgbModal,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.loadedIssues = this.issueEntityService.loaded$;
-    const paramsSubscription = this.route.parent.paramMap.subscribe(params => {
-      let projectId = params.get('key');
-      this.issues$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.projectId == projectId)));
-    });
+    this.loadedIssues = this.store.select(projectHasIssues);
+    this.issues$ = this.store.select(getSelectedProjectIssues);
+    this.projectId$ = this.store.select(getSelectedProjectId);
   }
   
   isSelected(url): boolean {
@@ -47,6 +51,11 @@ export class IssuesComponent implements OnInit {
         selectedIssue: key
       }
     });
+  }
+
+  createIssue(projectId: string) {
+    const modalRef = this.modalService.open(CreateIssueComponent, { size: 'md' });
+    modalRef.componentInstance.projectId = projectId;
   }
 
 }

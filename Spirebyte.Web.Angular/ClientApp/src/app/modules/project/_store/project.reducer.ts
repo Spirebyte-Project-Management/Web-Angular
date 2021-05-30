@@ -52,8 +52,6 @@ export const ProjectReducer = createReducer(
     }),
     immerOn(ProjectActions.updateProjectGroupSuccess, (state, action) => {
         let projectGroup = state.entities[state.currentProjectId].projectGroups.find(pg => pg.id === action.projectGroup.id);
-        console.log(projectGroup);
-        console.log(action.projectGroup);
         projectGroup.userIds = action.projectGroup.userIds;
         projectGroup.name = action.projectGroup.name;
     }),

@@ -12,11 +12,14 @@ import { CoreModule } from 'src/app/_metronic/core';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FormsModule } from '@angular/forms';
+import { HistoryStringTemplateComponent } from './issue/history/history-item/_components/history-string-template/history-string-template.component';
+import { HistoryAssigneesTemplateComponent } from './issue/history/history-item/_components/history-assignees-template/history-assignees-template.component';
+import { HistoryEpicIdTemplateComponent } from './issue/history/history-item/_components/history-epic-id-template/history-epic-id-template.component';
 
 
 
 @NgModule({
-  declarations: [CommentComponent, CommentListComponent, PostCommentComponent, HistoryItemComponent, HistoryListComponent, SubIssueComponent, EpicLabelComponent],
+  declarations: [CommentComponent, CommentListComponent, PostCommentComponent, HistoryItemComponent, HistoryListComponent, SubIssueComponent, EpicLabelComponent, HistoryStringTemplateComponent, HistoryAssigneesTemplateComponent, HistoryEpicIdTemplateComponent],
   imports: [
     CommonModule,
     CoreModule,

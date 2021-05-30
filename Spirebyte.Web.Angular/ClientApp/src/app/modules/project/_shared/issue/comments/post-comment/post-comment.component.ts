@@ -4,9 +4,9 @@ import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { IssueCommentModel } from 'src/app/modules/data/_models/issue-comment.model';
-import { IssueModel } from 'src/app/modules/data/_models/issue.model';
-import { IssueCommentEntityService } from 'src/app/modules/data/_services/issues/comments/issue-comment-entity.service';
+import { IssueCommentModel } from 'src/app/modules/project/issue-tracking/_models/issue-comment.model';
+import { IssueModel } from 'src/app/modules/project/issue-tracking/_models/issue.model';
+import { addIssueComment } from 'src/app/modules/project/issue-tracking/_store/issue.actions';
 import { ProjectModel } from 'src/app/modules/project/_models/project.model';
 import { UserModel } from 'src/app/_models/user.model';
 import { getAuthenticatedUser } from 'src/app/_store/auth/auth.selectors';
@@ -27,7 +27,7 @@ export class PostCommentComponent implements OnInit, OnChanges {
 
   User$: Observable<UserModel>;
 
-  constructor(private store: Store, private fb: FormBuilder, private issueCommentEntityService: IssueCommentEntityService) {
+  constructor(private store: Store, private fb: FormBuilder) {
     this.comment = new IssueCommentModel();
   }
 
@@ -47,7 +47,7 @@ export class PostCommentComponent implements OnInit, OnChanges {
 
   sendComment(): void {
     let commentToPost = Object.assign({}, this.comment);
-    this.issueCommentEntityService.add(commentToPost);
+    this.store.dispatch(addIssueComment({ issueComment: commentToPost}));
     this.comment.body = ""; 
   }
 }

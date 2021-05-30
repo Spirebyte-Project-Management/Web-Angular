@@ -1,24 +1,13 @@
-<!--begin::Form-->
-<form class="form" novalidate="novalidate" [formGroup]="createIssueForm" (ngSubmit)="submit()">
-    <!--begin::Card-->
-    <div class="card card-custom card-stretch">
-        <!--begin::Header-->
-        <div class="card-header py-3">
-            <div class="card-title align-items-start flex-column">
-                <h3 class="card-label font-weight-bolder text-dark">Create Issue</h3>
-                <span class="text-muted font-weight-bold font-size-sm mt-1">Start documenting as quickly as
-                    possible.</span>
-            </div>
-            <div class="card-toolbar">
-                <button type="submit" class="btn btn-success mr-2" [disabled]="
-    createIssueForm.invalid
-    ">Save Changes</button>
-                <a [routerLink]="this.returnUrl" class="btn btn-secondary">Cancel</a>
-            </div>
+<div class="modal-content">
+    <div class="modal-header">
+        <div class="modal-title h4" id="example-modal-sizes-title-lg">
+            Create new Issue
         </div>
-        <!--end::Header-->
-        <!--begin::Body-->
-        <div class="card-body">
+    </div>
+    <div class="modal-body">
+
+        <!--begin::Form-->
+        <form class="form" novalidate="novalidate" [formGroup]="createIssueForm">
             <!-- begin::Alert error-->
             <ng-container *ngIf="hasError">
                 <div class="mb-10 alert alert-custom alert-light-danger alert-dismissible">
@@ -28,48 +17,55 @@
             <!-- end::Alert error-->
             <div class="row">
                 <label class="col-xl-3"></label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <h5 class="font-weight-bold mb-6">Issue Details</h5>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Title
                     <span class="text-danger">*</span></label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <input class="form-control form-control-lg form-control-solid" type="text" name="title"
                         formControlName="title" autocomplete="off" [ngClass]="{
                 'is-invalid': createIssueForm.controls['title'].invalid
             }" />
+            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Title is required',
+                control: createIssueForm.controls['title']
+            }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'minlength',
+                message: 'Title should have at least 3 symbols',
+                control: createIssueForm.controls['title']
+            }"></ng-container>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'maxLength',
+                message: 'Title should have maximum 100 symbols',
+                control: createIssueForm.controls['title']
+            }"></ng-container>
                 </div>
-                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-            validation: 'required',
-            message: 'Title is required',
-            control: createIssueForm.controls['title']
-        }"></ng-container>
-                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-            validation: 'minlength',
-            message: 'Title should have at least 3 symbols',
-            control: createIssueForm.controls['title']
-        }"></ng-container>
-                <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
-            validation: 'maxLength',
-            message: 'Title should have maximum 100 symbols',
-            control: createIssueForm.controls['title']
-        }"></ng-container>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Type
                     <span class="text-danger">*</span></label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <select class="form-control form-control-lg form-control-solid" id="type" name="type"
-                        formControlName="type">
+                        formControlName="type" [ngClass]="{
+                            'is-invalid': createIssueForm.controls['type'].invalid
+                        }">
                         <option *ngFor="let item of types | enumToArray" [value]="item.index">{{item.name}}</option>
                     </select>
+                    <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                        validation: 'required',
+                        message: 'Type is required',
+                        control: createIssueForm.controls['type']
+                    }"></ng-container>
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-xl-3 col-lg-3 col-form-label">Description</label>
-                <div class="col-lg-9 col-xl-6">
+                <div class="col-lg-9">
                     <ckeditor [editor]="Editor" name="description" formControlName="description"></ckeditor>
                 </div>
             </div>
@@ -82,9 +78,13 @@
                     </div>
                 </ng-container>
             </ng-template>
-
-        </div>
-        <!--end::Body-->
+        </form>
+        <!--end::Form-->
     </div>
-</form>
-<!--end::Form-->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancel</button>
+
+        <button type="submit" class="btn btn-primary btn-elevate" (click)="create()"
+            [disabled]="createIssueForm.invalid">Save</button>
+    </div>
+</div>

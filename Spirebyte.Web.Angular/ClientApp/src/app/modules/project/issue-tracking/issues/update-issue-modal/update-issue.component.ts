@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { SettingsModel } from 'src/app/_metronic/partials/content/general/tag-input/_models/settings.model';
-import { UserModel } from 'src/app/_models/user.model';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
-import { IssueType, IssueStatus, IssueModel } from 'src/app/modules/data/_models/issue.model';
-import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
+import { Store } from '@ngrx/store';
+import { IssueType, IssueStatus, IssueModel } from '../../_models/issue.model';
+import { getSelectedProjectEpics, selectIssue } from '../../_store/issue.selectors';
+import { updateIssue } from '../../_store/issue.actions';
+import { IssueUpdateModel } from '../../_models/issue-update.model';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -18,13 +18,14 @@ import { UserEntityService } from 'src/app/modules/data/_services/users/user-ent
 })
 export class UpdateIssueComponent implements OnInit, OnDestroy {
   Editor = InlineEditor;
+
+  @Input() issueId: string;
   
   types = IssueType;
   status = IssueStatus;
   updateIssueForm: FormGroup;
   hasError: boolean;
-  issueId: string;
-  projectId: string;
+  issue: IssueModel;
   assignees: any;
 
   private isLoadingSubject: BehaviorSubject<boolean>;
@@ -34,21 +35,15 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
   private unsubscribe: Subscription[] = [];
 
   constructor(private fb: FormBuilder, 
-              private issueEntityService: IssueEntityService,
+              private store: Store,
               private userEntityService: UserEntityService,
-              private router: Router, private route: ActivatedRoute) {
+              public modal: NgbActiveModal) {
     this.isLoadingSubject = new BehaviorSubject<boolean>(true);
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
   ngOnInit(): void {
-    const paramsSubscription = this.route.paramMap.subscribe( params => {
-      this.issueId = params.get('issueKey');
-      this.projectId = params.get('key');
-    });
-    this.unsubscribe.push(paramsSubscription);
-
-    this.epics$ = this.issueEntityService.entities$.pipe(map(issues => issues.filter(issue => issue.type == IssueType.Epic)));
+    this.epics$ = this.store.select(getSelectedProjectEpics);
 
     this.initForm();
     this.loadIssue();
@@ -61,8 +56,9 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
   }
 
   loadIssue() {
-    const issueSubscription = this.issueEntityService.entities$.pipe(map(issues => issues.find(issue => issue.id == this.issueId))).subscribe(issue => {
+    const issueSubscription = this.store.select(selectIssue, { id: this.issueId }).subscribe(issue => {
       this.updateIssueForm.patchValue(issue);
+      this.issue = issue;
       this.isLoadingSubject.next(false);
     });
     this.unsubscribe.push(issueSubscription);
@@ -105,35 +101,18 @@ export class UpdateIssueComponent implements OnInit, OnDestroy {
       });
     }
 
-    submit() {
+    update() {
       this.hasError = false;
       const result = {};
       Object.keys(this.f).forEach(key => {
         result[key] = this.f[key].value;
       });
 
-      const issue = new IssueModel();
-      issue.setIssue(result);
-      issue.id = this.issueId;
-      issue.projectId = this.projectId;
-      const createIssueSubscr = this.issueEntityService
-        .update(issue)
-        .subscribe(
-          result => {
-            this.router.navigate(['../'], {      
-              relativeTo: this.route,
-              queryParams: {
-                selectedIssue: this.issueId
-              }
-            });
-          },
-          error => {
-            this.hasError = true;
-          },
-          () => {
-          }
-        );
-      this.unsubscribe.push(createIssueSubscr);
+      const issue = new IssueUpdateModel();
+      issue.setIssueUpdate(result);
+      issue.id = this.issue.id;
+      this.store.dispatch(updateIssue({ issue }));
+      this.modal.close();
     }
 
     getUsersPromise(): Promise<any[]> {

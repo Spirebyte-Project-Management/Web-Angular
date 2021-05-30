@@ -1,42 +1,27 @@
-export class IssueModel {
+import { IssueType, IssueStatus } from "./issue.model";
+
+export class IssueUpdateModel {
     id: string;
     type: IssueType;
     status: IssueStatus;
     title: string;
     description: string;
     storyPoints: number;
-    projectId: string;
     epicId: string;
     sprintId: string;
     assignees: string[];
     linkedIssues: string[];
-    createdAt: string;
 
-    setIssue(issue: any) {
+
+    setIssueUpdate(issue: any) {
         this.id = issue.id;
         this.type = issue.type;
         this.status = issue.status;
         this.title = issue.title;
         this.description = issue.description;
         this.storyPoints = issue.storyPoints;
-        this.projectId = issue.projectId;
         this.epicId = issue.epicId;
         this.assignees = issue.assignees;
         this.linkedIssues = issue.linkedIssues;
-        this.createdAt = issue.createdAt;
     }
-}
-
-export enum IssueType {
-    Story,
-    Task,
-    SubTask,
-    Bug,
-    Epic
-}
-
-export enum IssueStatus {
-    TODO = 0,
-    INPROGRESS = 1,
-    DONE = 2,
 }

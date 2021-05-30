@@ -19,9 +19,20 @@ export class Field {
     fieldName: string;
     valueBefore: string;
     valueAfter: string;
+    fieldType: FieldTypes
 }
 
 export enum HistoryTypes {
     Created,
     Updated
+}
+
+export enum FieldTypes {
+    String,
+    Status,
+    Type,
+    Assignees,
+    Epic,
+    Sprint,
+    LinkedIssues
 }

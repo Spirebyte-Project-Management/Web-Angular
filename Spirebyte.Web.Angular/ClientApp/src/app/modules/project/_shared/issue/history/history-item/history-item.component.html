@@ -14,9 +14,28 @@
         </div>
         <div class="p-0 d-flex" *ngFor="let field of history.changedFields">
             <span class="pr-2" *ngIf="history.changedFields.length > 1"><strong>{{field.fieldName}}:</strong></span>
-            <span>{{field.valueBefore}}</span>
-            <span class="px-1">→</span>
-            <span>{{field.valueAfter}}</span>
+            <ng-container [ngSwitch]="field.fieldType">
+                <ng-container *ngSwitchCase="fieldTypes.String">
+                    <app-history-string-template [value]="field.valueBefore"></app-history-string-template>
+                    <span class="px-1">→</span>
+                    <app-history-string-template [value]="field.valueAfter"></app-history-string-template>
+                </ng-container>
+                <ng-container *ngSwitchCase="fieldTypes.Assignees">
+                    <app-history-assignees-template [value]="field.valueAfter"></app-history-assignees-template>
+                    <span class="px-1 d-inline-flex align-items-center">→</span>
+                    <app-history-assignees-template [value]="field.valueAfter"></app-history-assignees-template>
+                </ng-container>
+                <ng-container *ngSwitchCase="fieldTypes.Epic">
+                    <app-history-epic-id-template [value]="field.valueAfter"></app-history-epic-id-template>
+                    <span class="px-1 d-inline-flex align-items-center">→</span>
+                    <app-history-epic-id-template [value]="field.valueAfter"></app-history-epic-id-template>
+                </ng-container>
+                <ng-container *ngSwitchDefault>
+                    <span>{{field.valueBefore}}</span>
+                    <span class="px-1">→</span>
+                    <span>{{field.valueAfter}}</span>
+                </ng-container>
+            </ng-container>
         </div>
     </div>
 </div>

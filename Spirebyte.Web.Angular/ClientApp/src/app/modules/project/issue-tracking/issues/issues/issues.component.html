@@ -5,7 +5,7 @@
         </div>
         <div class="card-toolbar" *requirePermission="issuePermissionKeys.CreateIssues">
             <!--begin::Button-->
-            <a [routerLink]="['create']" class="btn btn-primary font-weight-bolder">
+            <a *ngIf="projectId$ | async as projectId" (click)="createIssue(projectId)" class="btn btn-primary font-weight-bolder">
                 <span class="svg-icon svg-icon-md">
                     <!--begin::Svg Icon | path:/metronic/theme/html/demo1/dist/assets/media/svg/icons/Design/Flatten.svg-->
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px"
@@ -33,7 +33,7 @@
                 <tbody>
                     <tr *ngFor="let issue of issues">
                         <th [id]="issue.id" [class.active]="isSelected(issue.id)">
-                            <div class="d-flex align-items-center" (click)="setSelectedIssue(issue.id)">
+                            <div class="d-flex align-items-center cursor-pointer" (click)="setSelectedIssue(issue.id)">
                                 <!--begin::Checkbox-->
                                 <div class="symbol mt-1 mr-3 symbol-20 align-self-start" [ngSwitch]="issue.type">
                                     <span *ngSwitchCase="issueType.Epic" class="symbol-label bg-info">
@@ -143,8 +143,8 @@
                             </div>
                         </th>
                     </tr>
-                    <tr>
-                        <a [routerLink]="['create']" *requirePermission="issuePermissionKeys.CreateIssues">
+                    <tr *ngIf="projectId$ | async as projectId">
+                        <a (click)="createIssue(projectId)" class="cursor-pointer" *requirePermission="issuePermissionKeys.CreateIssues">
                             <div class="d-flex align-items-center p-1">
                                 <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"

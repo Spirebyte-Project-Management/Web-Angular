@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IssueModel } from 'src/app/modules/data/_models/issue.model';
-import { IssueEntityService } from 'src/app/modules/data/_services/issues/issue-entity.service';
 import stc from 'string-to-color';
+import { IssueModel } from '../../../issue-tracking/_models/issue.model';
+import { selectIssue } from '../../../issue-tracking/_store/issue.selectors';
 
 @Component({
   selector: 'app-epic-label',
@@ -18,10 +19,10 @@ export class EpicLabelComponent implements OnInit {
 
   epic$: Observable<IssueModel>;
 
-  constructor(private issueEntityService: IssueEntityService) { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
-    this.epic$ = this.issueEntityService.entities$.pipe(map(issues => issues.find(issue => issue.id == this.epicId)));
+    this.epic$ = this.store.select(selectIssue, { id: this.epicId });
   }
 
   epicColor(epicKey: string): string {

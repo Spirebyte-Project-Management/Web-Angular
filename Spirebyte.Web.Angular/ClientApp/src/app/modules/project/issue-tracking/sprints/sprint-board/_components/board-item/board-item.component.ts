@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserModel } from 'src/app/_models/user.model';
-import { IssueType, IssueStatus, IssueModel } from 'src/app/modules/data/_models/issue.model';
 import { UserEntityService } from 'src/app/modules/data/_services/users/user-entity.service';
+import { IssueType, IssueStatus, IssueModel } from '../../../../_models/issue.model';
 
 @Component({
   selector: 'app-board-item',

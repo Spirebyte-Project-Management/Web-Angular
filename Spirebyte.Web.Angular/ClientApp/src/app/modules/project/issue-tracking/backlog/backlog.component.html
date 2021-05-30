@@ -1,6 +1,6 @@
 <div class="row mb-3">
     <div class="col-12 col-xxxxl-2 col-xxl-3 col-xl-3 col-lg-4 mb-6">
-        <app-epic-list [projectId]="projectId"></app-epic-list>
+        <app-epic-list></app-epic-list>
     </div>
     <div class="col">
         <ng-container cdkDropListGroup>
@@ -93,25 +93,27 @@
                                     </div>
                                 </div>
                             </ng-template>
-                            <a *requirePermission="issuePermissionKeys.CreateIssues" [routerLink]="['../issues/create']" [queryParams]="{returnUrl: router.url}">
-                                <div class="d-flex align-items-center p-2">
-                                    <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
-                                            viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
-                                                <rect fill="#000000" opacity="0.3"
-                                                    transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
-                                                    x="4" y="11" width="16" height="2" rx="1" />
-                                            </g>
-                                        </svg>
-                                    </span>
-                                    <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
-                                        New Issue
-                                    </span>
-                                </div>
-                            </a>
+                            <ng-container *ngIf="projectId$ | async as projectId">
+                                <a class="cursor-pointer" *requirePermission="issuePermissionKeys.CreateIssues" (click)="createIssue(projectId)">
+                                    <div class="d-flex align-items-center p-2">
+                                        <span class="svg-icon svg-icon-dark svg-icon-xs mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px"
+                                                viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect fill="#000000" x="4" y="11" width="16" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3"
+                                                        transform="translate(12.000000, 12.000000) rotate(-270.000000) translate(-12.000000, -12.000000) "
+                                                        x="4" y="11" width="16" height="2" rx="1" />
+                                                </g>
+                                            </svg>
+                                        </span>
+                                        <span class="text-dark-75 font-weight-bold text-hover-primary font-size-md">
+                                            New Issue
+                                        </span>
+                                    </div>
+                                </a>
+                            </ng-container>
                         </div>
                     </div>
                 </ng-template>
