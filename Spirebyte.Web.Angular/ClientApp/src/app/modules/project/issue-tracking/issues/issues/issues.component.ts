@@ -39,7 +39,7 @@ export class IssuesComponent implements OnInit {
   }
   
   isSelected(url): boolean {
-    return this.router.url.includes(url);
+    return this.route.snapshot.queryParams.selectedIssue === url;
   } 
 
   setSelectedIssue(key: string): void{
