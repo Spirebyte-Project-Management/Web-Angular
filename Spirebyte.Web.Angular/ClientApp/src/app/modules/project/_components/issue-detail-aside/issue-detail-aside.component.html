@@ -117,7 +117,7 @@
                             <ul class="navi navi-hover">
                                 <li class="navi-item" *requirePermission="issuePermissionKeys.EditIssues">
                                     <a (click)="updateIssue(issue.id)"
-                                        class="navi-link">
+                                        class="navi-link cursor-pointer">
                                         <span class="navi-icon">
                                             <em class="flaticon2-edit"></em>
                                         </span>
@@ -126,7 +126,7 @@
                                 </li>
                                 <li class="navi-item" *requirePermission="issuePermissionKeys.DeleteIssues">
                                     <a (click)="deleteIssue(issue.id)"
-                                        class="navi-link">
+                                        class="navi-link cursor-pointer">
                                         <span class="navi-icon">
                                             <em class="flaticon2-delete"></em>
                                         </span>
